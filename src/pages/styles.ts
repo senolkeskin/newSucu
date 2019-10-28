@@ -297,29 +297,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  iconButton: {
-    backgroundColor:"pink",
+  iconButtonCustomer: {
+    marginHorizontal: 2,
+    paddingLeft:16,
+    flex:0.5,
+    textAlign:"right",
+  },
+  iconButtonOrder: {
     marginHorizontal: 2,
     paddingLeft:16,
     flex:0.1,
     textAlign:"right",
   },
 
-  
 
-
-
-
-
-
-
-
-
-  
-
-
-  
-  
+  modalContainer: {
+    margin:20,
+    padding: 20,
+    backgroundColor: '#efefef',
+    top:330,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+    position: "absolute",
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
 
 });
 

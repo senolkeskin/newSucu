@@ -1,5 +1,17 @@
 import React, { Component } from "react";
-import { View, FlatList, StatusBar, Text, TouchableOpacity, ActivityIndicator, TextInput, KeyboardAvoidingView, Platform } from "react-native";
+import { View,
+        FlatList, 
+        StatusBar, 
+        Text, 
+        TouchableOpacity, 
+        ActivityIndicator, 
+        TextInput, 
+        KeyboardAvoidingView, 
+        Platform,
+        LayoutChangeEvent,
+        LayoutRectangle,
+        Modal,
+        Button,} from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
 import { Header, Input } from "../components";
@@ -10,6 +22,8 @@ import { ICustomerItem } from "../redux/models/homeModel";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Dropdown, DropDownData, RenderBaseProps } from 'react-native-material-dropdown';
+
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -21,6 +35,7 @@ interface Props {
 interface State {
   page: number;
   limit: number;
+  modalVisible: boolean;
 }
 
 const girdiler = Yup.object().shape({
@@ -36,12 +51,21 @@ class Customer extends Component<Props, State> {
     super(props);
     this.state = {
       page: 1,
-      limit: 20
+      limit: 20,
+      modalVisible: false,
     };
   }
 
   componentWillMount() {
     this.props.GetCustomers();
+  }
+
+  openModal() {
+    this.setState({modalVisible:true});
+  }
+
+  closeModal() {
+    this.setState({modalVisible:false});
   }
 
 _renderView(){
@@ -67,8 +91,9 @@ _renderView(){
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-          style={styles.iconButton}
-      >
+          style={styles.iconButtonCustomer}
+          onPress={()=>this.openModal()}>
+          
       <Icon name="md-more" size={24} color={"#C4B47B"} />
       </TouchableOpacity>
       </View>)}
@@ -77,10 +102,6 @@ _renderView(){
   }
 }
   render() {
-    const { isHomeLoading, customers } = this.props;
-    console.log("rendered", customers);
-    
-    const { page, limit } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC"/>
@@ -91,6 +112,27 @@ _renderView(){
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
+         <Modal            
+              visible={this.state.modalVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.closeModal()}
+              transparent={true}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.innerContainer}>
+                <Text>This is content inside of modal component</Text>
+                <Text>This is content inside of modal component</Text>
+                <Text>This is content inside of modal component</Text>
+                <Text>This is content inside of modal component</Text>
+                <Text>This is content inside of modal component</Text>
+                <Button
+                    onPress={() => this.closeModal()}
+                    title="KAPAT"
+                >
+                </Button>
+              </View>
+            </View>
+          </Modal>
         <View style={{marginTop:10}}></View>
         <ScrollView bounces={false}>
         <Formik

@@ -48,7 +48,7 @@ class OrdersCustomer extends Component<Props, State> {
                 <Text style={styles.urunAdiText}>{item.productName}</Text>
                 <Text style={styles.tarihText}>25 Ekim 2019</Text>
                 <TouchableOpacity
-                  style={styles.iconButton}
+                  style={styles.iconButtonOrder}
                 >
                   <Icon name="md-more" size={24} color={"#C4B47B"} />
                 </TouchableOpacity>
@@ -79,7 +79,7 @@ class OrdersCustomer extends Component<Props, State> {
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
-          title={nameSurname+" Sipariş Detay"}
+          title={"Sipariş Detay"}
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
         />
         <View style={styles.order_ustbilgi_row}>
