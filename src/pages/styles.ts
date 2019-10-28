@@ -312,8 +312,8 @@ const styles = StyleSheet.create({
 
 
   modalContainer: {
-    margin:20,
-    padding: 20,
+    margin:32,
+    padding: 6,
     backgroundColor: '#efefef',
     top:330,
     left: 20,
@@ -324,6 +324,42 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignItems: 'center',
   },
+
+  modalEditButtonContainer:{
+    backgroundColor:'#FFFFFF',
+    paddingHorizontal:43,
+    margin:1,
+    borderRadius: 5,
+  },
+
+  modalEditButtonText:{
+    textAlign: "center",
+    color: "#6E6E6E",
+    fontWeight: "900",
+    paddingVertical: 10,
+    marginHorizontal:10,   
+  },
+
+  modalDeleteButtonContainer:{
+    backgroundColor:'#FFFFFF',
+    paddingHorizontal:61,
+    margin:1,
+    borderRadius: 5,
+  },
+
+  modalDeleteButtonText:{
+    textAlign: "center",
+    color: "#B80202",
+    fontWeight: "900",
+    paddingVertical: 10,
+    marginHorizontal:10,   
+  },
+
+  modalCancelButtonContainer:{
+    left:120,
+    paddingHorizontal:10,
+  },
+
 
 });
 
