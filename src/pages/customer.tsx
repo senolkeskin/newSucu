@@ -92,6 +92,7 @@ _renderView(){
       </TouchableOpacity>
       <TouchableOpacity
           style={styles.iconButtonCustomer}
+
           onPress={()=>this.openModal()}>
           
       <Icon name="md-more" size={24} color={"#C4B47B"} />
@@ -120,16 +121,20 @@ _renderView(){
           >
             <View style={styles.modalContainer}>
               <View style={styles.innerContainer}>
-                <Text>This is content inside of modal component</Text>
-                <Text>This is content inside of modal component</Text>
-                <Text>This is content inside of modal component</Text>
-                <Text>This is content inside of modal component</Text>
-                <Text>This is content inside of modal component</Text>
-                <Button
-                    onPress={() => this.closeModal()}
-                    title="KAPAT"
-                >
-                </Button>
+              <TouchableOpacity style={styles.modalCancelButtonContainer}
+                  onPress={() => this.closeModal()}>
+                  <Icon name="md-close" size={30} color={"#6E6E6E"} />
+                </TouchableOpacity>
+              <TouchableOpacity style={styles.modalEditButtonContainer}
+                  onPress={() => this.closeModal()}>
+                  <Text style={styles.modalEditButtonText}
+                  >Düzenle</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalDeleteButtonContainer}
+                  onPress={() => this.closeModal()}>
+                  <Text style={styles.modalDeleteButtonText}
+                  >Sil</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </Modal>
