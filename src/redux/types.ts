@@ -8,6 +8,9 @@ export const ORDER_GET_CUSTOMERID = "GetCustomerId";
 export const CUSTOMER_ADD_SUCCEED ="CustomerAddSucceed";
 export const CUSTOMER_ADD_FAILED ="CustomerAddFailed";
 
+export const CUSTOMER_DELETE_SUCCEED ="CustomerDeleteSucceed";
+export const CUSTOMER_DELETE_FAILED ="CustomerDeleteFailed";
+
 export const LOGIN_STARTED = "loginStarted";
 export const LOGIN_SUCCEED = "loginSucceed";
 export const LOGIN_FAILED = "loginFailed";

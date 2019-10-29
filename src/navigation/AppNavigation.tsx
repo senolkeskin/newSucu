@@ -22,13 +22,15 @@ import Settings from "../pages/settings";
 import addCustomer from "../pages/addCustomer";
 import OrdersCustomer from "../pages/OrdersCustomer";
 import addOrder from "../pages/addOrder";
+import editCustomer from "../pages/editCustomer";
 
 const CustomerApp =createStackNavigator(
   {
   Customer: { screen: Customer},
   CustomerAdd : {screen : addCustomer},
   OrdersCustomer : {screen: OrdersCustomer },
-  AddOrder: { screen: addOrder}
+  AddOrder: { screen: addOrder},
+  EditCustomer: {screen: editCustomer}
   },
   {
     headerMode: "none"

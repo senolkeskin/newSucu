@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginBottom:10,
   },
   customerAddButton:{
-    backgroundColor:'#5458F7',
+    backgroundColor:'#2B6EDC',
     borderRadius: 2000,
     marginHorizontal: 20,
     paddingVertical: 15,

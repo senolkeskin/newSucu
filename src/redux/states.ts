@@ -36,3 +36,8 @@ export interface State {
     isSuccess: boolean,
     CustomerAddMessage: string,
   }
+
+  export interface CustomerDelete
+  {
+    isSuccess: boolean;
+  }
