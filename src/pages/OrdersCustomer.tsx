@@ -21,14 +21,26 @@ interface itemProp {
 }
 
 interface State {
-  page: number;
-  limit: number;
+  refreshing: boolean;
 }
 
 class OrdersCustomer extends Component<Props, State> {
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      refreshing:false,
+    };
+  }
   
   componentWillMount() {
     this.props.GetOrders(this.props.navigation.getParam("customerId"));
+    this.setState({ refreshing: false }); 
+  }
+
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.componentWillMount();
   }
 
 
@@ -40,6 +52,8 @@ class OrdersCustomer extends Component<Props, State> {
     }
     else{
       return (<FlatList
+        refreshing={this.state.refreshing}
+        onRefresh={() => this.onRefresh()}
         data={this.props.orders}
         renderItem={({ item }) => 
           <View style={styles.orderContainer}>

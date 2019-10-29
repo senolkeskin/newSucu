@@ -8,10 +8,8 @@ import { View,
         TextInput, 
         KeyboardAvoidingView, 
         Platform,
-        LayoutChangeEvent,
-        LayoutRectangle,
         Modal,
-        Button,} from "react-native";
+        Alert,} from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
 import { Header, Input } from "../components";
@@ -22,7 +20,7 @@ import { ICustomerItem } from "../redux/models/homeModel";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Dropdown, DropDownData, RenderBaseProps } from 'react-native-material-dropdown';
+import { customerDelete } from "../redux/actions/customerDeleteAction";
 
 
 interface Props {
@@ -30,12 +28,16 @@ interface Props {
   isHomeLoading : boolean;
   customers : ICustomerItem[];
   GetCustomers : () => void;
+  customerDelete : (customerId:number) => void;
+  CustomerDeleteIsSuccess: boolean;
 }
 
 interface State {
-  page: number;
-  limit: number;
   modalVisible: boolean;
+  refreshing:boolean;
+  customerId:number;
+  nameSurname:string;
+  companyName:string;
 }
 
 const girdiler = Yup.object().shape({
@@ -50,22 +52,67 @@ class Customer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: 1,
-      limit: 20,
       modalVisible: false,
+      refreshing:false,
+      customerId:0,
+      nameSurname:"",
+      companyName:"",
     };
   }
 
   componentWillMount() {
     this.props.GetCustomers();
+    this.setState({ refreshing: false });  
   }
 
-  openModal() {
-    this.setState({modalVisible:true});
+
+  openModal(customerId:number,nameSurname:string,companyName:string) {
+    this.setState({modalVisible:true,
+                  customerId:customerId,
+                  nameSurname:nameSurname,
+                  companyName:companyName,});
   }
 
   closeModal() {
     this.setState({modalVisible:false});
+  }
+
+  deleteSelectedCustomer(){
+    const {customerDelete}=this.props;
+    customerDelete(this.state.customerId);
+    this.closeModal();
+    this.onRefresh();
+    this.componentWillMount();
+  }
+
+  deleteCustomerAlert(){
+      //function to make three option alert
+      Alert.alert(
+        //title
+        'Müşteri Silme İşlemi',
+        //body
+        'Müşteriyi silmek istiyor musunuz?',
+        [
+          {text: 'Geri Gel'},
+          {text: 'Evet', onPress: () => this.deleteSelectedCustomer()},
+        ],
+        { cancelable: false }
+      );
+    
+  }
+
+  editCustomer(){
+    this.closeModal();
+    this.props.navigation.navigate("EditCustomer", 
+                    {customerId: this.state.customerId,
+                    nameSurname:this.state.nameSurname,
+                    companyName:this.state.companyName})
+
+  }
+
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.componentWillMount();
   }
 
 _renderView(){
@@ -76,8 +123,10 @@ _renderView(){
   }
   else{
     return (<FlatList
-    data={this.props.customers}
-    renderItem={({ item })  => (
+      refreshing={this.state.refreshing}
+      onRefresh={() => this.onRefresh()}
+      data={this.props.customers}
+      renderItem={({ item })  => (
       <View style={styles.row}>
       <TouchableOpacity style={styles.row_cell5} onPress={
         ()=>this.props.navigation.navigate("OrdersCustomer", {customerId: item.customerId,nameSurname:item.nameSurname,companyName:item.companyName})}>
@@ -93,7 +142,7 @@ _renderView(){
       <TouchableOpacity
           style={styles.iconButtonCustomer}
 
-          onPress={()=>this.openModal()}>
+          onPress={()=>this.openModal(item.customerId,item.nameSurname,item.companyName)}>
           
       <Icon name="md-more" size={24} color={"#C4B47B"} />
       </TouchableOpacity>
@@ -121,17 +170,17 @@ _renderView(){
           >
             <View style={styles.modalContainer}>
               <View style={styles.innerContainer}>
-              <TouchableOpacity style={styles.modalCancelButtonContainer}
+                <TouchableOpacity style={styles.modalCancelButtonContainer}
                   onPress={() => this.closeModal()}>
                   <Icon name="md-close" size={30} color={"#6E6E6E"} />
                 </TouchableOpacity>
               <TouchableOpacity style={styles.modalEditButtonContainer}
-                  onPress={() => this.closeModal()}>
+                  onPress={()=>this.editCustomer()}>
                   <Text style={styles.modalEditButtonText}
                   >Düzenle</Text>
-                </TouchableOpacity>
+              </TouchableOpacity>
                 <TouchableOpacity style={styles.modalDeleteButtonContainer}
-                  onPress={() => this.closeModal()}>
+                  onPress={() => this.deleteCustomerAlert()}>
                   <Text style={styles.modalDeleteButtonText}
                   >Sil</Text>
                 </TouchableOpacity>
@@ -177,12 +226,15 @@ _renderView(){
 
 const mapStateToProps = (state : AppState) => ({
   isHomeLoading : state.home.isHomeLoading,
-  customers : state.home.customers
+  customers : state.home.customers,
+  CustomerDeleteIsSuccess: state.customerDelete.isSuccess,
 })
 function bindToAction(dispatch: any) {
   return {
     GetCustomers: () =>
-    dispatch(GetCustomers())
+    dispatch(GetCustomers()),
+    customerDelete: (customerId:number) =>
+    dispatch(customerDelete(customerId)),
   };
 }
 

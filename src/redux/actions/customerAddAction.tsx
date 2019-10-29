@@ -21,12 +21,10 @@ export function customerAdd(nameSurname:string, companyName:string) {
       }
     }
   })
-  .catch((response) => {
-    if(response.data.isSuccess){
-      if(response.data.result){
-        dispatch(customerAddIsSucceed(true, "Müşteri Eklendi!"));
-      }
-    }
+  .catch(error => { 
+      
+    console.log(error + 'error kaydetme asn storage')   
+    dispatch(customerAddIsSucceed(false,"Bir hata oluştu."));
   });
 
   }

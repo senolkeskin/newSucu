@@ -30,30 +30,25 @@ interface Props {
 }
 
 interface customerData {
-  musteriAdiSoyadi: string;
-  sirketAdi: string;
-}
-
-const initialValues:customerData = {
-  musteriAdiSoyadi: "",
-  sirketAdi: "",
+    musteriAdiSoyadi:string;
+    sirketAdi: string;
 }
 
 const girdiler = Yup.object().shape({
-  musteriAdiSoyadi: Yup.string()
+    musteriAdiSoyadi: Yup.string()
     .matches(/./g)
     .min(1)
-    .max(30)
+    .max(20)
     .required(),
     sirketAdi: Yup.string()
     .matches(/./g)
     .min(1)
-    .max(30)
+    .max(20)
     .required(),
 });
 
 
-class addCustomer extends Component<Props, {}> {
+class editCustomer extends Component<Props, {}> {
 
   constructor(props: Props) {
     super(props);
@@ -95,20 +90,26 @@ class addCustomer extends Component<Props, {}> {
   };
 
   render() {
+    const { navigation } = this.props;
+
+    var musteriAdiSoyadi:string=this.props.navigation.getParam("nameSurname");
+    var sirketAdi:string=this.props.navigation.getParam("companyName");
+
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
-          title="Müşteri Ekle"
+          title="Müşteri Bilgilerini Düzenle"
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
         />
+
         <View style={{marginBottom:30}}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView bounces={false}>
             <Formik
-              initialValues={initialValues}
+              initialValues={{musteriAdiSoyadi,sirketAdi}}
               validationSchema={girdiler}
               onSubmit={values => this.handleAddCustomer(values)}
             >
@@ -116,6 +117,7 @@ class addCustomer extends Component<Props, {}> {
                 return (                
                   <View>
                     <View style={styles.inputContainer}>
+                    <Text>Adı Soyadı</Text>
                       <TextInput
                         style={styles.input}
                         placeholder="Adı Soyadı"
@@ -125,6 +127,7 @@ class addCustomer extends Component<Props, {}> {
                         onChangeText={props.handleChange("musteriAdiSoyadi")}
                         onBlur={props.handleBlur("musteriAdiSoyadi")}                   
                       />
+                      <Text>Şirket Adı</Text>
                       <TextInput
                         style={styles.input}
                         placeholder="Şirket Adı"
@@ -138,7 +141,7 @@ class addCustomer extends Component<Props, {}> {
                       <TouchableOpacity 
                         style={styles.customerAddButton}
                         onPress={props.handleSubmit}>
-                        <Text style={styles.CustomerAddButtonText}>Ekle</Text>               
+                        <Text style={styles.CustomerAddButtonText}>Düzenle</Text>               
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -164,4 +167,4 @@ function bindToAction(dispatch : any) {
   };
 }
 
-export default connect(mapStateToProps,bindToAction)(addCustomer);
+export default connect(mapStateToProps,bindToAction)(editCustomer);
