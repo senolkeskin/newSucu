@@ -53,6 +53,33 @@ const styles = StyleSheet.create({
     borderRadius:4,
     borderColor:"white"
   },
+  inputFiyat: {
+    elevation:2,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    marginHorizontal: 5,
+    paddingHorizontal: 20,
+    color: 'black',
+    marginBottom:10,
+    borderRadius:4,
+    borderColor:"white",
+    flex:8,
+    flexDirection:"column",
+  },
+
+  inputFiyatText: {
+    flex:1,
+    flexDirection:"column",
+    textAlign:"center",
+    marginTop:12,
+    paddingRight:10,
+    fontSize:20,
+    fontWeight:"bold",
+  },
+
+  inputFiyatContainer:{
+    flexDirection:"row",
+  },
+
   logoContainer:{
     alignItems:"center",
     flexGrow:1,
@@ -79,6 +106,16 @@ const styles = StyleSheet.create({
     marginLeft:200,
   },
 
+  ProductAddButton:{
+    backgroundColor:'#2B6EDC',
+    borderRadius: 2000,
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    marginTop:5,
+    marginBottom:10,
+    marginLeft:200,
+  },
+
   customerEditButton:{
     backgroundColor:'#2B6EDC',
     borderRadius: 2000,
@@ -90,6 +127,13 @@ const styles = StyleSheet.create({
   },
 
   CustomerAddButtonText:{
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontWeight: "900",
+    fontSize:16,
+  },
+
+  ProductAddButtonText:{
     textAlign: "center",
     color: "#FFFFFF",
     fontWeight: "900",
@@ -377,6 +421,54 @@ const styles = StyleSheet.create({
     left:120,
     paddingHorizontal:10,
   },
+
+  logoutButtonContainer:{
+    backgroundColor:'#D60D0D',
+    paddingHorizontal:61,
+    margin:5,
+    borderRadius: 5,
+    flex:1,
+    justifyContent:"flex-end"
+  },
+
+  logoutButtonText:{
+    textAlign: "center",
+    color: "#F3CCCC",
+    fontWeight: "900",
+    fontSize:17,
+    paddingVertical: 17,
+    marginHorizontal:10,
+  },
+
+  settingsContainer:{
+    flex:10
+  },
+
+  addProductButtonContainer:{
+    backgroundColor:'#2B6EDC',
+    paddingHorizontal:61,
+    margin:5,
+    borderRadius: 5,
+    justifyContent:"flex-start",
+    flex:0.1,
+
+  },
+  addProductButtonText:{
+    textAlign: "center",
+    color: "white",
+    fontWeight: "900",
+    fontSize:17,
+    paddingVertical: 17,
+    marginHorizontal:10,
+  },
+
+  errorText:{
+    marginLeft:10,
+    marginBottom:10,
+    textAlign: "justify",
+    color:"#EA0808",
+    fontSize:12,
+  }
 
 
 });

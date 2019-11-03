@@ -47,3 +47,9 @@ export interface State {
     isSuccess: boolean,
     CustomerEditMessage: string,
   }
+
+  export interface ProductAdd
+  {
+    isSuccess: boolean,
+    ProductAddMessage: string, 
+  }

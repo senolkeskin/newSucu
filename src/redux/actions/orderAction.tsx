@@ -9,21 +9,16 @@ import { NavigationScreenProp, NavigationState } from "react-navigation";
 
 
 export function GetOrders(customerId:number) {
-    console.log(customerId.toString()+"fsfsafafsafafasfs");
 
     return (dispatch : Dispatch<Action>) =>  {
   
     dispatch(loading(true));
-
-    const token:string = "asdada";
-
     var WATER_CUSTOMER_ORDERS_GET_CUSTOMER =WATER_CUSTOMER_ORDERS_GET+customerId;
 
     axios.get(WATER_CUSTOMER_ORDERS_GET_CUSTOMER,
-    {headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Barrier '+token
-      }})
+
+      
+    )
   .then((response) =>{
     
   if(response.data.isSuccess){
