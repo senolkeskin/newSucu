@@ -12,7 +12,7 @@ import {
   Alert,
 } from "react-native";
 import { NavigationScreenProp, NavigationState, } from "react-navigation";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
 import { HeaderLeft } from "../components";
@@ -40,15 +40,15 @@ const initialValues:customerData = {
 
 const girdiler = Yup.object().shape({
   musteriAdiSoyadi: Yup.string()
-    .matches(/./g)
-    .min(1)
-    .max(30)
-    .required(),
+    .matches(/./g," ")
+    .min(3,"*Müşteri adı 3 karakterden kısa olamaz!")
+    .max(30,"*Müşteri adı 30 karakterden uzun olamaz!")
+    .required("*Zorunlu Alan"),
     sirketAdi: Yup.string()
-    .matches(/./g)
-    .min(1)
-    .max(30)
-    .required(),
+    .matches(/./g," ")
+    .min(3,"*Şirket adı 3 karakterden kısa olamaz!")
+    .max(30,"*Şirket adı 30 karakterden uzun olamaz!")
+    .required("*Zorunlu Alan"),
 });
 
 
@@ -111,7 +111,7 @@ class addCustomer extends Component<Props, {}> {
               validationSchema={girdiler}
               onSubmit={values => this.handleAddCustomer(values)}
             >
-              {props => {
+              {({values,errors,handleChange,handleBlur,handleSubmit}) => {
                 return (                
                   <View>
                     <View style={styles.inputContainer}>
@@ -119,24 +119,25 @@ class addCustomer extends Component<Props, {}> {
                         style={styles.input}
                         placeholder="Adı Soyadı"
                         placeholderTextColor="#9A9A9A"
-                        value={props.values.musteriAdiSoyadi}
+                        value={values.musteriAdiSoyadi}
                         autoCapitalize="words"
-                        onChangeText={props.handleChange("musteriAdiSoyadi")}
-                        onBlur={props.handleBlur("musteriAdiSoyadi")}                   
+                        onChangeText={handleChange("musteriAdiSoyadi")}
+                        onBlur={handleBlur("musteriAdiSoyadi")}                   
                       />
+                      <Text style={styles.errorText}>{errors.musteriAdiSoyadi}</Text>
                       <TextInput
                         style={styles.input}
                         placeholder="Şirket Adı"
                         placeholderTextColor="#9A9A9A"
-                        value={props.values.sirketAdi}
+                        value={values.sirketAdi}
                         autoCapitalize="words"
-                        onChangeText={props.handleChange("sirketAdi")}
-                        onBlur={props.handleBlur("sirketAdi")}
-                        
+                        onChangeText={handleChange("sirketAdi")}
+                        onBlur={handleBlur("sirketAdi")} 
                       />
+                      <Text style={styles.errorText}>{errors.sirketAdi}</Text>
                       <TouchableOpacity 
                         style={styles.customerAddButton}
-                        onPress={props.handleSubmit}>
+                        onPress={handleSubmit}>
                         <Text style={styles.CustomerAddButtonText}>Ekle</Text>               
                       </TouchableOpacity>
                     </View>

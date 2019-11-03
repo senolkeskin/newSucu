@@ -16,39 +16,50 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
 import { HeaderLeft } from "../components";
-import { customerEdit } from "../redux/actions/customerEditAction";
+import { productAdd } from "../redux/actions/productAddAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
-import { thisExpression } from "@babel/types";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isSuccees : boolean;
-  customerEdit : (id:number ,nameSurname : string , companyName : string ) => void;
-  CustomerEditMessage: string;
-  musteri: customerData;
+  productAdd : (productName : string , productCode : string, price: string ) => void;
+  ProductAddMessage: string;
+  urun: productData;
 }
 
-interface customerData {
-    musteriAdiSoyadi:string;
-    sirketAdi: string;
+interface productData {
+  urunAdi: string;
+  urunKodu: string;
+  urunFiyati: string;
+}
+
+const initialValues:productData = {
+    urunAdi: "",
+    urunKodu: "",
+    urunFiyati:"",
 }
 
 const girdiler = Yup.object().shape({
-    musteriAdiSoyadi: Yup.string()
+    urunAdi: Yup.string()
     .matches(/./g)
     .min(1)
     .max(30)
     .required(),
-    sirketAdi: Yup.string()
+    urunKodu: Yup.string()
     .matches(/./g)
+    .min(1)
+    .max(30)
+    .required(),
+    urunFiyati: Yup.number()
+    .positive()
     .min(1)
     .max(30)
     .required(),
 });
 
 
-class editCustomer extends Component<Props, {}> {
+class addProduct extends Component<Props, {}> {
 
   constructor(props: Props) {
     super(props);
@@ -57,14 +68,14 @@ class editCustomer extends Component<Props, {}> {
     };
   }
 
-  handleEditCustomer(values: customerData) {
-    const { customerEdit, isSuccees,navigation } = this.props;
+  handleCreateProduct(values: productData) {
+    const { productAdd, isSuccees,navigation } = this.props;
     if(isSuccees){
-      customerEdit(this.props.navigation.getParam("customerId"),values.musteriAdiSoyadi, values.sirketAdi);
-      this.props.navigation.navigate("Customer");
+      productAdd(values.urunAdi, values.urunKodu, values.urunFiyati);
+      this.props.navigation.navigate("Settings");
       Alert.alert(
         //title
-        'Müşteri Düzenleme Başarılı!',
+        'Yeni Ürün Oluşturuldu!',
         //body
         '',
         [
@@ -90,58 +101,63 @@ class editCustomer extends Component<Props, {}> {
   };
 
   render() {
-    const { navigation } = this.props;
-
-    var musteriAdiSoyadi:string=this.props.navigation.getParam("nameSurname");
-    var sirketAdi:string=this.props.navigation.getParam("companyName");
-
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
-          title="Müşteri Bilgilerini Düzenle"
-          leftButtonPress={() => this.props.navigation.navigate("Customer")}
+          title="Ürün Oluştur"
+          leftButtonPress={() => this.props.navigation.navigate("Settings")}
         />
-
         <View style={{marginBottom:30}}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView bounces={false}>
             <Formik
-              initialValues={{musteriAdiSoyadi,sirketAdi}}
+              initialValues={initialValues}
               validationSchema={girdiler}
-              onSubmit={values => this.handleEditCustomer(values)}
+              onSubmit={values => this.handleCreateProduct(values)}
             >
               {props => {
                 return (                
                   <View>
                     <View style={styles.inputContainer}>
-                    <Text>Adı Soyadı</Text>
                       <TextInput
                         style={styles.input}
-                        placeholder="Adı Soyadı"
+                        placeholder="Ürün Adı"
                         placeholderTextColor="#9A9A9A"
-                        value={props.values.musteriAdiSoyadi}
+                        value={props.values.urunAdi}
                         autoCapitalize="words"
-                        onChangeText={props.handleChange("musteriAdiSoyadi")}
-                        onBlur={props.handleBlur("musteriAdiSoyadi")}                   
+                        onChangeText={props.handleChange("urunAdi")}
+                        onBlur={props.handleBlur("urunAdi")}                   
                       />
-                      <Text>Şirket Adı</Text>
                       <TextInput
                         style={styles.input}
-                        placeholder="Şirket Adı"
+                        placeholder="Ürün Kodu"
                         placeholderTextColor="#9A9A9A"
-                        value={props.values.sirketAdi}
+                        value={props.values.urunKodu}
                         autoCapitalize="words"
-                        onChangeText={props.handleChange("sirketAdi")}
-                        onBlur={props.handleBlur("sirketAdi")}
+                        onChangeText={props.handleChange("urunKodu")}
+                        onBlur={props.handleBlur("urunKodu")}
                         
                       />
+                      <View style={styles.inputFiyatContainer}>
+                      <TextInput
+                        style={styles.inputFiyat}
+                        placeholder="Ürün Fiyatı"
+                        placeholderTextColor="#9A9A9A"
+                        value={props.values.urunFiyati}
+                        autoCapitalize="none"
+                        keyboardType= "numeric"
+                        onChangeText={props.handleChange("urunFiyati")}
+                        onBlur={props.handleBlur("urunFiyati")}      
+                      />
+                      <Text style={styles.inputFiyatText}>TL</Text>
+                      </View>
                       <TouchableOpacity 
-                        style={styles.customerEditButton}
+                        style={styles.ProductAddButton}
                         onPress={props.handleSubmit}>
-                        <Text style={styles.CustomerEditButtonText}>Düzenle</Text>               
+                        <Text style={styles.ProductAddButtonText}>Oluştur</Text>               
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -156,15 +172,15 @@ class editCustomer extends Component<Props, {}> {
 }
 
 const mapStateToProps = (state : AppState) => ({
-  isSuccees : state.customerEdit.isSuccess,
-  CustomerEditMessage :state.customerEdit.CustomerEditMessage
+  isSuccees : state.productAdd.isSuccess,
+  ProductAddMessage :state.productAdd.ProductAddMessage
 })
 
 function bindToAction(dispatch : any) {
   return {
-    customerEdit : (id:number ,nameSurname:string , companyName : string) =>
-    dispatch(customerEdit(id,nameSurname,companyName))   
+    productAdd : (productName:string , productCode : string, price : string) =>
+    dispatch(productAdd(productName,productCode,price))   
   };
 }
 
-export default connect(mapStateToProps,bindToAction)(editCustomer);
+export default connect(mapStateToProps,bindToAction)(addProduct);

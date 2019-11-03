@@ -20,5 +20,5 @@ export const LOGIN_FAILED = "loginFailed";
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
-
-export const RESET_PROPS = "resetProps";
+export const PRODUCT_ADD_SUCCEED = "ProductAddSucceed";
+export const PRODUCT_ADD_FAILED = "ProductAddFailed";

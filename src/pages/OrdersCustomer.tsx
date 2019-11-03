@@ -102,8 +102,8 @@ class OrdersCustomer extends Component<Props, State> {
           <Text style={styles.alt_bilgi}>{companyName}</Text>
         </View>
         <View style={styles.row_cell2}>
-          <Text style={styles.paratextalınan}>49900TL kalan</Text>
-          <Text style={styles.paratextkalan} >10TL alınan</Text>
+          <Text style={styles.paratextalınan}>49900TL alınan</Text>
+          <Text style={styles.paratextkalan} >10TL kalan</Text>
         </View>
       </View>
         <View style={{marginTop:10}}></View>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, ActivityIndicator, StatusBar } from "react-native";
+import { View, FlatList, ActivityIndicator, StatusBar, TouchableOpacity, Text } from "react-native";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import { connect } from "react-redux";
 import { Header } from "../components";
@@ -28,20 +28,14 @@ interface State {
   limit: number;
 }
 
-class Settings extends Component<Props, State> {
+class Settings extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: 1,
-      limit: 20
+
     };
   }
 
-  componentDidMount() {
-    const { fetchImageData } = this.props;
-    const { page, limit } = this.state;
-    fetchImageData(page, limit);
-  }
 
   handleLogout = () => {
     const { navigation } = this.props;
@@ -51,23 +45,23 @@ class Settings extends Component<Props, State> {
   };
 
   render() {
-    const { navigation, imageData, fetchMoreImageData, loading } = this.props;
-    const { page, limit } = this.state;
+    const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <Header
           title="Ayarlar"
         />
-        <FlatList
-          data={imageData}
-          keyExtractor={item => item.id}
-          renderItem={({ item }: itemProp) => {
-            return (
-              <AvatarItem avatar={item.download_url} title={item.author} />
-            );
-          }}
-        />
+        <View style={styles.settingsContainer}>
+        <TouchableOpacity style={styles.addProductButtonContainer}
+        onPress={()=>this.props.navigation.navigate("AddProduct")}>
+          <Text style={styles.addProductButtonText}>Ürün Ekle</Text>
+        </TouchableOpacity>
+        </View>
+          
+        <TouchableOpacity style={styles.logoutButtonContainer}>
+          <Text style={styles.logoutButtonText}>Çıkış</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -87,7 +81,4 @@ function bindToAction(dispatch: any) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  bindToAction
-)(Settings);
+export default connect( mapStateToProps, bindToAction)(Settings);

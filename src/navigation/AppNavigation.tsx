@@ -25,6 +25,7 @@ import addCustomer from "../pages/addCustomer";
 import OrdersCustomer from "../pages/OrdersCustomer";
 import addOrder from "../pages/addOrder";
 import editCustomer from "../pages/editCustomer";
+import addProduct from "../pages/addProduct";
 
 const CustomerApp =createStackNavigator(
   {
@@ -39,6 +40,17 @@ const CustomerApp =createStackNavigator(
   }
 
 );
+
+const SettingsApp = createStackNavigator(
+  {
+    Settings: {screen: Settings},
+    AddProduct: {screen: addProduct},
+
+  },
+  {
+    headerMode: "none"
+  }
+)
 
 const MainStack = createBottomTabNavigator(
   {
@@ -60,7 +72,7 @@ const MainStack = createBottomTabNavigator(
       },
       
     },
-    Settings: { screen: Settings,
+    Settings: { screen: SettingsApp,
       navigationOptions:{
         tabBarLabel:'Ayarlar',
         tabBarIcon:()=>(  
@@ -83,6 +95,7 @@ const LoginScreen = createStackNavigator(
     headerMode: "none"
   }
 );
+
 
 export default createAppContainer(
   createSwitchNavigator(
