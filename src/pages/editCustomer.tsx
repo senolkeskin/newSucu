@@ -16,7 +16,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
 import { HeaderLeft } from "../components";
-import { customerAdd } from "../redux/actions/customerAddAction";
+import { customerEdit } from "../redux/actions/customerEditAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
 import { thisExpression } from "@babel/types";
@@ -24,8 +24,8 @@ import { thisExpression } from "@babel/types";
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isSuccees : boolean;
-  customerAdd : (nameSurname : string , companyName : string ) => void;
-  CustomerAddMessage: string;
+  customerEdit : (id:number ,nameSurname : string , companyName : string ) => void;
+  CustomerEditMessage: string;
   musteri: customerData;
 }
 
@@ -57,14 +57,14 @@ class editCustomer extends Component<Props, {}> {
     };
   }
 
-  handleAddCustomer(values: customerData) {
-    const { customerAdd, isSuccees,navigation } = this.props;
+  handleEditCustomer(values: customerData) {
+    const { customerEdit, isSuccees,navigation } = this.props;
     if(isSuccees){
-      customerAdd(values.musteriAdiSoyadi, values.sirketAdi);
+      customerEdit(this.props.navigation.getParam("customerId"),values.musteriAdiSoyadi, values.sirketAdi);
       this.props.navigation.navigate("Customer");
       Alert.alert(
         //title
-        'Müşteri Ekleme Başarılı!',
+        'Müşteri Düzenleme Başarılı!',
         //body
         '',
         [
@@ -111,7 +111,7 @@ class editCustomer extends Component<Props, {}> {
             <Formik
               initialValues={{musteriAdiSoyadi,sirketAdi}}
               validationSchema={girdiler}
-              onSubmit={values => this.handleAddCustomer(values)}
+              onSubmit={values => this.handleEditCustomer(values)}
             >
               {props => {
                 return (                
@@ -139,9 +139,9 @@ class editCustomer extends Component<Props, {}> {
                         
                       />
                       <TouchableOpacity 
-                        style={styles.customerAddButton}
+                        style={styles.customerEditButton}
                         onPress={props.handleSubmit}>
-                        <Text style={styles.CustomerAddButtonText}>Düzenle</Text>               
+                        <Text style={styles.CustomerEditButtonText}>Düzenle</Text>               
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -156,14 +156,14 @@ class editCustomer extends Component<Props, {}> {
 }
 
 const mapStateToProps = (state : AppState) => ({
-  isSuccees : state.customerAdd.isSuccess,
-  CustomerAddMessage :state.customerAdd.CustomerAddMessage
+  isSuccees : state.customerEdit.isSuccess,
+  CustomerEditMessage :state.customerEdit.CustomerEditMessage
 })
 
 function bindToAction(dispatch : any) {
   return {
-    customerAdd : (nameSurname:string , companyName : string) =>
-    dispatch(customerAdd(nameSurname,companyName))   
+    customerEdit : (id:number ,nameSurname:string , companyName : string) =>
+    dispatch(customerEdit(id,nameSurname,companyName))   
   };
 }
 

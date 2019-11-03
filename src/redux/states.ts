@@ -41,3 +41,9 @@ export interface State {
   {
     isSuccess: boolean;
   }
+
+  export interface CustomerEdit
+  {
+    isSuccess: boolean,
+    CustomerEditMessage: string,
+  }

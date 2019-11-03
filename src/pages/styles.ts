@@ -79,12 +79,30 @@ const styles = StyleSheet.create({
     marginLeft:200,
   },
 
+  customerEditButton:{
+    backgroundColor:'#2B6EDC',
+    borderRadius: 2000,
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    marginTop:5,
+    marginBottom:10,
+    marginLeft:200,
+  },
+
   CustomerAddButtonText:{
     textAlign: "center",
     color: "#FFFFFF",
     fontWeight: "900",
     fontSize:16,
   },
+
+  CustomerEditButtonText:{
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontWeight: "900",
+    fontSize:16,
+  },
+  
   linkText: {
     textAlign: "center",
     color: "#C2C8F7",

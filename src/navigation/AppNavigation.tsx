@@ -11,6 +11,8 @@ import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+import Icon from "react-native-vector-icons/Ionicons";
+
 import Home from "../screens/AppScreens/Home";
 import Blank from "../screens/AppScreens/Blank";
 import SideBar from "../screens/AppScreens/SideBar";
@@ -40,12 +42,35 @@ const CustomerApp =createStackNavigator(
 
 const MainStack = createBottomTabNavigator(
   {
-    Customer:  CustomerApp,
-    Employee: { screen: Employee},
-    Settings: { screen: Settings},
+    Customer:  {screen: CustomerApp,
+      navigationOptions:{
+        tabBarLabel:'Müşteriler',
+        tabBarIcon:()=>(  
+          <Icon name="ios-contacts" size={25}/>  
+        ),
+      }
+    },
+    Employee: { screen: Employee,
+      
+      navigationOptions:{
+        tabBarLabel:'Çalışanlar',
+        tabBarIcon:()=>(  
+          <Icon name="ios-person"  size={25}/>  
+        ),
+      },
+      
+    },
+    Settings: { screen: Settings,
+      navigationOptions:{
+        tabBarLabel:'Ayarlar',
+        tabBarIcon:()=>(  
+          <Icon name="ios-settings"  size={25}/>  
+        )  
+      }},
   },
   {
     initialRouteName: "Customer",
+    
   }
 );
 
