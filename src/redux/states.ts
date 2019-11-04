@@ -29,6 +29,9 @@ export interface State {
     customerId: number;
     orders: IOrderItem[];
     isOrderLoading: boolean;
+    takeTotalAmount:number;
+    tookTotalAmount:number;
+    restTotalAmount:number;
   }
 
   export interface CustomerAdd
