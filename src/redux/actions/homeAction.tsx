@@ -3,26 +3,8 @@ import axios from 'axios'
 import {WATER_CUSTOMERS_HOME_GET} from './../constants'
 import { Dispatch } from "react";
 import {CUSTOMER_GET,HOME_LOADING_CUSTOMERS } from './../types'
-//import { navigate } from '../services/Navigator';
 import {Action} from '../states'
 import { ICustomerItem } from "../models/homeModel";
-import { number } from "prop-types";
-
-
-// export function controlemail(email: string) {
-// return new Promise((resolve,reject) => {
-//   //control email if its exist 
-
-// });
-// }
-
-
-
-// export function resetProps() {
-//   return(dispatch : Dispatch<Action>) => {
-//     dispatch(reset());
-//   }
-// }
 
 
 export function GetCustomers() {
@@ -31,16 +13,11 @@ export function GetCustomers() {
   
     dispatch(loading(true));
 
-    // dispatch({
-    //   type:LOGIN_STARTED,
-    // });   
     const token:string = "asdada";
 
   axios.get(WATER_CUSTOMERS_HOME_GET,
-    {headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Barrier '+token
-      }})
+    
+    )
   .then((response) =>{
     
   if(response.data.isSuccess){

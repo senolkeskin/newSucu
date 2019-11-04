@@ -250,7 +250,15 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   paratextkalan: {
-    color: "red",
+    color: "#E30606",
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 13,
+    textAlign: "right",
+  },
+  paratextToplam: {
+    color: "black",
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
@@ -292,8 +300,8 @@ const styles = StyleSheet.create({
     textAlign:"right",
     color: "#946C4D",
     includeFontPadding: false,
-    flex: 1,
-    fontSize: 15,
+    flex: 1.2,
+    fontSize: 13,
     paddingRight:12,
     marginTop:5,
   },
@@ -377,7 +385,7 @@ const styles = StyleSheet.create({
     margin:32,
     padding: 6,
     backgroundColor: '#efefef',
-    top:330,
+    top:320,
     left: 20,
     right: 20,
     alignItems: 'center',
@@ -468,7 +476,54 @@ const styles = StyleSheet.create({
     textAlign: "justify",
     color:"#EA0808",
     fontSize:12,
-  }
+  },
+
+  amountButtonContainer:{
+    backgroundColor:'#2B6EDC',
+    borderRadius: 10,
+    marginHorizontal: 30,
+    paddingVertical: 10,
+    marginTop:5,
+    marginBottom:22,
+    marginLeft:200,
+    right:10,
+    alignItems:"center",
+
+  },
+
+  amountButtonText:{
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontWeight: "900",
+    fontSize:16,
+
+  },
+
+  modalOrderButtonContainer:{
+    backgroundColor:'#FFFFFF',
+    paddingHorizontal:31,
+    margin:1,
+    borderRadius: 5,
+  },
+
+  alınanParaText:{
+    textAlign:"center",
+    color: "green",
+    includeFontPadding: false,
+    flex:1,
+    fontSize: 12,
+  },
+
+  kalanParaText:{
+    textAlign:"center",
+    color: "#E30606",
+    includeFontPadding: false,
+    flex:1,
+    fontSize: 12,
+    fontWeight:"bold",
+  },
+
+
 
 
 });
