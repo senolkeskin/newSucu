@@ -523,6 +523,17 @@ const styles = StyleSheet.create({
     fontWeight:"bold",
   },
 
+  pickerSelectStyles:{
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30,
+  }
+
 
 
 

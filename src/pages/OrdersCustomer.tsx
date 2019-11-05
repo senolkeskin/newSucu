@@ -4,12 +4,13 @@ import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigat
 import { connect } from "react-redux";
 import { HeaderLeftRight, Input } from "../components";
 import styles from "./styles";
-import { GetOrders, orders } from "../redux/actions/orderAction";
+import { GetOrders} from "../redux/actions/orderAction";
 import { AppState } from "../redux/store";
 import { IOrderItem } from "../redux/models/orderModel";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { AddCash} from "../redux/actions/addCashAction";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -19,10 +20,11 @@ interface Props {
   restTotalAmount: number,
   isOrderLoading: boolean,
   GetOrders : (customerId:number) => void;
+  AddCash : (orderId:number,amount:string) => void;
 }
 
 interface amountData {
-  amount: number
+  amount: string
 }
 
 interface State {
@@ -42,7 +44,7 @@ const girdiler = Yup.object().shape({
 });
 
 const initialValues:amountData = {
-  amount:0,
+  amount:"",
 }
 
 
@@ -62,9 +64,6 @@ class OrdersCustomer extends Component<Props, State> {
   componentWillMount() {
     this.props.GetOrders(this.props.navigation.getParam("customerId"));
     this.setState({ refreshing: false }); 
-    console.log(this.props.takeTotalAmount+"fsafaasffa");
-    console.log(this.props.tookTotalAmount+"fsafaasffaaaaaaaaaaaaa");
-    console.log(this.props.restTotalAmount+"fsafaasffabbbbbbbbbbb");
   }
 
   onRefresh() {
@@ -111,8 +110,12 @@ closeAmountModal() {
   this.setState({modalAmountVisible:false});
 }
 
-odemeAl(){
-  //odeme güncelleme alanı daha gelmedi
+odemeAl(values: amountData){
+  console.log("fsafsafasfsa "+this.state.orderId+" fsafasf "+values.amount)
+  this.props.AddCash(this.state.orderId,values.amount);
+  this.closeAmountModal();
+  this.onRefresh();
+  this.componentWillMount();
 }
 
 deleteSelectedOrder(){
@@ -180,7 +183,7 @@ deleteSelectedOrder(){
         <HeaderLeftRight
           title={"Sipariş Detay"}
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
-          rightButtonPress={() => this.props.navigation.navigate("Customer")}//order ekle sayfası daha yapılmadı buradan ona gidecek.
+          rightButtonPress={() => this.props.navigation.navigate("AddOrder")}
         />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -227,7 +230,7 @@ deleteSelectedOrder(){
                 <Formik
                   initialValues={initialValues}
                   validationSchema={girdiler}
-                  onSubmit={values => this.handleCreateProduct(values)}
+                  onSubmit={values => this.odemeAl(values)}
                 >
                   {props => {
                 return (                
@@ -289,7 +292,9 @@ const mapStateToProps = (state: AppState) => ({
 function bindToAction(dispatch: any,) {
   return {
     GetOrders: (customerId:number) =>
-    dispatch(GetOrders(customerId))
+    dispatch(GetOrders(customerId)),
+    AddCash:(orderId:number,amount:string)=>
+    dispatch(AddCash(orderId,Number(amount))),
   };
 }
 

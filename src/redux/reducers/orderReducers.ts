@@ -6,7 +6,6 @@ import customer from "../../pages/customer";
 
 
 const initalState = {
-    customerId: 0,
     orders: [],
     takeTotalAmount:0,
     tookTotalAmount: 0,
@@ -19,28 +18,24 @@ export default (state: Orders = initalState, action: Action) => {
     case ORDERS_GET:
       return {
         ...state,
-        customerId: action.payload,
         orders: action.payload,
         isOrderLoading:false
       };
     case GET_TAKE_TOTAL_AMOUNT:
       return {
         ...state,
-        customerId: action.payload,
         takeTotalAmount:action.payload,
         isOrderLoading:false
       };
     case GET_TOOK_TOTAL_AMOUNT:
       return {
         ...state,
-        customerId: action.payload,
         tookTotalAmount: action.payload,
         isOrderLoading:false
       };
     case GET_REST_TOTAL_AMOUNT:
       return {
         ...state,
-        customerId: action.payload,
         restTotalAmount: action.payload,
         isOrderLoading:false
       };      

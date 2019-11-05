@@ -10,6 +10,7 @@ import customerAddReducers from "./reducers/customerAddReducers";
 import customerDeleteReducers from "./reducers/customerDeleteReducers";
 import customerEditReducers from "./reducers/customerEditReducers";
 import productAddReducers from "./reducers/productAddReducers";
+import addCashReducers from "./reducers/addCashReducers";
 
 const persistConfig = {
   key: "root",
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === `development`) {
 }
 
 const rootReducer = combineReducers({
+  addCash:addCashReducers,
   productAdd: productAddReducers,
   customerEdit: customerEditReducers, 
   customerDelete: customerDeleteReducers,

@@ -14,10 +14,10 @@ import {
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { loginUserService } from "../redux/services/user";
 import styles from "./styles";
 import { HeaderLeft } from "../components";
-import { logoutUserService } from "../redux/services/user";
+import RNPickerSelect from 'react-native-picker-select';
+import Icon from "react-native-vector-icons/Ionicons";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -28,38 +28,32 @@ interface userData {
 }
 
 const girdiler = Yup.object().shape({
-  musteriAdi: Yup.string()
-    .matches(/^[a-zA-Z0-9_-]+$/)
-    .min(4)
-    .max(16)
-    .required(),
-  sebilSayisi: Yup.string()
-    .matches(/^[a-zA-Z0-9_-]+$/)
-    .min(6)
-    .max(16)
-    .required()
+  count: Yup.number()
+  .positive()
+  .min(1)
+  .max(30)
+  .required(),
 });
-
 class Login extends Component<Props, {}> {
-  anasayfayaDon = () => {
-    const { navigation } = this.props;
-    logoutUserService().then(() => {
-      navigation.navigate("MainStack");
-    });
-  };
 
   render() {
+    const placeholder = {
+      label: 'Ürün Seçiniz...',
+      value: null,
+      color: '#2B6EDC',
+    };
+
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
           title="Sipariş Ekle"
-          leftButtonPress={() => this.anasayfayaDon()}
+          leftButtonPress={() => this.props.navigation.navigate("OrdersCustomer")}
         />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <ScrollView bounces={false}>
+          <ScrollView bounces={false}>      
             <Formik
               initialValues={{ musteriAdi: "", sebilSayisi: "" }}
               validationSchema={girdiler}
@@ -71,16 +65,22 @@ class Login extends Component<Props, {}> {
                     <View>
                     </View>
                     <View style={styles.inputContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Müşteri Adı / Şirket Adı"
-                        placeholderTextColor="white"
-                        value={props.values.musteriAdi}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        onChangeText={props.handleChange("musteriAdi")}
-                        onBlur={props.handleBlur("musteriAdi")}                   
-                      />
+                    <View style={styles.input}>
+                    <RNPickerSelect
+                      style={styles.pickerSelectStyles}
+                      placeholder={placeholder}
+                      onValueChange={(value) => console.log(value)}
+                      items={[
+                      { label: 'Football', value: 'football' },
+                      { label: 'Baseball', value: 'baseball' },
+                      { label: 'Hockey', value: 'hockey' },
+                      ]}
+                      textInputProps={{ underlineColor: 'yellow' }}
+                      Icon={() => {
+                        return <Icon name="md-arrow-down" size={24} color="gray" style={{top:15}} />;
+                      }}
+                    />
+                    </View>
                       <TextInput
                         style={styles.input}
                         placeholder="Sebil Sayısı"
@@ -91,7 +91,7 @@ class Login extends Component<Props, {}> {
                         secureTextEntry
                       />
                       <TouchableOpacity style={styles.buttonContainer}>
-                        <Text style={styles.buttonText}
+                        <Text style={styles.amountButtonText}
                         onPress={props.handleSubmit}
                         >Sipariş Ekle</Text>
                       </TouchableOpacity>

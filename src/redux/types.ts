@@ -26,3 +26,6 @@ export const PRODUCT_ADD_FAILED = "ProductAddFailed";
 export const GET_TAKE_TOTAL_AMOUNT = "GetTakeTotalAmounts";
 export const GET_TOOK_TOTAL_AMOUNT = "GetTookTotalAmounts";
 export const GET_REST_TOTAL_AMOUNT = "GetRestTotalAmounts";
+
+export const ADD_CASH_SUCCEED ="AddCashSucceed";
+export const ADD_CASH_FAILED ="AddCashFailed";

@@ -21,6 +21,7 @@
     "react-native-navigation": "^2.27.9",
     "react-native-options-menu": "^2.0.2",
     "react-native-picker-module": "^1.2.3",
+    "react-native-picker-select": "^6.3.3",
     "react-native-popup-menu": "^0.15.6",
     "react-native-vector-icons": "^6.5.0",
     "react-navigation": "^3.11.0",

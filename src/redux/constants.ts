@@ -5,4 +5,6 @@ export const WATER_CUSTOMER_ORDERS_GET = WATER_BASE_URL+"/customer/CustomerOrder
 export const WATER_CUSTOMER_ADD = WATER_BASE_URL+"/customer";
 export const WATER_CUSTOMER_DELETE = WATER_BASE_URL+"/customer/Delete";
 export const WATER_CUSTOMER_EDIT = WATER_BASE_URL+"/customer/Update";
-export const WATER_PRODUCT_ADD = WATER_BASE_URL+"/Product"
+export const WATER_PRODUCT_ADD = WATER_BASE_URL+"/Product";
+export const WATER_ADD_CASH = WATER_BASE_URL+"/Cash"
+
