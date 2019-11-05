@@ -26,7 +26,6 @@ export interface State {
 
   export interface Orders
   {
-    customerId: number;
     orders: IOrderItem[];
     isOrderLoading: boolean;
     takeTotalAmount:number;
@@ -55,4 +54,10 @@ export interface State {
   {
     isSuccess: boolean,
     ProductAddMessage: string, 
+  }
+
+  export interface AddCash
+  {
+    isSuccess: boolean,
+    AddCashMessage: string,
   }
