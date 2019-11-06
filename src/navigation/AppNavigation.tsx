@@ -33,7 +33,7 @@ const CustomerApp =createStackNavigator(
   CustomerAdd : {screen : addCustomer},
   OrdersCustomer : {screen: OrdersCustomer },
   AddOrder: { screen: addOrder},
-  EditCustomer: {screen: editCustomer}
+  EditCustomer: {screen: editCustomer},
   },
   {
     headerMode: "none"
