@@ -18,13 +18,37 @@ import styles from "./styles";
 import { HeaderLeft } from "../components";
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/Ionicons";
+import { GetProducts } from "../redux/actions/productAction";
+import { connect } from "react-redux";
+import { AppState } from "../redux/store";
+import { IProductItem } from "../redux/models/productAddModel";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
+  isProductLoading : boolean;
+  products : IProductItem[];
+  GetProducts : () => void;
 }
-interface userData {
-  musteriAdi: string;
-  sebilSayisi: string;
+interface State {
+  productName:string,
+  productCode:string,
+  price:number,
+  date:string,
+}
+
+interface Item {
+  label: string;
+  value: any;
+  key?: string | number;
+  color?: string;
+}
+
+interface orderData {
+  count:number,
+}
+
+const initialValues:orderData = {
+  count:0,
 }
 
 const girdiler = Yup.object().shape({
@@ -34,12 +58,54 @@ const girdiler = Yup.object().shape({
   .max(30)
   .required(),
 });
-class Login extends Component<Props, {}> {
+class addOrder extends Component<Props, State> {
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      productName:"",
+      productCode:"",
+      price:0,
+      date:"",
+    };
+  }
+
+  siparisOlustur(values:orderData){
+
+  }
+
+  OrderInfo(value:IProductItem){
+    this.setState({
+      productName:value.productName,
+      productCode:value.productCode,
+      price:value.price,
+    })
+  }
+  
+  PickerMenuCreate(){
+    var PickerModel :Item[] = [];
+      
+      this.props.products.forEach((product:IProductItem) => {
+            var productItem : Item={
+                label : product.productName,
+                value :product,
+            }
+            PickerModel.push(productItem);         
+      });
+
+      return PickerModel;
+  }
+
+  componentWillMount() {
+    this.props.GetProducts();
+    var date = new Date().toISOString(); //Current Date
+    
+  }
 
   render() {
     const placeholder = {
       label: 'Ürün Seçiniz...',
-      value: null,
+      value: '',
       color: '#2B6EDC',
     };
 
@@ -55,9 +121,9 @@ class Login extends Component<Props, {}> {
         >
           <ScrollView bounces={false}>      
             <Formik
-              initialValues={{ musteriAdi: "", sebilSayisi: "" }}
+              initialValues={initialValues}
               validationSchema={girdiler}
-              onSubmit={values => this.handleLogin(values)}
+              onSubmit={values => this.siparisOlustur(values)}
             >
               {props => {
                 return (
@@ -69,12 +135,8 @@ class Login extends Component<Props, {}> {
                     <RNPickerSelect
                       style={styles.pickerSelectStyles}
                       placeholder={placeholder}
-                      onValueChange={(value) => console.log(value)}
-                      items={[
-                      { label: 'Football', value: 'football' },
-                      { label: 'Baseball', value: 'baseball' },
-                      { label: 'Hockey', value: 'hockey' },
-                      ]}
+                      onValueChange={(value) => this.OrderInfo(value)}
+                      items={this.PickerMenuCreate()}
                       textInputProps={{ underlineColor: 'yellow' }}
                       Icon={() => {
                         return <Icon name="md-arrow-down" size={24} color="gray" style={{top:15}} />;
@@ -83,12 +145,36 @@ class Login extends Component<Props, {}> {
                     </View>
                       <TextInput
                         style={styles.input}
-                        placeholder="Sebil Sayısı"
-                        placeholderTextColor="white"
-                        value={props.values.sebilSayisi}
-                        onChangeText={props.handleChange("sebilSayisi")}
-                        onBlur={props.handleBlur("sebilSayisi")}
-                        secureTextEntry
+                        placeholder="Ürün Adedi"
+                        placeholderTextColor="#9A9A9A"
+                        keyboardType="number-pad"
+                        value={props.values.count+""}
+                        onChangeText={props.handleChange("count")}
+                        onBlur={props.handleBlur("count")}
+                      />
+                      <TextInput
+                        editable={false}
+                        style={styles.input}
+                        placeholderTextColor="#313033"
+                        value={"Date().toISOString()"}
+                      />
+                      <TextInput
+                        editable={false}
+                        style={styles.input}
+                        placeholderTextColor="#313033"
+                        value={this.state.productCode}       
+                      />
+                      <TextInput
+                        editable={false}
+                        style={styles.input}
+                        placeholderTextColor="#313033"
+                        value={this.state.price+""}       
+                      />
+                      <TextInput
+                        editable={false}
+                        style={styles.input}
+                        placeholderTextColor="#313033"
+                        value={(this.state.price*props.values.count)+""}       
                       />
                       <TouchableOpacity style={styles.buttonContainer}>
                         <Text style={styles.amountButtonText}
@@ -108,6 +194,18 @@ class Login extends Component<Props, {}> {
   }
 }
 
+const mapStateToProps = (state : AppState) => ({
+  isProductLoading : state.products.isProductLoading,
+  products : state.products.products,
+})
+function bindToAction(dispatch: any) {
+  return {
+    GetProducts: () =>
+    dispatch(GetProducts()),
+  };
+}
 
-
-export default Login;
+export default connect(
+  mapStateToProps,
+  bindToAction
+)(addOrder);

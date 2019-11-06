@@ -1,5 +1,6 @@
 import { ICustomerItem } from "./models/homeModel";
 import { IOrderItem } from "./models/orderModel";
+import { IProductItem} from "./models/productModel";
 
 export interface State {
     data: any[];
@@ -61,3 +62,8 @@ export interface State {
     isSuccess: boolean,
     AddCashMessage: string,
   }
+
+  export interface ProductState{
+    products:IProductItem[];
+    isProductLoading :boolean;
+}
