@@ -532,7 +532,23 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     color: 'black',
     paddingRight: 30,
-  }
+  },
+  chechBoxContainer: {
+    elevation:2,
+    borderRadius:2,
+    marginHorizontal:20,
+    justifyContent: "space-between",
+    flex:4,
+  },
+
+  productUrunfiyatText: {
+    color: "#0A157A",
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 12,
+    textAlign: "right",
+  },
 
 
 

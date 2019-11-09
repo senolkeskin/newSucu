@@ -67,3 +67,15 @@ export interface State {
     products:IProductItem[];
     isProductLoading :boolean;
 }
+
+export interface AddOrder
+  {
+    isSuccess: boolean,
+    AddOrderMessage: string,
+  }
+
+  export interface ProductEdit
+  {
+    isSuccess: boolean,
+    ProductEditMessage: string,
+  }

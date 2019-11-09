@@ -26,6 +26,8 @@ import OrdersCustomer from "../pages/OrdersCustomer";
 import addOrder from "../pages/addOrder";
 import editCustomer from "../pages/editCustomer";
 import addProduct from "../pages/addProduct";
+import products from "../pages/products";
+import editProduct from "../pages/editProduct";
 
 const CustomerApp =createStackNavigator(
   {
@@ -45,6 +47,8 @@ const SettingsApp = createStackNavigator(
   {
     Settings: {screen: Settings},
     AddProduct: {screen: addProduct},
+    EditProduct: {screen: editProduct},
+    Products: {screen: products},
 
   },
   {

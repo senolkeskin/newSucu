@@ -10,6 +10,7 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
+  Alert,
 } from "react-native";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import { Formik } from "formik";
@@ -18,22 +19,30 @@ import styles from "./styles";
 import { HeaderLeft } from "../components";
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/Ionicons";
-import { GetProducts } from "../redux/actions/productAction";
 import { connect } from "react-redux";
 import { AppState } from "../redux/store";
+import { GetProducts } from "../redux/actions/productAction";
 import { IProductItem } from "../redux/models/productAddModel";
+import { AddOrder } from "../redux/actions/addOrderAction";
+import { IAddOrderItem } from "../redux/models/addOrderModel";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isProductLoading : boolean;
   products : IProductItem[];
   GetProducts : () => void;
+  AddOrder : (productId:number, customerId:number,unitPrice:number, count:number)=>void;
+  isSuccees : boolean;
+  AddOrderMessage: string;
 }
+
 interface State {
   productName:string,
   productCode:string,
-  price:number,
+  price:string,
   date:string,
+  productId:number,
+  count:string,
 }
 
 interface Item {
@@ -43,12 +52,9 @@ interface Item {
   color?: string;
 }
 
-interface orderData {
-  count:number,
-}
-
-const initialValues:orderData = {
-  count:0,
+interface input{
+  count:string,
+  price:string,
 }
 
 const girdiler = Yup.object().shape({
@@ -57,29 +63,67 @@ const girdiler = Yup.object().shape({
   .min(1)
   .max(30)
   .required(),
+  price: Yup.number()
+  .positive()
+  .min(1)
+  .max(30)
+  .required()
+  .moreThan(0),
 });
 class addOrder extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
     this.state = {
+      productId:0,
       productName:"",
       productCode:"",
-      price:0,
+      price:"",
       date:"",
+      count:"",
     };
   }
 
-  siparisOlustur(values:orderData){
+  siparisOlustur(values:input){
+    const { AddOrder, isSuccees,navigation } = this.props;
+    if(isSuccees){
+      var customerId = navigation.getParam("customerId");
+      AddOrder(this.state.productId, customerId, Number(values.price),Number(values.count));
+      this.props.navigation.navigate("OrdersCustomer");
+      Alert.alert(
+        //title
+        'Yeni Sipariş Oluşturuldu!',
+        //body
+        '',
+        [
+          {text: 'Tamam'}
+        ],
+        { cancelable: false }
+      );      
+    }
+    else{
+      Alert.alert(
+        //title
+        'Bir Sorun Oluştu!',
+        //body
+        '',
+        [
+          {text: 'Tamam'}
+        ],
+        { cancelable: false }
+      );
+    }
 
   }
 
   OrderInfo(value:IProductItem){
     this.setState({
+      productId: value.productId,
       productName:value.productName,
       productCode:value.productCode,
-      price:value.price,
+      price:String(value.price),
     })
+    console.log(this.state.price);
   }
   
   PickerMenuCreate(){
@@ -98,11 +142,19 @@ class addOrder extends Component<Props, State> {
 
   componentWillMount() {
     this.props.GetProducts();
+    var dateAta:string;
     var date = new Date().toISOString(); //Current Date
+    dateAta = date;
+    this.setState({date:dateAta});
     
   }
 
   render() {
+    const initialValues:input={
+      count:this.state.count,
+      price:this.state.price,
+    }
+
     const placeholder = {
       label: 'Ürün Seçiniz...',
       value: '',
@@ -121,6 +173,7 @@ class addOrder extends Component<Props, State> {
         >
           <ScrollView bounces={false}>      
             <Formik
+              enableReinitialize
               initialValues={initialValues}
               validationSchema={girdiler}
               onSubmit={values => this.siparisOlustur(values)}
@@ -143,12 +196,13 @@ class addOrder extends Component<Props, State> {
                       }}
                     />
                     </View>
+                      <Text>Ürün Adedi:</Text>
                       <TextInput
                         style={styles.input}
                         placeholder="Ürün Adedi"
                         placeholderTextColor="#9A9A9A"
                         keyboardType="number-pad"
-                        value={props.values.count+""}
+                        value={props.values.count}
                         onChangeText={props.handleChange("count")}
                         onBlur={props.handleBlur("count")}
                       />
@@ -156,25 +210,31 @@ class addOrder extends Component<Props, State> {
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
-                        value={"Date().toISOString()"}
+                        value={this.state.date.slice(8,10)+"/"+this.state.date.slice(5,7)+"/"+this.state.date.slice(0,4)+" "+
+                        this.state.date.slice(11,16)}
                       />
+                      <Text>Ürün Kodu:</Text>
                       <TextInput
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
                         value={this.state.productCode}       
                       />
+                      <Text>Birim Fiyat:</Text>
                       <TextInput
-                        editable={false}
                         style={styles.input}
-                        placeholderTextColor="#313033"
-                        value={this.state.price+""}       
+                        placeholder="Ürün Adedi"
+                        placeholderTextColor="#9A9A9A"
+                        keyboardType="number-pad"
+                        value={props.values.price}
+                        onChangeText={props.handleChange("price")}
+                        onBlur={props.handleBlur("price")}     
                       />
                       <TextInput
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
-                        value={(this.state.price*props.values.count)+""}       
+                        value={"Toplam Tutar: "+(Number(props.values.price)*Number(props.values.count))+" TL"}       
                       />
                       <TouchableOpacity style={styles.buttonContainer}>
                         <Text style={styles.amountButtonText}
@@ -197,11 +257,14 @@ class addOrder extends Component<Props, State> {
 const mapStateToProps = (state : AppState) => ({
   isProductLoading : state.products.isProductLoading,
   products : state.products.products,
+  isSuccees: state.addOrder.isSuccess,
 })
 function bindToAction(dispatch: any) {
   return {
     GetProducts: () =>
     dispatch(GetProducts()),
+    AddOrder: (productId:number, customerId:number, unitPrice:number, count:number) =>
+    dispatch(AddOrder(productId, customerId, unitPrice,count)), 
   };
 }
 

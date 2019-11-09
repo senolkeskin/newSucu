@@ -55,7 +55,8 @@ const girdiler = Yup.object().shape({
     .positive()
     .min(1)
     .max(30)
-    .required(),
+    .required()
+    .moreThan(0),
 });
 
 
@@ -70,9 +71,10 @@ class addProduct extends Component<Props, {}> {
 
   handleCreateProduct(values: productData) {
     const { productAdd, isSuccees,navigation } = this.props;
+    console.log(isSuccees);
     if(isSuccees){
       productAdd(values.urunAdi, values.urunKodu, values.urunFiyati);
-      this.props.navigation.navigate("Settings");
+      this.props.navigation.navigate("Products");
       Alert.alert(
         //title
         'Yeni Ürün Oluşturuldu!',
@@ -106,7 +108,7 @@ class addProduct extends Component<Props, {}> {
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
           title="Ürün Oluştur"
-          leftButtonPress={() => this.props.navigation.navigate("Settings")}
+          leftButtonPress={() => this.props.navigation.navigate("Products")}
         />
         <View style={{marginBottom:30}}></View>
         <KeyboardAvoidingView
