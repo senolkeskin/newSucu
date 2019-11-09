@@ -1,5 +1,6 @@
-export interface IProductItem{
-    productId: number;
+export interface IProductEditItem{
+    id: number;
+    status: boolean;
     productName : string;
     productCode :string;
     price :number;

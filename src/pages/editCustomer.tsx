@@ -19,7 +19,6 @@ import { HeaderLeft } from "../components";
 import { customerEdit } from "../redux/actions/customerEditAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
-import { thisExpression } from "@babel/types";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;

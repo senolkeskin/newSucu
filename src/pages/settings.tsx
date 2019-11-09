@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { View, FlatList, ActivityIndicator, StatusBar, TouchableOpacity, Text } from "react-native";
+import { View, StatusBar, TouchableOpacity, Text } from "react-native";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import { connect } from "react-redux";
 import { Header } from "../components";
 import styles from "./styles";
-import { AvatarItem } from "../components";
 import { logoutUserService } from "../redux/services/user";
 import {
   fetchImageData,
@@ -40,7 +39,7 @@ class Settings extends Component<Props> {
   handleLogout = () => {
     const { navigation } = this.props;
     logoutUserService().then(() => {
-      navigation.navigate("Employee");
+      navigation.navigate("LoginScreen");
     });
   };
 
@@ -54,12 +53,13 @@ class Settings extends Component<Props> {
         />
         <View style={styles.settingsContainer}>
         <TouchableOpacity style={styles.addProductButtonContainer}
-        onPress={()=>this.props.navigation.navigate("AddProduct")}>
-          <Text style={styles.addProductButtonText}>Ürün Ekle</Text>
+        onPress={()=>this.props.navigation.navigate("Products")}>
+          <Text style={styles.addProductButtonText}>Ürünler</Text>
         </TouchableOpacity>
         </View>
           
-        <TouchableOpacity style={styles.logoutButtonContainer}>
+        <TouchableOpacity style={styles.logoutButtonContainer}
+        onPress={()=>this.handleLogout()}>
           <Text style={styles.logoutButtonText}>Çıkış</Text>
         </TouchableOpacity>
       </View>

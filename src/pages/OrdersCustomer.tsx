@@ -111,7 +111,6 @@ closeAmountModal() {
 }
 
 odemeAl(values: amountData){
-  console.log("fsafsafasfsa "+this.state.orderId+" fsafasf "+values.amount)
   this.props.AddCash(this.state.orderId,values.amount);
   this.closeAmountModal();
   this.onRefresh();
@@ -183,7 +182,7 @@ deleteSelectedOrder(){
         <HeaderLeftRight
           title={"Sipariş Detay"}
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
-          rightButtonPress={() => this.props.navigation.navigate("AddOrder")}
+          rightButtonPress={() => this.props.navigation.navigate("AddOrder",{customerId:this.props.navigation.getParam("customerId")})}
         />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}

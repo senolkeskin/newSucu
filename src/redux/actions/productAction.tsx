@@ -12,8 +12,6 @@ export function GetProducts() {
   
     dispatch(loading(true));
 
-    const token:string = "asdada";
-
   axios.get(WATER_GET_PRODUCT,
     
     )
@@ -24,6 +22,7 @@ export function GetProducts() {
       
       response.data.result.homeProductItemModels.forEach((product:any) => {
             var productItem : IProductItem={
+                productId :product.productId,
                 productName : product.productName,
                 productCode :product.productCode,
                 price :product.price
