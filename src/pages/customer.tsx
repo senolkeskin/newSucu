@@ -21,13 +21,14 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Ionicons";
 import { customerDelete } from "../redux/actions/customerDeleteAction";
+import { Server } from "http";
 
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isHomeLoading : boolean;
   customers : ICustomerItem[];
-  GetCustomers : () => void;
+  GetCustomers : (orderType:number,searchText:string) => void;
   customerDelete : (customerId:number) => void;
   CustomerDeleteIsSuccess: boolean;
 }
@@ -40,10 +41,18 @@ interface State {
   companyName:string;
 }
 
+interface search{
+  searchText:string;
+}
+
+const initialValues:search={
+  searchText:"",
+}
+
 const girdiler = Yup.object().shape({
-  arananCustomer: Yup.string()
-    .matches(/^[a-zA-Z0-9_-]+$/)
-    .min(4)
+  searchText: Yup.string()
+    .matches(/./g)
+    .min(1)
     .max(16)
     .required(),
 });
@@ -60,8 +69,12 @@ class Customer extends Component<Props, State> {
     };
   }
 
+  search(search:search){
+    this.props.GetCustomers(1,search.searchText)
+  }
+
   componentWillMount() {
-    this.props.GetCustomers();
+    this.props.GetCustomers(1,"");
     this.setState({ refreshing: false });  
   }
 
@@ -135,9 +148,11 @@ _renderView(){
           <Text style={styles.alt_bilgi}>{item.companyName}</Text>
         </View>
         <View style={styles.row_cell2}>
-          <Text style={styles.paratextalınan}>49900TL alınan</Text>
-          <Text style={styles.paratextkalan} >10TL kalan</Text>
+          <Text style={styles.paratextalınan}>{item.displayTookTotalAmount} Alınan</Text>
+          <Text style={styles.paratextkalan} >{item.displayRestTotalAmount} Kalan</Text>
+          <Text style={styles.paratextToplam} >Toplam: {item.displayTotalAmount}</Text>
         </View>
+        
       </TouchableOpacity>
       <TouchableOpacity
           style={styles.iconButtonCustomer}
@@ -190,9 +205,9 @@ _renderView(){
         <View style={{marginTop:10}}></View>
         <ScrollView bounces={false}>
         <Formik
-              initialValues={{ arananCustomer: ""}}
+              initialValues={initialValues}
               validationSchema={girdiler}
-              onSubmit={values => this.handleLogin(values)}
+              onSubmit={values => this.search(values)}
             >
               {props => {
                 return (
@@ -202,12 +217,13 @@ _renderView(){
                         style={styles.searchInput}
                         placeholder="Ara"
                         placeholderTextColor="#9A9A9A"
-                        value={props.values.arananCustomer}
+                        value={props.values.searchText}
                         autoCapitalize="none"
-                        onChangeText={props.handleChange("arananCustomer")}
-                        onBlur={props.handleBlur("arananCustomer")}                   
+                        onChangeText={props.handleChange("searchText")}
+                        onBlur={props.handleBlur("searchText")}                   
                       />
-                      <TouchableOpacity style={styles.searchButton}>
+                      <TouchableOpacity style={styles.searchButton}
+                      onPress={()=>this.props.GetCustomers(1,props.values.searchText)}>
                         <Icon name="ios-arrow-round-forward" size={30} color={"#EBEDF1"} />
                       </TouchableOpacity>
                     </View>
@@ -215,6 +231,19 @@ _renderView(){
                 );
               }}
             </Formik>
+            <View style={styles.search_row}>
+            <TouchableOpacity
+            style={styles.wantedCustomerGetButtonContainer}
+            onPress={()=>this.props.GetCustomers(1,"")}>
+              <Text style={styles.wantedCustomerGetText}>Tüm Müşteriler</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+            style={styles.wantedCustomerGetButtonContainer}
+            onPress={()=>this.props.GetCustomers(2,"")}>
+              <Text style={styles.wantedCustomerGetText}>Ödeme Alınacaklar</Text>
+            </TouchableOpacity>
+            </View>
+            
         </ScrollView>
         </KeyboardAvoidingView>
       {this._renderView()}
@@ -231,8 +260,8 @@ const mapStateToProps = (state : AppState) => ({
 })
 function bindToAction(dispatch: any) {
   return {
-    GetCustomers: () =>
-    dispatch(GetCustomers()),
+    GetCustomers: (orderType:number,searchText:string) =>
+    dispatch(GetCustomers(orderType,searchText)),
     customerDelete: (customerId:number) =>
     dispatch(customerDelete(customerId)),
   };

@@ -86,8 +86,9 @@ class addOrder extends Component<Props, State> {
 
   siparisOlustur(values:input){
     const { AddOrder, isSuccees,navigation } = this.props;
-    if(isSuccees){
-      var customerId = navigation.getParam("customerId");
+    var customerId = navigation.getParam("customerId");
+    console.log(this.state.productId+" " +customerId+" "+ Number(values.price)+" " + " "+Number(values.count));
+    if(true){   
       AddOrder(this.state.productId, customerId, Number(values.price),Number(values.count));
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(

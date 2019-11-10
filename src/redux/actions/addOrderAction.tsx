@@ -6,7 +6,7 @@ import {Action} from '../states'
 
 
 export function AddOrder(productId:number, customerId:number,unitPrice:number, count:number) {
-
+  console.log(productId+" "+customerId+" "+unitPrice+" "+count);
   return (dispatch : Dispatch<Action>) =>  {
 
   axios.post(WATER_ADD_ORDER,
@@ -18,7 +18,6 @@ export function AddOrder(productId:number, customerId:number,unitPrice:number, c
     })
   .then((response) =>{
   if(response.data.isSuccess){
-    console.log("------------------------------------------");
       if(response.data.result){
         dispatch(addOrder(true, "Sipariş Alındı!"));
       }
@@ -26,7 +25,7 @@ export function AddOrder(productId:number, customerId:number,unitPrice:number, c
   })
   .catch(error => { 
     console.log(error + 'error kaydetme asn storage')   
-    dispatch(addOrder(false,"Sipariş eklenirken bir hata oluştu."));
+    dispatch(addOrder(false,"Sipariş eklenirken bir hata oluştuuu."));
   });
 
   }

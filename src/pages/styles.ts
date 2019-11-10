@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 13,
+    fontSize: 12,
     textAlign: "right",
   },
   paratextkalan: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 13,
+    fontSize: 12,
     textAlign: "right",
   },
   paratextToplam: {
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 13,
+    fontSize: 10,
     textAlign: "right",
   },
   detay_bilgi: {
@@ -549,6 +549,23 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "right",
   },
+
+  wantedCustomerGetButtonContainer:{
+    backgroundColor:'#2B6EDC',
+    borderRadius: 4,
+    marginHorizontal: 5,
+    paddingVertical: 8,
+    marginBottom:5,
+    flexDirection: 'column',
+    flex:1,
+    alignItems:"center",
+  },
+  wantedCustomerGetText:{
+    color: "white",
+    includeFontPadding: false,
+    fontSize: 15,
+    textAlign: "right",
+  }
 
 
 
