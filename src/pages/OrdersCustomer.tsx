@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { View, FlatList, ActivityIndicator, StatusBar, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert, TextInput } from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
-import { HeaderLeftRight, Input } from "../components";
+import { HeaderLeftRight} from "../components";
+import {Input} from "react-native-elements";
 import styles from "./styles";
 import { GetOrders} from "../redux/actions/orderAction";
 import { AppState } from "../redux/store";
@@ -11,6 +12,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { AddCash} from "../redux/actions/addCashAction";
+import {orderDelete} from "../redux/actions/deleteOrderAction"
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -21,6 +23,7 @@ interface Props {
   isOrderLoading: boolean,
   GetOrders : (customerId:number) => void;
   AddCash : (orderId:number,amount:string) => void;
+  orderDelete : (orderId:number) => void;
 }
 
 interface amountData {
@@ -138,8 +141,8 @@ odemeAl(values: amountData){
 }
 
 deleteSelectedOrder(){
-  //const {customerDelete}=this.props; sipariş sil sonra apisi yazılınca eklenecek
-  //customerDelete(this.state.customerId);
+  const {orderDelete}=this.props;
+  orderDelete(this.state.orderId);
   this.closeModal();
   this.onRefresh();
   this.componentWillMount();
@@ -255,7 +258,7 @@ deleteSelectedOrder(){
                 return (                
                   <View>
                       <View style={styles.inputFiyatContainer}>
-                      <TextInput
+                      <Input
                         style={styles.inputFiyat}
                         placeholder="Ürün Fiyatı"
                         placeholderTextColor="#9A9A9A"
@@ -347,6 +350,8 @@ function bindToAction(dispatch: any,) {
     dispatch(GetOrders(customerId)),
     AddCash:(orderId:number,amount:string)=>
     dispatch(AddCash(orderId,Number(amount))),
+    orderDelete: (orderId:number) =>
+    dispatch(orderDelete(orderId)),
   };
 }
 

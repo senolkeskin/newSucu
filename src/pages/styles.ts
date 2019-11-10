@@ -3,7 +3,7 @@ import { colors } from "../constants";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#F4FCFF",
     justifyContent: "flex-start",
     
   },

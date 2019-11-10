@@ -14,5 +14,7 @@ export const WATER_CUSTOMER_PRICE_GET_PRODUCT = WATER_BASE_URL+"/CustomerPrice/P
 export const WATER_CUSTOMER_PRICE_ADD = WATER_BASE_URL+"/CustomerPrice";
 export const WATER_CUSTOMER_DEFINED_PRICE = WATER_BASE_URL+"/CustomerPrice/CustomerPrice?customerId="
 export const WATER_CUSTOMER_PRICE_EDIT = WATER_BASE_URL+"/CustomerPrice/Update"
+export const WATER_PRODUCT_FOR_CUSTOMER = WATER_BASE_URL+"/Product/ProductForCustomer?productId="
+export const WATER_CUSTOMER_ORDER_DELETE = WATER_BASE_URL+"/Order/Delete";
 
 
