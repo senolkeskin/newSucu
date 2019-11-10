@@ -14,7 +14,7 @@ export default (state: CustomerPriceProductState = intialState, action: Action) 
       return {
         ...state,
         products: action.payload,
-        isProductLoading:false
+        isProductLoading:false,
       };
     case CUSTOMERPICE_PRODUCT_LOADING:
       return {

@@ -41,3 +41,12 @@ export const EDIT_PRODUCT_FAILED ="EditProductFailed";
 
 export const CUSTOMERPICE_PRODUCT_GET ="CustomerPriceProductGet";
 export const CUSTOMERPICE_PRODUCT_LOADING ="CustomerPriceProductLoading";
+
+export const CUSTOMERPRICE_ADD_SUCCEED ="CustomerPriceAddSucceed";
+export const CUSTOMERPRICE_ADD_FAILED ="CustomerPriceAddFailed";
+
+export const CUSTOMER_DEFINED_PRICE_GET = "CustomerDefinedPriceGet";
+export const CUSTOMER_DEFINED_PRICE_LOADING = "CustomerDefinedPriceLoading";
+
+export const CUSTOMERPRICE_EDIT_SUCCEED ="CustomerPriceEditSucceed";
+export const CUSTOMERPRICE_EDIT_FAILED ="CustomerPriceEditFailed";

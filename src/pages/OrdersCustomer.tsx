@@ -125,6 +125,11 @@ goToNewPricePage(){
   this.props.navigation.navigate("NewPricePage",{customerId:this.props.navigation.getParam("customerId")});
 }
 
+goToDefinedPrice(){
+  this.closePriceModal();
+  this.props.navigation.navigate("CustomerDefinedPricePage",{customerId:this.props.navigation.getParam("customerId")});
+}
+
 odemeAl(values: amountData){
   this.props.AddCash(this.state.orderId,values.amount);
   this.closeAmountModal();
@@ -294,7 +299,7 @@ deleteSelectedOrder(){
                   >Yeni Fiyat Gir</Text>
               </TouchableOpacity>
                 <TouchableOpacity style={styles.modalPriceTanimliFiyatButtonContainer}
-                  onPress={() => this.deleteCustomerAlert()}>
+                  onPress={() => this.goToDefinedPrice()}>
                   <Text style={styles.modalPriceTanimliFiyatButtonText}
                   >Tanımlı Fiyatlar</Text>
                 </TouchableOpacity>

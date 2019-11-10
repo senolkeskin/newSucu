@@ -23,13 +23,15 @@ import { connect } from "react-redux";
 import { AppState } from "../redux/store";
 import { GetCustomerProduct } from "../redux/actions/customerPriceGetProductAction";
 import { ICustomerPriceProductItem } from "../redux/models/customerPriceProductModel";
+import {customerPriceAdd} from "../redux/actions/customerpriceAddAction";
+import {ICustomerPriceItem} from "../redux/models/addCustomerPriceModel";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isProductLoading : boolean;
   products : ICustomerPriceProductItem[];
   GetCustomerProduct : (customerId:number) => void;
-  AddOrder : (productId:number, customerId:number,unitPrice:number, count:number)=>void;
+  customerPriceAdd : (productId:number, customerId:number,price:number)=>void;
   isSuccees : boolean;
   AddOrderMessage: string;
 }
@@ -68,6 +70,37 @@ class addOrder extends Component<Props, State> {
       customerId:this.props.navigation.getParam("customerId"),
       price:"",
     };
+  }
+
+  yeniFiyat(values:input){
+    const { customerPriceAdd, isSuccees,navigation } = this.props;
+    if(isSuccees){   
+      customerPriceAdd(this.state.productId, this.state.customerId, Number(values.price));
+      this.props.navigation.navigate("OrdersCustomer");
+      Alert.alert(
+        //title
+        'Yeni Fiyat Belirlendi!',
+        //body
+        '',
+        [
+          {text: 'Tamam'}
+        ],
+        { cancelable: false }
+      );      
+    }
+    else{
+      Alert.alert(
+        //title
+        'Bir Sorun Oluştu!',
+        //body
+        '',
+        [
+          {text: 'Tamam'}
+        ],
+        { cancelable: false }
+      );
+    }
+
   }
 
 
@@ -125,7 +158,7 @@ class addOrder extends Component<Props, State> {
               enableReinitialize
               initialValues={initialValues}
               validationSchema={girdiler}
-              onSubmit={values => this.siparisOlustur(values)}
+              onSubmit={values => this.yeniFiyat(values)}
             >
               {props => {
                 return (
@@ -174,13 +207,15 @@ class addOrder extends Component<Props, State> {
 
 const mapStateToProps = (state : AppState) => ({
   isProductLoading : state.products.isProductLoading,
-  products : state.products.products,
-  isSuccees: state.addOrder.isSuccess,
+  products : state.customerPriceGetProduct.products,
+  isSuccees: state.addCustomerPrice.isSuccess,
 })
 function bindToAction(dispatch: any) {
   return {
     GetCustomerProduct: (customerId:number) =>
     dispatch(GetCustomerProduct(customerId)),
+    customerPriceAdd: (productId:number, customerId:number,price:number) =>
+    dispatch(customerPriceAdd(productId,customerId,price))
   };
 }
 
