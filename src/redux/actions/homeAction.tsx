@@ -7,15 +7,15 @@ import {Action} from '../states'
 import { ICustomerItem } from "../models/homeModel";
 
 
-export function GetCustomers() {
+export function GetCustomers(orderType:number,searchText?:string) {
 
   return (dispatch : Dispatch<Action>) =>  {
   
     dispatch(loading(true));
 
-    const token:string = "asdada";
+    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET+orderType+"&searchText="+searchText;
 
-  axios.get(WATER_CUSTOMERS_HOME_GET,
+  axios.get(WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT,
     
     )
   .then((response) =>{
@@ -27,7 +27,12 @@ export function GetCustomers() {
             var customerItem : ICustomerItem={
                     customerId : customer.customerId,
                     companyName :customer.companyName,
-                    nameSurname :customer.nameSurname
+                    nameSurname :customer.nameSurname,
+                    displayTotalAmount: customer.displayTotalAmount,
+                    totalAmount: customer.totalAmount,
+                    displayRestTotalAmount: customer.displayRestTotalAmount,
+                    restTotalAmount: customer.restTotalAmount,
+                    displayTookTotalAmount:customer.displayTookTotalAmount,
             }
         customersModel.push(customerItem);         
       });
