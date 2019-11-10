@@ -25,6 +25,8 @@ import { GetProducts } from "../redux/actions/productAction";
 import { IProductItem } from "../redux/models/productAddModel";
 import { AddOrder } from "../redux/actions/addOrderAction";
 import { IAddOrderItem } from "../redux/models/addOrderModel";
+import {GetProduct} from "../redux/actions/productForCustomerAction";
+import { IProductForCustomerItem } from "../redux/models/productForCustomerModel";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -34,12 +36,14 @@ interface Props {
   AddOrder : (productId:number, customerId:number,unitPrice:number, count:number)=>void;
   isSuccees : boolean;
   AddOrderMessage: string;
+  GetProduct : (productId:number,customerId:number) => void;
+  product: IProductForCustomerItem;
 }
 
 interface State {
   productName:string,
   productCode:string,
-  price:string,
+  unitPrice:string,
   date:string,
   productId:number,
   count:string,
@@ -54,7 +58,7 @@ interface Item {
 
 interface input{
   count:string,
-  price:string,
+  unitPrice:string,
 }
 
 const girdiler = Yup.object().shape({
@@ -63,7 +67,7 @@ const girdiler = Yup.object().shape({
   .min(1)
   .max(30)
   .required(),
-  price: Yup.number()
+  unitPrice: Yup.number()
   .positive()
   .min(1)
   .max(30)
@@ -78,7 +82,7 @@ class addOrder extends Component<Props, State> {
       productId:0,
       productName:"",
       productCode:"",
-      price:"",
+      unitPrice:"",
       date:"",
       count:"",
     };
@@ -88,7 +92,7 @@ class addOrder extends Component<Props, State> {
     const { AddOrder, isSuccees,navigation } = this.props;
     var customerId = navigation.getParam("customerId");
     if(isSuccees){   
-      AddOrder(this.state.productId, customerId, Number(values.price),Number(values.count));
+      AddOrder(this.state.productId, customerId, Number(values.unitPrice),Number(values.count));
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(
         //title
@@ -116,14 +120,12 @@ class addOrder extends Component<Props, State> {
 
   }
 
-  OrderInfo(value:IProductItem){
+  OrderInfo(productId:number){
     this.setState({
-      productId: value.productId,
-      productName:value.productName,
-      productCode:value.productCode,
-      price:String(value.price),
-    })
-    console.log(this.state.price);
+      productId: productId,
+    });
+    this.props.GetProduct(productId,this.props.navigation.getParam("customerId"));
+
   }
   
   PickerMenuCreate(){
@@ -132,7 +134,7 @@ class addOrder extends Component<Props, State> {
       this.props.products.forEach((product:IProductItem) => {
             var productItem : Item={
                 label : product.productName,
-                value :product,
+                value :product.productId,
             }
             PickerModel.push(productItem);         
       });
@@ -154,7 +156,7 @@ class addOrder extends Component<Props, State> {
   render() {
     const initialValues:input={
       count:this.state.count,
-      price:this.state.price,
+      unitPrice:String(this.props.product.unitPrice),
     }
 
     const placeholder = {
@@ -219,7 +221,7 @@ class addOrder extends Component<Props, State> {
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
-                        value={this.state.productCode}       
+                        value={this.props.product.productCode}       
                       />
                       <Text>Birim Fiyat:</Text>
                       <TextInput
@@ -227,15 +229,15 @@ class addOrder extends Component<Props, State> {
                         placeholder="Ürün Adedi"
                         placeholderTextColor="#9A9A9A"
                         keyboardType="number-pad"
-                        value={props.values.price}
-                        onChangeText={props.handleChange("price")}
-                        onBlur={props.handleBlur("price")}     
+                        value={String(props.values.unitPrice)}
+                        onChangeText={props.handleChange("unitPrice")}
+                        onBlur={props.handleBlur("unitPrice")}     
                       />
                       <TextInput
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
-                        value={"Toplam Tutar: "+(Number(props.values.price)*Number(props.values.count))+" TL"}       
+                        value={"Toplam Tutar: "+(Number(this.props.product.unitPrice)*Number(props.values.count))+" TL"}       
                       />
                       <TouchableOpacity style={styles.siparisButtonContainer}>
                         <Text style={styles.amountButtonText}
@@ -259,13 +261,16 @@ const mapStateToProps = (state : AppState) => ({
   isProductLoading : state.products.isProductLoading,
   products : state.products.products,
   isSuccees: state.addOrder.isSuccess,
+  product: state.productForCustomer.product,
 })
 function bindToAction(dispatch: any) {
   return {
     GetProducts: () =>
     dispatch(GetProducts()),
     AddOrder: (productId:number, customerId:number, unitPrice:number, count:number) =>
-    dispatch(AddOrder(productId, customerId, unitPrice,count)), 
+    dispatch(AddOrder(productId, customerId, unitPrice,count)),
+    GetProduct: (productId:number,customerId:number) =>
+    dispatch(GetProduct(productId,customerId)), 
   };
 }
 

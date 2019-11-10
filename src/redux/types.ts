@@ -50,3 +50,9 @@ export const CUSTOMER_DEFINED_PRICE_LOADING = "CustomerDefinedPriceLoading";
 
 export const CUSTOMERPRICE_EDIT_SUCCEED ="CustomerPriceEditSucceed";
 export const CUSTOMERPRICE_EDIT_FAILED ="CustomerPriceEditFailed";
+
+export const PRODUCT_FOR_CUSTOMER_GET = "ProductForCustomerGet";
+export const PRODUCT_FOR_CUSTOMER_LOADING = "ProductForCustomerLoading";
+
+export const ORDER_DELETE_SUCCEED ="OrderDeleteSucceed";
+export const ORDER_DELETE_FAILED ="OrderDeleteFailed";

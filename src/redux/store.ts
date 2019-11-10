@@ -18,6 +18,7 @@ import customerPriceGetProductReducers from "./reducers/customerPriceGetProductR
 import addCustomerPriceReducers from "./reducers/addCustomerPriceReducers";
 import customerDefinedPriceReducers from "./reducers/customerDefinedPriceReducers";
 import customerPriceEditReducers from  "./reducers/customerPriceEditReducers";
+import productForCustomerReducers from "./reducers/productForCustomerReducers";
 
 const persistConfig = {
   key: "root",
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === `development`) {
 }
 
 const rootReducer = combineReducers({
+  productForCustomer: productForCustomerReducers,
   customerPriceEdit: customerPriceEditReducers,
   customerDefinedPrice: customerDefinedPriceReducers,
   addCustomerPrice: addCustomerPriceReducers,

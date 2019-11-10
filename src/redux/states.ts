@@ -3,6 +3,7 @@ import { IOrderItem } from "./models/orderModel";
 import { IProductItem} from "./models/productModel";
 import {ICustomerPriceProductItem} from "./models/customerPriceProductModel"
 import {IDefinedCustomerPriceItem} from "./models/customerDefinedPriceModel"
+import {IProductForCustomerItem} from "./models/productForCustomerModel"
 
 export interface State {
     data: any[];
@@ -103,3 +104,13 @@ export interface CustomerPriceEdit
   isSuccess: boolean,
   CustomerPriceEditMessage: string,
 }
+
+export interface ProductForCustomer{
+  product:IProductForCustomerItem;
+  isLoading :boolean;
+}
+
+export interface OrderDelete
+  {
+    isSuccess: boolean;
+  }

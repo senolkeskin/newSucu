@@ -14,20 +14,16 @@ export function customerDelete(id:number) {
         id: id,
     })
   .then((response) =>{
-      console.log(response.data.isSuccess+"gasggasgasgasgsgasg")
   if(response.data.isSuccess){
       if(response.data.result){
         dispatch(customerDeleteIsSucceed(true, "Müşteri Silindi!"));
       }
     }
   })
-  .catch((response) => {
-    console.log(response.data.isSuccess+ "safsafsfsafsafsafsafasf")
-    if(response.data.isSuccess){
-      if(response.data.result){
-        dispatch(customerDeleteIsSucceed(true, "Müşteri Silindi!"));
-      }
-    }
+  .catch(error => { 
+      
+    console.log(error + 'error kaydetme asn storage')   
+    dispatch(customerDeleteIsSucceed(false,"Bir hata oluştu."));
   });
 
   }
