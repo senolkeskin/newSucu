@@ -1,6 +1,7 @@
 import { ICustomerItem } from "./models/homeModel";
 import { IOrderItem } from "./models/orderModel";
 import { IProductItem} from "./models/productModel";
+import {ICustomerPriceProductItem} from "./models/customerPriceProductModel"
 
 export interface State {
     data: any[];
@@ -79,3 +80,8 @@ export interface AddOrder
     isSuccess: boolean,
     ProductEditMessage: string,
   }
+
+  export interface CustomerPriceProductState{
+    products:ICustomerPriceProductItem[];
+    isProductLoading :boolean;
+}

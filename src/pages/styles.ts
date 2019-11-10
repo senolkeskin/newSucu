@@ -565,7 +565,64 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     fontSize: 15,
     textAlign: "right",
-  }
+  },
+
+  modalPriceYeniPriceButtonContainer:{
+    backgroundColor:'#FFFFFF',
+    paddingHorizontal:19,
+    margin:1,
+    borderRadius: 5,
+  },
+
+  modalPriceYeniPriceButtonText:{
+    textAlign: "center",
+    color: "#9AB055",
+    fontWeight: "900",
+    paddingVertical: 10,
+    marginHorizontal:10,   
+  },
+
+  modalPriceTanimliFiyatButtonContainer:{
+    backgroundColor:'#FFFFFF',
+    paddingHorizontal:12,
+    margin:1,
+    borderRadius: 5,
+  },
+
+  modalPriceTanimliFiyatButtonText:{
+    textAlign: "center",
+    color: "#B0AA55",
+    fontWeight: "900",
+    paddingVertical: 10,
+    marginHorizontal:10,   
+  },
+
+  modalPriceContainer: {
+    margin:32,
+    padding: 6,
+    backgroundColor: '#efefef',
+    top:100,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+    position: "absolute",
+  },
+
+  siparisButtonContainer:{
+    backgroundColor:'#2B6EDC',
+    borderRadius: 2000,
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    marginBottom:10,
+  },
+
+  newPriceButtonContainer:{
+    backgroundColor:'#2B6EDC',
+    borderRadius: 2000,
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    marginBottom:10,
+  },
 
 
 

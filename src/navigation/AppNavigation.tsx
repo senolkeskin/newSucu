@@ -28,6 +28,7 @@ import editCustomer from "../pages/editCustomer";
 import addProduct from "../pages/addProduct";
 import products from "../pages/products";
 import editProduct from "../pages/editProduct";
+import newPricePage from "../pages/newPricePage";
 
 const CustomerApp =createStackNavigator(
   {
@@ -36,6 +37,7 @@ const CustomerApp =createStackNavigator(
   OrdersCustomer : {screen: OrdersCustomer },
   AddOrder: { screen: addOrder},
   EditCustomer: {screen: editCustomer},
+  NewPricePage: {screen: newPricePage},
   },
   {
     headerMode: "none"

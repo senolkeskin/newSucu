@@ -38,3 +38,6 @@ export const ADD_ORDER_FAILED ="AddOrderFailed";
 
 export const EDIT_PRODUCT_SUCCEED ="EditProductSucceed";
 export const EDIT_PRODUCT_FAILED ="EditProductFailed";
+
+export const CUSTOMERPICE_PRODUCT_GET ="CustomerPriceProductGet";
+export const CUSTOMERPICE_PRODUCT_LOADING ="CustomerPriceProductLoading";
