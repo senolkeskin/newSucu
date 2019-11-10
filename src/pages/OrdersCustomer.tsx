@@ -33,6 +33,7 @@ interface State {
   orderId:number;
   amount:number;
   modalAmountVisible:boolean;
+  modalPriceVisible:boolean;
 }
 
 const girdiler = Yup.object().shape({
@@ -58,6 +59,7 @@ class OrdersCustomer extends Component<Props, State> {
       orderId:0,
       amount:0,
       modalAmountVisible:false,
+      modalPriceVisible:false,
     };
   }
   
@@ -108,6 +110,24 @@ openAmountModal() {
 
 closeAmountModal() {
   this.setState({modalAmountVisible:false});
+}
+
+closePriceModal(){
+  this.setState({modalPriceVisible:false});
+}
+
+openPriceModal(){
+  this.setState({modalPriceVisible:true});
+}
+
+goToNewPricePage(){
+  this.closePriceModal();
+  this.props.navigation.navigate("NewPricePage",{customerId:this.props.navigation.getParam("customerId")});
+}
+
+goToDefinedPrice(){
+  this.closePriceModal();
+  this.props.navigation.navigate("CustomerDefinedPricePage",{customerId:this.props.navigation.getParam("customerId")});
 }
 
 odemeAl(values: amountData){
@@ -260,16 +280,49 @@ deleteSelectedOrder(){
               </View>
             </View>
           </Modal>
+
+          <Modal            
+              visible={this.state.modalPriceVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.closePriceModal()}
+              transparent={true}
+          >
+            <View style={styles.modalPriceContainer}>
+              <View style={styles.innerContainer}>
+                <TouchableOpacity style={styles.modalCancelButtonContainer}
+                  onPress={() => this.closePriceModal()}>
+                  <Icon name="md-close" size={30} color={"#6E6E6E"} />
+                </TouchableOpacity>
+              <TouchableOpacity style={styles.modalPriceYeniPriceButtonContainer}
+                  onPress={()=>this.goToNewPricePage()}>
+                  <Text style={styles.modalPriceYeniPriceButtonText}
+                  >Yeni Fiyat Gir</Text>
+              </TouchableOpacity>
+                <TouchableOpacity style={styles.modalPriceTanimliFiyatButtonContainer}
+                  onPress={() => this.goToDefinedPrice()}>
+                  <Text style={styles.modalPriceTanimliFiyatButtonText}
+                  >Tanımlı Fiyatlar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
         <View style={styles.order_ustbilgi_row}>
         <View style={styles.row_cell1}>
           <Text style={styles.musteri_adi}>{nameSurname}</Text>
           <Text style={styles.alt_bilgi}>{companyName}</Text>
         </View>
+        <TouchableOpacity
+            style={styles.iconButtonOrder}
+            onPress={()=>this.openPriceModal()}>
+            <Icon name="md-more" size={24} color={"#C4B47B"} />
+        </TouchableOpacity>
         <View style={styles.row_cell2}>
           <Text style={styles.paratextalınan}>{this.props.tookTotalAmount} TL Alınan</Text>
           <Text style={styles.paratextkalan} >{this.props.restTotalAmount} TL Kalan</Text>
           <Text style={styles.paratextToplam}>Toplam: {this.props.takeTotalAmount} TL </Text>
         </View>
+        
       </View>
         <View style={{marginTop:10}}></View>
         </KeyboardAvoidingView>

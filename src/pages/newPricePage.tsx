@@ -21,48 +21,39 @@ import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 import { AppState } from "../redux/store";
-import { GetProducts } from "../redux/actions/productAction";
-import { IProductItem } from "../redux/models/productAddModel";
-import { AddOrder } from "../redux/actions/addOrderAction";
-import { IAddOrderItem } from "../redux/models/addOrderModel";
+import { GetCustomerProduct } from "../redux/actions/customerPriceGetProductAction";
+import { ICustomerPriceProductItem } from "../redux/models/customerPriceProductModel";
+import {customerPriceAdd} from "../redux/actions/customerpriceAddAction";
+import {ICustomerPriceItem} from "../redux/models/addCustomerPriceModel";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isProductLoading : boolean;
-  products : IProductItem[];
-  GetProducts : () => void;
-  AddOrder : (productId:number, customerId:number,unitPrice:number, count:number)=>void;
+  products : ICustomerPriceProductItem[];
+  GetCustomerProduct : (customerId:number) => void;
+  customerPriceAdd : (productId:number, customerId:number,price:number)=>void;
   isSuccees : boolean;
   AddOrderMessage: string;
 }
 
 interface State {
-  productName:string,
-  productCode:string,
-  price:string,
-  date:string,
-  productId:number,
-  count:string,
+    productId:number,
+    customerId:number;  
+    price:string,
 }
 
 interface Item {
   label: string;
-  value: any;
+  value: number;
   key?: string | number;
   color?: string;
 }
 
 interface input{
-  count:string,
   price:string,
 }
 
 const girdiler = Yup.object().shape({
-  count: Yup.number()
-  .positive()
-  .min(1)
-  .max(30)
-  .required(),
   price: Yup.number()
   .positive()
   .min(1)
@@ -76,23 +67,19 @@ class addOrder extends Component<Props, State> {
     super(props);
     this.state = {
       productId:0,
-      productName:"",
-      productCode:"",
+      customerId:this.props.navigation.getParam("customerId"),
       price:"",
-      date:"",
-      count:"",
     };
   }
 
-  siparisOlustur(values:input){
-    const { AddOrder, isSuccees,navigation } = this.props;
-    var customerId = navigation.getParam("customerId");
+  yeniFiyat(values:input){
+    const { customerPriceAdd, isSuccees,navigation } = this.props;
     if(isSuccees){   
-      AddOrder(this.state.productId, customerId, Number(values.price),Number(values.count));
+      customerPriceAdd(this.state.productId, this.state.customerId, Number(values.price));
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(
         //title
-        'Yeni Sipariş Oluşturuldu!',
+        'Yeni Fiyat Belirlendi!',
         //body
         '',
         [
@@ -116,23 +103,23 @@ class addOrder extends Component<Props, State> {
 
   }
 
-  OrderInfo(value:IProductItem){
+
+
+  OrderInfo(productId:number){
     this.setState({
-      productId: value.productId,
-      productName:value.productName,
-      productCode:value.productCode,
-      price:String(value.price),
+      productId: productId,
     })
-    console.log(this.state.price);
+    console.log(productId);
+    console.log(this.state.customerId);
   }
   
   PickerMenuCreate(){
     var PickerModel :Item[] = [];
       
-      this.props.products.forEach((product:IProductItem) => {
+      this.props.products.forEach((product:ICustomerPriceProductItem) => {
             var productItem : Item={
                 label : product.productName,
-                value :product,
+                value :product.productId,
             }
             PickerModel.push(productItem);         
       });
@@ -141,19 +128,12 @@ class addOrder extends Component<Props, State> {
   }
 
   componentWillMount() {
-    this.props.GetProducts();
-    var dateAta:string;
-    var date = new Date();
-
-    console.log(date);
-    dateAta = date.toLocaleDateString()+" "+date.toLocaleTimeString();
-    this.setState({date:dateAta});
+    this.props.GetCustomerProduct(this.state.customerId);
     
   }
 
   render() {
     const initialValues:input={
-      count:this.state.count,
       price:this.state.price,
     }
 
@@ -167,7 +147,7 @@ class addOrder extends Component<Props, State> {
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
-          title="Sipariş Ekle"
+          title="Yeni Fiyat"
           leftButtonPress={() => this.props.navigation.navigate("OrdersCustomer")}
         />
         <KeyboardAvoidingView
@@ -178,7 +158,7 @@ class addOrder extends Component<Props, State> {
               enableReinitialize
               initialValues={initialValues}
               validationSchema={girdiler}
-              onSubmit={values => this.siparisOlustur(values)}
+              onSubmit={values => this.yeniFiyat(values)}
             >
               {props => {
                 return (
@@ -198,46 +178,16 @@ class addOrder extends Component<Props, State> {
                       }}
                     />
                     </View>
-                      <Text>Ürün Adedi:</Text>
                       <TextInput
                         style={styles.input}
-                        placeholder="Ürün Adedi"
-                        placeholderTextColor="#9A9A9A"
-                        keyboardType="number-pad"
-                        value={props.values.count}
-                        onChangeText={props.handleChange("count")}
-                        onBlur={props.handleBlur("count")}
-                      />
-                      <TextInput
-                        editable={false}
-                        style={styles.input}
-                        placeholderTextColor="#313033"
-                        value={this.state.date}
-                      />
-                      <Text>Ürün Kodu:</Text>
-                      <TextInput
-                        editable={false}
-                        style={styles.input}
-                        placeholderTextColor="#313033"
-                        value={this.state.productCode}       
-                      />
-                      <Text>Birim Fiyat:</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Ürün Adedi"
+                        placeholder="Ürün Fiyatı"
                         placeholderTextColor="#9A9A9A"
                         keyboardType="number-pad"
                         value={props.values.price}
                         onChangeText={props.handleChange("price")}
-                        onBlur={props.handleBlur("price")}     
+                        onBlur={props.handleBlur("price")}
                       />
-                      <TextInput
-                        editable={false}
-                        style={styles.input}
-                        placeholderTextColor="#313033"
-                        value={"Toplam Tutar: "+(Number(props.values.price)*Number(props.values.count))+" TL"}       
-                      />
-                      <TouchableOpacity style={styles.siparisButtonContainer}>
+                      <TouchableOpacity style={styles.newPriceButtonContainer}>
                         <Text style={styles.amountButtonText}
                         onPress={props.handleSubmit}
                         >Sipariş Ekle</Text>
@@ -257,15 +207,15 @@ class addOrder extends Component<Props, State> {
 
 const mapStateToProps = (state : AppState) => ({
   isProductLoading : state.products.isProductLoading,
-  products : state.products.products,
-  isSuccees: state.addOrder.isSuccess,
+  products : state.customerPriceGetProduct.products,
+  isSuccees: state.addCustomerPrice.isSuccess,
 })
 function bindToAction(dispatch: any) {
   return {
-    GetProducts: () =>
-    dispatch(GetProducts()),
-    AddOrder: (productId:number, customerId:number, unitPrice:number, count:number) =>
-    dispatch(AddOrder(productId, customerId, unitPrice,count)), 
+    GetCustomerProduct: (customerId:number) =>
+    dispatch(GetCustomerProduct(customerId)),
+    customerPriceAdd: (productId:number, customerId:number,price:number) =>
+    dispatch(customerPriceAdd(productId,customerId,price))
   };
 }
 
