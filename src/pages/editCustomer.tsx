@@ -56,26 +56,11 @@ class editCustomer extends Component<Props, {}> {
     };
   }
 
-  handleEditCustomer(values: customerData) {
-    const { customerEdit, isSuccees,navigation } = this.props;
-    if(isSuccees){
-      customerEdit(this.props.navigation.getParam("customerId"),values.musteriAdiSoyadi, values.sirketAdi);
+  handleAlert(){
       this.props.navigation.navigate("Customer");
       Alert.alert(
         //title
-        'Müşteri Düzenleme Başarılı!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );      
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
+        'Müşteri Düzenlendi!',
         //body
         '',
         [
@@ -83,9 +68,12 @@ class editCustomer extends Component<Props, {}> {
         ],
         { cancelable: false }
       );
-    }
-    
-    
+  }
+
+  handleEditCustomer(values: customerData) {
+    const { customerEdit, isSuccees,navigation } = this.props;
+    customerEdit(this.props.navigation.getParam("customerId"),values.musteriAdiSoyadi, values.sirketAdi);
+    this.handleAlert();
   };
 
   render() {

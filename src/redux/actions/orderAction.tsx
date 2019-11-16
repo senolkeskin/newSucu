@@ -29,6 +29,7 @@ export function GetOrders(customerId:number) {
       response.data.result.orderItems.forEach((order:any) => {
             var orderItem : IOrderItem={
                     orderId : order.orderId,
+                    productId: order.productId,
                     unitPrice :order.unitPrice,
                     totalPrice :order.totalPrice,
                     tookTotalPrice: order.tookTotalPrice,

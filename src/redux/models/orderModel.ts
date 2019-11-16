@@ -1,6 +1,7 @@
 export interface IOrderItem
 {
     orderId:number,
+    productId: number,
     unitPrice:number,
     totalPrice:number,
     tookTotalPrice: number,

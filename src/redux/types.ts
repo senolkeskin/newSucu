@@ -56,3 +56,6 @@ export const PRODUCT_FOR_CUSTOMER_LOADING = "ProductForCustomerLoading";
 
 export const ORDER_DELETE_SUCCEED ="OrderDeleteSucceed";
 export const ORDER_DELETE_FAILED ="OrderDeleteFailed";
+
+export const UPDATE_ORDER_SUCCEED ="UpdateOrderSucceed";
+export const UPDATE_ORDER_FAILED ="UpdateOrderFailed";
