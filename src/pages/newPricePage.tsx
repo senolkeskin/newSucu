@@ -56,8 +56,6 @@ interface input{
 const girdiler = Yup.object().shape({
   price: Yup.number()
   .positive()
-  .min(1)
-  .max(30)
   .required()
   .moreThan(0),
 });
@@ -73,8 +71,7 @@ class addOrder extends Component<Props, State> {
   }
 
   yeniFiyat(values:input){
-    const { customerPriceAdd, isSuccees,navigation } = this.props;
-    if(isSuccees){   
+    const { customerPriceAdd } = this.props;
       customerPriceAdd(this.state.productId, this.state.customerId, Number(values.price));
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(
@@ -87,20 +84,6 @@ class addOrder extends Component<Props, State> {
         ],
         { cancelable: false }
       );      
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-    }
-
   }
 
 

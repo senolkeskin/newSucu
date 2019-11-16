@@ -1,3 +1,4 @@
+//bu sayfa henüz oluşturulmadı.
 import React, { Component } from "react";
 import {
   View,
@@ -26,6 +27,7 @@ import { AddOrder } from "../redux/actions/addOrderAction";
 import { IAddOrderItem } from "../redux/models/addOrderModel";
 import {GetProduct} from "../redux/actions/productForCustomerAction";
 import { IProductForCustomerItem } from "../redux/models/productForCustomerModel";
+import {EditOrder} from "../redux/actions/editOrderAction";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -37,6 +39,7 @@ interface Props {
   AddOrderMessage: string;
   GetProduct : (productId:number,customerId:number) => void;
   product: IProductForCustomerItem;
+  EditOrder : (orderId:number,productId:number, customerId:number,unitPrice:number, count:number) => void
 }
 
 interface State {
@@ -70,7 +73,7 @@ const girdiler = Yup.object().shape({
   .required()
   .moreThan(0),
 });
-class addOrder extends Component<Props, State> {
+class editOrder extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
@@ -85,15 +88,14 @@ class addOrder extends Component<Props, State> {
     };
   }
 
+  
   componentDidUpdate(){}
 
   handleAlert(){
-    const {isSuccees} = this.props;
-    if(isSuccees){
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(
         //title
-        'Yeni Sipariş Oluşturuldu!',
+        'Sipariş Düzenlendi!',
         //body
         '',
         [
@@ -101,30 +103,20 @@ class addOrder extends Component<Props, State> {
         ],
         { cancelable: false }
       );      
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-    }
   }
 
-  siparisOlustur(values:input){
-    const { AddOrder, navigation, isSuccees } = this.props;
+  siparisDüzenle(values:input){
+    const { AddOrder, navigation, isSuccees, EditOrder} = this.props;
     var customerId = navigation.getParam("customerId");
-    console.log(isSuccees+" before")
-    AddOrder(this.state.productId, customerId, Number(values.unitPrice),Number(values.count));
+    console.log("orderId "+this.props.navigation.getParam("orderId"))
+    console.log("productId "+ this.state.productId)
+    console.log("customerId "+customerId)
+    console.log("unitprice"+values.unitPrice)
+    console.log("count"+values.count)
+    EditOrder(this.props.navigation.getParam("orderId"),this.state.productId,customerId,Number(values.unitPrice),Number(values.count))
     this.componentDidUpdate();
     this.componentDidUpdate();
     this.handleAlert()
-    console.log(isSuccees+" after")
   }
 
   OrderInfo(productId:number){
@@ -132,7 +124,6 @@ class addOrder extends Component<Props, State> {
       productId: productId,
     });
     this.props.GetProduct(productId,this.props.navigation.getParam("customerId"));
-
   }
   
   PickerMenuCreate(){
@@ -157,18 +148,23 @@ class addOrder extends Component<Props, State> {
     console.log(date);
     dateAta = date.toLocaleDateString()+" "+date.toLocaleTimeString();
     this.setState({date:dateAta});
+
+    this.props.GetProduct(this.props.navigation.getParam("productId"),this.props.navigation.getParam("customerId"));
+    this.setState({
+      productId: this.props.navigation.getParam("productId"),
+    });
     
   }
 
   render() {
     const initialValues:input={
-      count:this.state.count,
+      count:String(this.props.navigation.getParam("count")),
       unitPrice:String(this.props.product.unitPrice),
     }
 
     const placeholder = {
-      label: 'Ürün Seçiniz...',
-      value: '',
+      label: this.props.navigation.getParam("productName"),
+      value: this.props.navigation.getParam("productId"),
       color: '#2B6EDC',
     };
 
@@ -176,7 +172,7 @@ class addOrder extends Component<Props, State> {
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
         <HeaderLeft
-          title="Sipariş Ekle"
+          title="Sipariş Düzenle"
           leftButtonPress={() => this.props.navigation.navigate("OrdersCustomer")}
         />
         <KeyboardAvoidingView
@@ -187,7 +183,7 @@ class addOrder extends Component<Props, State> {
               enableReinitialize
               initialValues={initialValues}
               validationSchema={girdiler}
-              onSubmit={values => this.siparisOlustur(values)}
+              onSubmit={values => this.siparisDüzenle(values)}
             >
               {props => {
                 return (
@@ -217,12 +213,6 @@ class addOrder extends Component<Props, State> {
                         onChangeText={props.handleChange("count")}
                         onBlur={props.handleBlur("count")}
                       />
-                      <TextInput
-                        editable={false}
-                        style={styles.input}
-                        placeholderTextColor="#313033"
-                        value={this.state.date}
-                      />
                       <Text>Ürün Kodu:</Text>
                       <TextInput
                         editable={false}
@@ -249,7 +239,7 @@ class addOrder extends Component<Props, State> {
                       <TouchableOpacity style={styles.siparisButtonContainer}>
                         <Text style={styles.amountButtonText}
                         onPress={props.handleSubmit}
-                        >Sipariş Ekle</Text>
+                        >Siparişi Düzenle</Text>
                       </TouchableOpacity>
 
                     </View>
@@ -267,15 +257,15 @@ class addOrder extends Component<Props, State> {
 const mapStateToProps = (state : AppState) => ({
   isProductLoading : state.products.isProductLoading,
   products : state.products.products,
-  isSuccees: state.addOrder.isSuccess,
+  isSuccees: state.editOrder.isSuccess,
   product: state.productForCustomer.product,
 })
 function bindToAction(dispatch: any) {
   return {
     GetProducts: () =>
     dispatch(GetProducts()),
-    AddOrder: (productId:number, customerId:number, unitPrice:number, count:number) =>
-    dispatch(AddOrder(productId, customerId, unitPrice,count)),
+    EditOrder: (orderId:number,productId:number, customerId:number, unitPrice:number, count:number) =>
+    dispatch(EditOrder(orderId,productId, customerId, unitPrice,count)),
     GetProduct: (productId:number,customerId:number) =>
     dispatch(GetProduct(productId,customerId)), 
   };
@@ -284,4 +274,4 @@ function bindToAction(dispatch: any) {
 export default connect(
   mapStateToProps,
   bindToAction
-)(addOrder);
+)(editOrder);

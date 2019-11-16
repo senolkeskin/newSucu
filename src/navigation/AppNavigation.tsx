@@ -30,6 +30,7 @@ import products from "../pages/products";
 import editProduct from "../pages/editProduct";
 import newPricePage from "../pages/newPricePage";
 import customerDefinedPricePage from "../pages/CustomerDefinedPrice"
+import editOrder from "../pages/editOrder";
 
 const CustomerApp =createStackNavigator(
   {
@@ -39,7 +40,8 @@ const CustomerApp =createStackNavigator(
   AddOrder: { screen: addOrder},
   EditCustomer: {screen: editCustomer},
   NewPricePage: {screen: newPricePage},
-  CustomerDefinedPricePage: {screen: customerDefinedPricePage}
+  CustomerDefinedPricePage: {screen: customerDefinedPricePage},
+  EditOrder: {screen: editOrder}
   },
   {
     headerMode: "none"

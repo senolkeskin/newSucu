@@ -69,11 +69,9 @@ class addProduct extends Component<Props, {}> {
     };
   }
 
-  handleCreateProduct(values: productData) {
-    const { productAdd, isSuccees,navigation } = this.props;
-    console.log(isSuccees);
+  handleAlert(){
+    const {isSuccees} = this.props;
     if(isSuccees){
-      productAdd(values.urunAdi, values.urunKodu, values.urunFiyati);
       this.props.navigation.navigate("Products");
       Alert.alert(
         //title
@@ -98,8 +96,17 @@ class addProduct extends Component<Props, {}> {
         { cancelable: false }
       );
     }
-    
-    
+
+  }
+
+  componentDidUpdate(){}
+
+  handleCreateProduct(values: productData) {
+    const { productAdd} = this.props;
+    productAdd(values.urunAdi, values.urunKodu, values.urunFiyati);
+    this.componentDidUpdate();
+    this.handleAlert()
+
   };
 
   render() {

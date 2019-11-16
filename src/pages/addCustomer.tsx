@@ -57,14 +57,12 @@ class addCustomer extends Component<Props, {}> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      
     };
   }
 
-  handleAddCustomer(values: customerData) {
-    const { customerAdd, isSuccees,navigation } = this.props;
+  componentDidUpdate(){
+    const {isSuccees} = this.props;
     if(isSuccees){
-      customerAdd(values.musteriAdiSoyadi, values.sirketAdi);
       this.props.navigation.navigate("Customer");
       Alert.alert(
         //title
@@ -75,7 +73,7 @@ class addCustomer extends Component<Props, {}> {
           {text: 'Tamam'}
         ],
         { cancelable: false }
-      );      
+      );
     }
     else{
       Alert.alert(
@@ -89,8 +87,14 @@ class addCustomer extends Component<Props, {}> {
         { cancelable: false }
       );
     }
-    
-    
+
+  }
+
+
+  handleAddCustomer(values: customerData) {
+    const { customerAdd} = this.props;
+    customerAdd(values.musteriAdiSoyadi, values.sirketAdi);
+    this.componentDidUpdate();
   };
 
   render() {

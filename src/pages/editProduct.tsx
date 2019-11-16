@@ -52,8 +52,6 @@ const girdiler = Yup.object().shape({
   .required(),
   price: Yup.number()
   .positive()
-  .min(1)
-  .max(30)
   .required()
   .moreThan(0),
 });
@@ -68,15 +66,7 @@ class editProduct extends Component<Props,state> {
     };
   }
 
-  handleEditProduct(values: productData) {
-    const { productEdit, isSuccees,navigation } = this.props;
-    if(isSuccees){
-      productEdit(
-        this.props.navigation.getParam("productId"),
-      this.state.status, 
-      values.productName,
-      values.productCode,
-      Number(values.price));
+  handleAlert(){
       this.props.navigation.navigate("Products");
       Alert.alert(
         //title
@@ -88,21 +78,17 @@ class editProduct extends Component<Props,state> {
         ],
         { cancelable: false }
       );      
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-    }
-    
-    
+  }
+
+  handleEditProduct(values: productData) {
+    const { productEdit } = this.props;
+    productEdit(
+      this.props.navigation.getParam("productId"),
+    this.state.status, 
+    values.productName,
+    values.productCode,
+    Number(values.price));
+    this.handleAlert();   
   };
 
   render() {

@@ -410,6 +410,14 @@ const styles = StyleSheet.create({
     marginHorizontal:10,   
   },
 
+  modalAddCashButtonText:{
+    textAlign: "center",
+    color: "#62C463",
+    fontWeight: "900",
+    paddingVertical: 10,
+    marginHorizontal:10,   
+  },
+
   modalDeleteButtonContainer:{
     backgroundColor:'#FFFFFF',
     paddingHorizontal:61,

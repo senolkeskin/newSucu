@@ -114,3 +114,9 @@ export interface OrderDelete
   {
     isSuccess: boolean;
   }
+
+  export interface EditOrder
+  {
+    isSuccess: boolean,
+    EditOrderMessage: string,
+  }

@@ -37,13 +37,15 @@ interface State {
   amount:number;
   modalAmountVisible:boolean;
   modalPriceVisible:boolean;
+  unitPrice:number;
+  count:number;
+  productId:number;
+  productName:string;
 }
 
 const girdiler = Yup.object().shape({
   amount: Yup.number()
   .positive()
-  .min(1)
-  .max(30)
   .required(),
 });
 
@@ -63,6 +65,10 @@ class OrdersCustomer extends Component<Props, State> {
       amount:0,
       modalAmountVisible:false,
       modalPriceVisible:false,
+      unitPrice:0,
+      count:0,
+      productId:0,
+      productName:"",
     };
   }
   
@@ -92,15 +98,30 @@ class OrdersCustomer extends Component<Props, State> {
   
 }
 
+editOrder(){
+  this.closeModal();
+  this.props.navigation.navigate("EditOrder",{customerId:this.props.navigation.getParam("customerId")
+,orderId:this.state.orderId,
+unitPrice:this.state.unitPrice,
+count:this.state.count,
+productId:this.state.productId,
+productName:this.state.productName});
+}
+
 addCash(){
   this.closeModal();
   this.openAmountModal();
 
 }
 
-openModal(orderId:number) {
+openModal(orderId:number,unitPrice:number,count:number,productId:number,productName:string) {
   this.setState({modalVisible:true,
-                orderId:orderId,});
+                orderId:orderId,
+                unitPrice:unitPrice,
+                count:count,
+                productId:productId,
+                productName:productName,
+              });
 }
 
 closeModal() {
@@ -169,7 +190,7 @@ deleteSelectedOrder(){
                   item.dateTime.slice(11,16)}</Text>
                 <TouchableOpacity
                   style={styles.iconButtonOrder}
-                  onPress={()=>this.openModal(item.orderId)}>
+                  onPress={()=>this.openModal(item.orderId,item.unitPrice,item.count,item.productId,item.productName)}>
                   <Icon name="md-more" size={24} color={"#C4B47B"} />
                 </TouchableOpacity>
               </View>
@@ -224,9 +245,14 @@ deleteSelectedOrder(){
                 </TouchableOpacity>
               <TouchableOpacity style={styles.modalOrderButtonContainer}
                   onPress={()=>this.addCash()}>
-                  <Text style={styles.modalEditButtonText}
+                  <Text style={styles.modalAddCashButtonText}
                   >Ödeme Ekle</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={styles.modalEditButtonContainer}
+                  onPress={() => this.editOrder()}>
+                  <Text style={styles.modalEditButtonText}
+                  >Düzenle</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.modalDeleteButtonContainer}
                   onPress={() => this.deleteOrderAlert()}>
                   <Text style={styles.modalDeleteButtonText}
