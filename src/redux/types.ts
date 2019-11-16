@@ -59,3 +59,18 @@ export const ORDER_DELETE_FAILED ="OrderDeleteFailed";
 
 export const UPDATE_ORDER_SUCCEED ="UpdateOrderSucceed";
 export const UPDATE_ORDER_FAILED ="UpdateOrderFailed";
+
+export const EMPLOYEE_GET = "EmployeesGet";
+export const LOADING_EMPLOYEES = "LoadingEmployees";
+
+export const EMPLOYEE_ADD_SUCCEED ="EmployeeAddSucceed";
+export const EMPLOYEE_ADD_FAILED ="EmployeeAddFailed";
+
+export const ADD_USER_SUCCEED ="AddUserSucceed";
+export const ADD_USER_FAILED ="AddUserFailed";
+
+export const EMPLOYEE_EDIT_SUCCEED ="EmployeeEditSucceed";
+export const EMPLOYEE_EDIT_FAILED ="EmployeeEditFailed";
+
+export const EMPLOYEE_DELETE_SUCCEED ="EmployeeDeleteSucceed";
+export const EMPLOYEE_DELETE_FAILED ="EmployeeDeleteFailed";

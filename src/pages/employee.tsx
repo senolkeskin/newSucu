@@ -1,90 +1,202 @@
 import React, { Component } from "react";
-import { View, FlatList, ActivityIndicator, StatusBar } from "react-native";
-import { NavigationScreenProp, NavigationState } from "react-navigation";
+import {
+  View,
+  FlatList,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Modal,
+  Alert,
+} from "react-native";
+import { NavigationScreenProp, NavigationState,} from "react-navigation";
 import { connect } from "react-redux";
 import { Header } from "../components";
 import styles from "./styles";
-import { AvatarItem } from "../components";
-import { logoutUserService } from "../redux/services/user";
-import {
-  fetchImageData,
-  fetchMoreImageData
-} from "../redux/actions/fetch";
+import { AppState } from "../redux/store";
+import { IEmployeeItem } from "../redux/models/employeeModel";
+import Icon from "react-native-vector-icons/Ionicons";
+import { employeeDelete } from "../redux/actions/deleteEmployeeAction";
+import { GetEmployees } from "../redux/actions/employeeAction";
+
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
-  fetchImageData: (page?: number, limit?: number) => void;
-  fetchMoreImageData: (page?: number, limit?: number) => void;
-  imageData: any;
-  loading: boolean;
-}
-
-interface itemProp {
-  item: any;
+  isLoading: boolean;
+  employees: IEmployeeItem[];
+  employeeDelete: (employeeId: number) => void;
+  employeeDeleteIsSuccess: boolean;
+  GetEmployees: () => void
 }
 
 interface State {
-  page: number;
-  limit: number;
+  modalVisible: boolean;
+  refreshing: boolean;
+  nameSurname: string;
+  employeeId: number;
+  monthlySalary:number;
 }
 
 class Employee extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: 1,
-      limit: 20
+      modalVisible: false,
+      refreshing: false,
+      nameSurname: "",
+      employeeId: 0,
+      monthlySalary:0,
     };
   }
 
-  componentDidMount() {
-    const { fetchImageData } = this.props;
-    const { page, limit } = this.state;
-    fetchImageData(page, limit);
+  componentWillMount() {
+    this.props.GetEmployees();
+    this.setState({ refreshing: false });
   }
 
-  calisanEkle = () => {
-    const { navigation } = this.props;
-    logoutUserService().then(() => {
-      navigation.navigate("LoginScreen");
+  openModal(employeeId: number, nameSurname: string, monthlySalary: number) {
+    this.setState({
+      modalVisible: true,
+      employeeId: employeeId,
+      nameSurname: nameSurname,
+      monthlySalary: monthlySalary,
     });
-  };
+  }
 
+  closeModal() {
+    this.setState({ modalVisible: false });
+  }
+
+  deleteSelectedEmployee() {
+    const { employeeDelete } = this.props;
+    employeeDelete(this.state.employeeId);
+    this.closeModal();
+    this.onRefresh();
+    this.componentWillMount();
+  }
+
+  deleteEmployeeAlert() {
+    //function to make three option alert
+    Alert.alert(
+      //title
+      'Müşteri Silme İşlemi',
+      //body
+      'Müşteriyi silmek istiyor musunuz?',
+      [
+        { text: 'Geri Gel' },
+        { text: 'Evet', onPress: () => this.deleteSelectedEmployee() },
+      ],
+      { cancelable: false }
+    );
+
+  }
+
+  editEmployee() {
+    this.closeModal();
+    this.props.navigation.navigate("EditEmployee",
+      {
+        employeeId: this.state.employeeId,
+        nameSurname: this.state.nameSurname,
+        monthlySalary: this.state.monthlySalary
+      })
+
+  }
+
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.componentWillMount();
+  }
+
+  _renderView() {
+    const { isLoading, navigation } = this.props;
+    console.log(isLoading);
+    if (isLoading) {
+      return (<ActivityIndicator></ActivityIndicator>);
+    }
+    else {
+      return (<FlatList
+        refreshing={this.state.refreshing}
+        onRefresh={() => this.onRefresh()}
+        data={this.props.employees}
+        renderItem={({ item }) => (
+          <View style={styles.row}>
+            <View style={styles.row_cell5}>
+              <View style={styles.row_cell1}>
+                <Text style={styles.musteri_adi}>{item.employeeName}</Text>
+                <Text style={styles.alt_bilgi}>İşe Giriş: {item.createDate.slice(8, 10) + "/" + item.createDate.slice(5, 7) + "/" + item.createDate.slice(0, 4)}</Text>
+              </View>
+              <View style={styles.row_cell2}>
+                <Text style={styles.maasText}> Maaş: {item.monthlySalary} TL</Text>
+              </View>
+            </View>
+            <TouchableOpacity
+              style={styles.iconButtonCustomer}
+              onPress={() => this.openModal(item.employeeId,item.employeeName,item.monthlySalary)}>
+              <Icon name="md-more" size={24} color={"#C4B47B"} />
+            </TouchableOpacity>
+          </View>)}
+        keyExtractor={item => item.employeeId.toString()}
+      />);
+    }
+  }
   render() {
-    const { navigation, imageData, fetchMoreImageData, loading } = this.props;
-    const { page, limit } = this.state;
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#2B6EDC"/>
+        <StatusBar backgroundColor="#2B6EDC" />
         <Header
           title="Çalışanlar"
-          rightButtonPress={() => this.calisanEkle()}
+          rightButtonPress={() => this.props.navigation.navigate("AddEmployee")}
         />
-        <FlatList
-          data={imageData}
-          keyExtractor={item => item.id}
-          renderItem={({ item }: itemProp) => {
-            return (
-              <AvatarItem avatar={item.download_url} title={item.author} />
-            );
-          }}
-        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Modal
+            visible={this.state.modalVisible}
+            animationType={'slide'}
+            onRequestClose={() => this.closeModal()}
+            transparent={true}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.innerContainer}>
+                <TouchableOpacity style={styles.modalCancelButtonContainer}
+                  onPress={() => this.closeModal()}>
+                  <Icon name="md-close" size={30} color={"#6E6E6E"} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalEditButtonContainer}
+                  onPress={() => this.editEmployee()}>
+                  <Text style={styles.modalEditButtonText}
+                  >Düzenle</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalDeleteButtonContainer}
+                  onPress={() => this.deleteEmployeeAlert()}>
+                  <Text style={styles.modalDeleteButtonText}
+                  >Sil</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          <View style={{ marginTop: 10 }}></View>
+        </KeyboardAvoidingView>
+        {this._renderView()}
+
       </View>
     );
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  imageData: state.data,
-  loading: state.loading
-});
-
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.employee.isLoading,
+  employees: state.employee.employees,
+  employeeDeleteIsSuccess: state.deleteEmployee.isSuccess,
+})
 function bindToAction(dispatch: any) {
   return {
-    fetchImageData: (page?: number, limit?: number) =>
-      dispatch(fetchImageData(page, limit)),
-    fetchMoreImageData: (page?: number, limit?: number) =>
-      dispatch(fetchMoreImageData(page, limit))
+    GetEmployees: () =>
+      dispatch(GetEmployees()),
+      employeeDelete: (employeeId: number) =>
+      dispatch(employeeDelete(employeeId)),
   };
 }
 

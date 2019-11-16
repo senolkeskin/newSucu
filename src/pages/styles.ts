@@ -632,6 +632,34 @@ const styles = StyleSheet.create({
     marginBottom:10,
   },
 
+  maasText: {
+    color: "#853614",
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 12,
+    textAlign: "right",
+  },
+
+  userAddContiner: {
+    margin:10,
+    elevation:2,
+    borderRadius:2,
+    paddingTop:30,
+    marginHorizontal:20,
+    justifyContent: "space-between",
+    padding: 20,
+    flex:4,
+  },
+
+  addUserInfoText: {
+    color: "#0A157A",
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 10.5,
+  },
+
 
 
 
