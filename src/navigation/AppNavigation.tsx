@@ -31,6 +31,20 @@ import editProduct from "../pages/editProduct";
 import newPricePage from "../pages/newPricePage";
 import customerDefinedPricePage from "../pages/CustomerDefinedPrice"
 import editOrder from "../pages/editOrder";
+import employee from "../pages/employee";
+import addEmployee from "../pages/addEmployee";
+import editEmployee from "../pages/editEmployee";
+
+const EmployeeApp = createStackNavigator(
+  {
+    Employee: {screen:employee},
+    AddEmployee: {screen: addEmployee},
+    EditEmployee: {screen: editEmployee},
+
+  },
+  {
+    headerMode:"none"
+  })
 
 const CustomerApp =createStackNavigator(
   {
@@ -72,7 +86,7 @@ const MainStack = createBottomTabNavigator(
         ),
       }
     },
-    Employee: { screen: Employee,
+    Employee: { screen: EmployeeApp,
       
       navigationOptions:{
         tabBarLabel:'Çalışanlar',

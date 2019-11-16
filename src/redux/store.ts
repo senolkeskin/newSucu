@@ -20,7 +20,11 @@ import customerDefinedPriceReducers from "./reducers/customerDefinedPriceReducer
 import customerPriceEditReducers from  "./reducers/customerPriceEditReducers";
 import productForCustomerReducers from "./reducers/productForCustomerReducers";
 import editOrderReducers from "./reducers/editOrderReducers";
-
+import employeeReducers from "./reducers/employeeReducers";
+import addEmployeeReducers from "./reducers/addEmployeeReducers"
+import addUserReducers from "./reducers/addUserReducers"
+import deleteEmployeeReducers from "./reducers/deleteEmployeeReducers"
+ 
 const persistConfig = {
   key: "root",
   storage: storage
@@ -35,6 +39,10 @@ if (process.env.NODE_ENV === `development`) {
 }
 
 const rootReducer = combineReducers({
+  deleteEmployee : deleteEmployeeReducers,
+  addUser: addUserReducers,
+  addEmployee: addEmployeeReducers,
+  employee: employeeReducers,
   editOrder: editOrderReducers,
   productForCustomer: productForCustomerReducers,
   customerPriceEdit: customerPriceEditReducers,

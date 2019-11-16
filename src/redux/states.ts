@@ -4,6 +4,7 @@ import { IProductItem} from "./models/productModel";
 import {ICustomerPriceProductItem} from "./models/customerPriceProductModel"
 import {IDefinedCustomerPriceItem} from "./models/customerDefinedPriceModel"
 import {IProductForCustomerItem} from "./models/productForCustomerModel"
+import {IEmployeeItem} from "./models/employeeModel"
 
 export interface State {
     data: any[];
@@ -119,4 +120,27 @@ export interface OrderDelete
   {
     isSuccess: boolean,
     EditOrderMessage: string,
+  }
+
+  
+  export interface EmployeeState{
+    employees:IEmployeeItem[];
+    isLoading :boolean;
+}
+
+export interface EmployeeAdd
+{
+  isSuccess: boolean,
+  EmployeeAddMessage: string,
+}
+
+export interface AddUser
+  {
+    isSuccess: boolean,
+    AddUserMessage: string,
+  }
+
+  export interface EmployeeDelete
+  {
+    isSuccess: boolean;
   }

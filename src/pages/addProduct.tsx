@@ -53,8 +53,6 @@ const girdiler = Yup.object().shape({
     .required(),
     urunFiyati: Yup.number()
     .positive()
-    .min(1)
-    .max(30)
     .required()
     .moreThan(0),
 });
