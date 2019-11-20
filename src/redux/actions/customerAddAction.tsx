@@ -5,14 +5,15 @@ import {CUSTOMER_ADD_SUCCEED,CUSTOMER_ADD_FAILED} from './../types'
 import {Action} from '../states'
 
 
-export function customerAdd(nameSurname:string, companyName:string) {
+export function customerAdd(nameSurname:string, companyName:string, dayOfWeek1:number) {
 
   return (dispatch : Dispatch<Action>) =>  {
-
+console.log(dayOfWeek1, 111);
   axios.post(WATER_CUSTOMER_ADD,
     {
         nameSurname: nameSurname,
         companyName: companyName,
+        dayOfWeek : dayOfWeek1
     })
   .then((response) =>{
   if(response.data.isSuccess){

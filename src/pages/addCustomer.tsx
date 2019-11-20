@@ -19,11 +19,12 @@ import { HeaderLeft } from "../components";
 import { customerAdd } from "../redux/actions/customerAddAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
-
+import Icon from "react-native-vector-icons/Ionicons";
+import RNPickerSelect from 'react-native-picker-select';
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isSuccees : boolean;
-  customerAdd : (nameSurname : string , companyName : string ) => void;
+  customerAdd : (nameSurname : string , companyName : string, dayOfWeek:number) => void;
   CustomerAddMessage: string;
   musteri: customerData;
 }
@@ -36,6 +37,10 @@ interface customerData {
 const initialValues:customerData = {
   musteriAdiSoyadi: "",
   sirketAdi: "",
+}
+
+interface CustomerInserState{
+  dayOfWeek : number;
 }
 
 const girdiler = Yup.object().shape({
@@ -52,17 +57,16 @@ const girdiler = Yup.object().shape({
 });
 
 
-class addCustomer extends Component<Props, {}> {
+class addCustomer extends Component<Props, CustomerInserState> {
 
   constructor(props: Props) {
     super(props);
     this.state = {
+      dayOfWeek:0
     };
   }
 
-  componentDidUpdate(){
-    const {isSuccees} = this.props;
-    if(isSuccees){
+  resultMessage(){
       this.props.navigation.navigate("Customer");
       Alert.alert(
         //title
@@ -74,30 +78,26 @@ class addCustomer extends Component<Props, {}> {
         ],
         { cancelable: false }
       );
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-    }
-
   }
 
+  _SetStateDay(value:number){
+
+    this.setState({dayOfWeek:value});
+  }
 
   handleAddCustomer(values: customerData) {
     const { customerAdd} = this.props;
-    customerAdd(values.musteriAdiSoyadi, values.sirketAdi);
-    this.componentDidUpdate();
+
+    customerAdd(values.musteriAdiSoyadi, values.sirketAdi, this.state.dayOfWeek);
+    this.resultMessage();
   };
 
   render() {
+    const placeHolderDay ={
+      label: 'Tümü',
+      value: 0,
+      color: '#2B6EDC',
+    }
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
@@ -139,6 +139,25 @@ class addCustomer extends Component<Props, {}> {
                         onBlur={handleBlur("sirketAdi")} 
                       />
                       <Text style={styles.errorText}>{errors.sirketAdi}</Text>
+                      <RNPickerSelect
+                  style={styles.pickerSelectStyles}
+                  placeholder={placeHolderDay}
+                  onValueChange={(value) => (this._SetStateDay(value))}
+                  items={[
+                    { label: 'Pazartesi', value: 1 },
+                    { label: 'Salı', value: 2 },
+                    { label: 'Çarşamba', value: 3 },
+                    { label: 'Perşembe', value: 4 },
+                    { label: 'Cuma', value: 5 },
+                    { label: 'Cumartesi', value: 6 },
+                    { label: 'Pazar', value: 7 },
+                  ]}
+                  textInputProps={{ underlineColor: 'yellow' }}
+                  Icon={() => {
+                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
+                  }}
+                />
+
                       <TouchableOpacity 
                         style={styles.customerAddButton}
                         onPress={handleSubmit}>
@@ -163,8 +182,8 @@ const mapStateToProps = (state : AppState) => ({
 
 function bindToAction(dispatch : any) {
   return {
-    customerAdd : (nameSurname:string , companyName : string) =>
-    dispatch(customerAdd(nameSurname,companyName))   
+    customerAdd : (nameSurname:string , companyName : string, dayOfWeek:number) =>
+    dispatch(customerAdd(nameSurname,companyName, dayOfWeek))   
   };
 }
 

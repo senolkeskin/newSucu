@@ -24,6 +24,7 @@ import employeeReducers from "./reducers/employeeReducers";
 import addEmployeeReducers from "./reducers/addEmployeeReducers"
 import addUserReducers from "./reducers/addUserReducers"
 import deleteEmployeeReducers from "./reducers/deleteEmployeeReducers"
+import getUserReducers from "./reducers/getUserReducers"
  
 const persistConfig = {
   key: "root",
@@ -39,6 +40,7 @@ if (process.env.NODE_ENV === `development`) {
 }
 
 const rootReducer = combineReducers({
+  getUser: getUserReducers,
   deleteEmployee : deleteEmployeeReducers,
   addUser: addUserReducers,
   addEmployee: addEmployeeReducers,

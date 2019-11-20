@@ -23,18 +23,23 @@ import { IEmployeeItem } from "../redux/models/addEmployeeModel";
 import { IUserItem } from "../redux/models/addUserModel";
 import { Input } from "react-native-elements";
 import { AddUser } from "../redux/actions/addUserAction"
+import { GetUser } from "../redux/actions/getUserAction"
+import {IGetUserItem} from "../redux/models/userModel"
 
 interface Props {
     navigation: NavigationScreenProp<NavigationState>;
     isSuccees: boolean;
     EmployeeAddMessage: string;
     employee: IEmployeeItem;
-    user: IUserItem;
-    employeeEdit: (employeeId:number,nameSurname: string, monthlySalary: number) => void;
+    user: IGetUserItem;
+    employeeEdit: (employeeId: number,active:boolean, nameSurname: string, monthlySalary: number,email:string,password:string) => void;
     AddUser: (nameSurname: string, mail: string, password: string) => void;
+    GetUser: (employeeId: number) => void;
 }
 
-interface multi extends IEmployeeItem, IUserItem { }
+interface multi extends IEmployeeItem, IUserItem {
+    active:boolean;
+ }
 
 const girdiler = Yup.object().shape({
     nameSurname: Yup.string()
@@ -55,13 +60,23 @@ const girdiler = Yup.object().shape({
         .max(30, "*Şifre 30 karakterden uzun olamaz!"),
 });
 
+interface state {
 
-class addEmployee extends Component<Props, {}> {
+}
+
+
+class addEmployee extends Component<Props, state> {
 
     constructor(props: Props) {
         super(props);
         this.state = {
         };
+    }
+
+    componentWillMount() {
+        console.log("fsfsaasfasfsafasfsafsafsafsafasfasf")  
+        const {GetUser,navigation }= this.props
+        GetUser(navigation.getParam("employeeId"));
     }
 
     handleAlert() {
@@ -81,9 +96,9 @@ class addEmployee extends Component<Props, {}> {
 
 
     handleEditEmployee(values: multi) {
-        const { employeeEdit, AddUser,navigation } = this.props;
-        console.log(String(navigation.getParam("employeeId"))+" "+values.nameSurname+" "+values.monthlySalary )
-        employeeEdit(navigation.getParam("employeeId"),values.nameSurname, Number(values.monthlySalary));
+        const { employeeEdit, AddUser, navigation } = this.props;
+        console.log(String(navigation.getParam("employeeId")) + " " + values.nameSurname + " " + values.monthlySalary+" "+values.mail+" "+values.password)
+        employeeEdit(navigation.getParam("employeeId"),values.active, values.nameSurname, Number(values.monthlySalary),values.mail,values.password);
         // if (values.mail != "" && values.password != "") {
         //     AddUser(values.nameSurname, values.mail, values.password);
         // }
@@ -95,9 +110,12 @@ class addEmployee extends Component<Props, {}> {
         const initialValues: multi = {
             nameSurname: navigation.getParam("nameSurname"),
             monthlySalary: String(navigation.getParam("monthlySalary")),
-            mail: "",
-            password: "",
+            active: navigation.getParam("active"),
+            mail: this.props.user.email,//ha bura
+            password: this.props.user.password,//ahan da bura
         }
+
+        
         return (
             <View style={styles.addCustomerContainer}>
                 <StatusBar backgroundColor="#2B6EDC" />
@@ -123,7 +141,7 @@ class addEmployee extends Component<Props, {}> {
                                                 style={styles.input}
                                                 placeholder="Adı Soyadı"
                                                 placeholderTextColor="#9A9A9A"
-                                                value={values.nameSurname}
+                                                value={values.nameSurname+String(values.active)}
                                                 autoCapitalize="words"
                                                 onChangeText={handleChange("nameSurname")}
                                                 onBlur={handleBlur("nameSurname")}
@@ -191,14 +209,18 @@ const mapStateToProps = (state: AppState) => ({
     isSuccees: state.addEmployee.isSuccess,
     EmployeeAddMessage: state.addEmployee.EmployeeAddMessage,
     isSucceesUser: state.addUser.isSuccess,
+    user: state.getUser.user,
 })
 
 function bindToAction(dispatch: any) {
     return {
-        employeeEdit: (employeeId:number,nameSurname: string, monthlySalary: number) =>
-            dispatch(employeeEdit(employeeId,nameSurname, monthlySalary)),
+        employeeEdit: (employeeId: number,active:boolean, nameSurname: string, monthlySalary: number,email:string,password:string) =>
+            dispatch(employeeEdit(employeeId,active, nameSurname, monthlySalary,email,password)),
         AddUser: (nameSurname: string, mail: string, password: string) =>
             dispatch(AddUser(nameSurname, mail, password)),
+        GetUser: (employeeId: number) =>
+            dispatch(GetUser(employeeId)),
+            
     };
 }
 

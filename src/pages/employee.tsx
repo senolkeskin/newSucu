@@ -37,6 +37,7 @@ interface State {
   nameSurname: string;
   employeeId: number;
   monthlySalary:number;
+  active:boolean
 }
 
 class Employee extends Component<Props, State> {
@@ -48,6 +49,7 @@ class Employee extends Component<Props, State> {
       nameSurname: "",
       employeeId: 0,
       monthlySalary:0,
+      active:false,
     };
   }
 
@@ -56,12 +58,13 @@ class Employee extends Component<Props, State> {
     this.setState({ refreshing: false });
   }
 
-  openModal(employeeId: number, nameSurname: string, monthlySalary: number) {
+  openModal(employeeId: number, nameSurname: string, monthlySalary: number,active:boolean) {
     this.setState({
       modalVisible: true,
       employeeId: employeeId,
       nameSurname: nameSurname,
       monthlySalary: monthlySalary,
+      active:active,
     });
   }
 
@@ -99,7 +102,8 @@ class Employee extends Component<Props, State> {
       {
         employeeId: this.state.employeeId,
         nameSurname: this.state.nameSurname,
-        monthlySalary: this.state.monthlySalary
+        monthlySalary: this.state.monthlySalary,
+        active: this.state.active,
       })
 
   }
@@ -133,7 +137,7 @@ class Employee extends Component<Props, State> {
             </View>
             <TouchableOpacity
               style={styles.iconButtonCustomer}
-              onPress={() => this.openModal(item.employeeId,item.employeeName,item.monthlySalary)}>
+              onPress={() => this.openModal(item.employeeId,item.employeeName,item.monthlySalary,item.active)}>
               <Icon name="md-more" size={24} color={"#C4B47B"} />
             </TouchableOpacity>
           </View>)}

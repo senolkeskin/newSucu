@@ -5,6 +5,8 @@ import {ICustomerPriceProductItem} from "./models/customerPriceProductModel"
 import {IDefinedCustomerPriceItem} from "./models/customerDefinedPriceModel"
 import {IProductForCustomerItem} from "./models/productForCustomerModel"
 import {IEmployeeItem} from "./models/employeeModel"
+import { IUserItem } from "./models/addUserModel";
+import { IGetUserItem} from "./models/userModel"
 
 export interface State {
     data: any[];
@@ -144,3 +146,8 @@ export interface AddUser
   {
     isSuccess: boolean;
   }
+
+  export interface getUserState{
+    user:IGetUserItem;
+    isUserLoading :boolean;
+}

@@ -22,5 +22,6 @@ export const WATER_ADD_EMPLOYEE = WATER_BASE_URL+"/employe"
 export const WATER_ADD_USER = WATER_BASE_URL+"/User"
 export const WATER_EDIT_EMPLOYEE = WATER_BASE_URL+"/employe/Update";
 export const WATER_DELETE_EMPLOYEE = WATER_BASE_URL+"/employe/Delete";
+export const WATER_GET_USER = WATER_BASE_URL+"/User?employeId=";
 
 

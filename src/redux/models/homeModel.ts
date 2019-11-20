@@ -8,5 +8,6 @@ export interface ICustomerItem{
     displayRestTotalAmount:string;
     restTotalAmount:number;
     displayTookTotalAmount:string;
+    dayOfWeek ? : number;
 
 }
