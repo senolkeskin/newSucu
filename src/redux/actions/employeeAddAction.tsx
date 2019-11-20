@@ -5,7 +5,7 @@ import {EMPLOYEE_ADD_SUCCEED,EMPLOYEE_ADD_FAILED} from './../types'
 import {Action} from '../states'
 
 
-export function employeeAdd(nameSurname:string, monthlySalary:number) {
+export function employeeAdd(nameSurname:string, monthlySalary:number,email:string,password:string) {
 
   return (dispatch : Dispatch<Action>) =>  {
 
@@ -13,6 +13,8 @@ export function employeeAdd(nameSurname:string, monthlySalary:number) {
     {
         nameSurname: nameSurname,
         monthlySalary: monthlySalary,
+        email: email,
+        password: password,
     })
   .then((response) =>{
   if(response.data.isSuccess){

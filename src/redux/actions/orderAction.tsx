@@ -8,12 +8,12 @@ import { IOrderItem } from "../models/orderModel";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 
 
-export function GetOrders(customerId:number) {
+export function GetOrders(customerId:number,pageIndex:number,pageSize:number) {
 
     return (dispatch : Dispatch<Action>) =>  {
   
     dispatch(loading(true));
-    var WATER_CUSTOMER_ORDERS_GET_CUSTOMER =WATER_CUSTOMER_ORDERS_GET+customerId;
+    var WATER_CUSTOMER_ORDERS_GET_CUSTOMER =WATER_CUSTOMER_ORDERS_GET+customerId+"&pageIndex="+pageIndex+"&pageSize="+pageSize;
 
     axios.get(WATER_CUSTOMER_ORDERS_GET_CUSTOMER,
 
@@ -22,6 +22,7 @@ export function GetOrders(customerId:number) {
   .then((response) =>{
     
   if(response.data.isSuccess){
+    console.log(response.data.result.takeTotalAmount+"fsfsafafsafsafsafafsaf");
       var takeTotal:number = response.data.result.takeTotalAmount;
       var tookTotal:number = response.data.result.tookTotalAmount;
       var restTotal:number = response.data.result.restTotalAmount;

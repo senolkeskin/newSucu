@@ -3,4 +3,5 @@ export interface IEmployeeItem{
     employeeName :string;
     monthlySalary :number;
     createDate: string;
+    active:boolean;
 }

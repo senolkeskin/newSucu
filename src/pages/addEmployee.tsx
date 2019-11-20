@@ -30,7 +30,7 @@ interface Props {
     EmployeeAddMessage: string;
     employee: IEmployeeItem;
     user: IUserItem;
-    employeeAdd: (nameSurname: string, monthlySalary: number) => void;
+    employeeAdd: (nameSurname: string, monthlySalary: number, email: string, password:string) => void;
     AddUser: (nameSurname: string, mail: string, password: string) => void;
 }
 
@@ -89,10 +89,11 @@ class addEmployee extends Component<Props, {}> {
 
     handleAddEmployee(values: multi) {
         const { employeeAdd, AddUser } = this.props;
-        employeeAdd(values.nameSurname, Number(values.monthlySalary));
-        if (values.mail != "" && values.password != "") {
-            AddUser(values.nameSurname, values.mail, values.password);
-        }
+        console.log(values.nameSurname+" "+values.mail+" "+values.password)
+        employeeAdd(values.nameSurname, Number(values.monthlySalary),values.mail,values.password);
+        // if (values.mail != "" && values.password != "") {
+        //     AddUser(values.nameSurname, values.mail, values.password);
+        // }
         this.handleAlert();
     };
 
@@ -194,8 +195,8 @@ const mapStateToProps = (state: AppState) => ({
 
 function bindToAction(dispatch: any) {
     return {
-        employeeAdd: (nameSurname: string, monthlySalary: number) =>
-            dispatch(employeeAdd(nameSurname, monthlySalary)),
+        employeeAdd: (nameSurname: string, monthlySalary: number,mail: string, password: string) =>
+            dispatch(employeeAdd(nameSurname, monthlySalary,mail,password)),
         AddUser: (nameSurname: string, mail: string, password: string) =>
             dispatch(AddUser(nameSurname, mail, password)),
     };

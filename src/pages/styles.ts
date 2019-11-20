@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer:{
     backgroundColor:'#D2D5F1',
-    borderRadius: 2000,
+
     marginHorizontal: 20,
     paddingVertical: 15,
     marginBottom:10,
   },
   customerAddButton:{
     backgroundColor:'#2B6EDC',
-    borderRadius: 2000,
+
     marginHorizontal: 20,
     paddingVertical: 15,
     marginTop:5,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 
   ProductAddButton:{
     backgroundColor:'#2B6EDC',
-    borderRadius: 2000,
+
     marginHorizontal: 20,
     paddingVertical: 15,
     marginTop:5,
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
 
   customerEditButton:{
     backgroundColor:'#2B6EDC',
-    borderRadius: 2000,
     marginHorizontal: 20,
     paddingVertical: 15,
     marginTop:5,
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
   },
 
   row_cell1: {
-    flex: 2,
+    flex: 1,
     flexDirection: 'column',
     marginBottom:10,
     marginTop:10,
@@ -219,6 +218,29 @@ const styles = StyleSheet.create({
   row_cell5: {
     flexDirection: 'row',
     flex:7,
+  },
+  customerDetailHeader1: {
+    flex: 6,
+    flexDirection: 'column',
+    marginBottom:10,
+    marginTop:10,
+  },
+  customerDetailHeader2: {
+    flex:7,
+    flexDirection: 'column',
+    marginBottom:10,
+    marginTop:10,
+  },
+  customerDetailHeader3: {
+    flex: 4,
+    flexDirection: 'column',
+    marginBottom:10,
+    marginTop:10,
+  },
+
+  customerDetailHeaderButtonText:{
+    color: "#1E1E1E",
+    fontSize:40,
   },
 
   tikla: {
@@ -659,6 +681,47 @@ const styles = StyleSheet.create({
     flex: 0,
     fontSize: 10.5,
   },
+
+  iconButtonOrderCustomer: {
+    textAlign:"left",
+    flexDirection: "column-reverse",
+    flex:1,
+    paddingTop:10,
+  },
+
+  rnpickerselect: {
+    elevation:2,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    marginHorizontal: 5,
+    paddingHorizontal: 20,
+    color: 'black',
+    marginBottom:10,
+    borderRadius:4,
+    borderColor:"white",
+    flex:1
+  },
+
+  musteribulunamadiContainer: {
+    backgroundColor:"#ECDF0A",
+    margin:10,
+    elevation:2,
+    borderRadius:2,
+    paddingTop:20,
+    marginHorizontal:20,
+    justifyContent: "space-between",
+    padding: 20,
+
+  },
+
+  musteribulunamadiText: {
+    color: "#686204",
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 15,
+  }
+
+
 
 
 
