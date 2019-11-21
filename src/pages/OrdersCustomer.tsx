@@ -21,7 +21,7 @@ interface Props {
   tookTotalAmount: number,
   restTotalAmount: number,
   isOrderLoading: boolean,
-  GetOrders : (customerId:number) => void;
+  GetOrders : (customerId:number,pageIndex:number,pageSize:number) => void;
   AddCash : (orderId:number,amount:string) => void;
   orderDelete : (orderId:number) => void;
 }
@@ -73,13 +73,14 @@ class OrdersCustomer extends Component<Props, State> {
   }
   
   componentWillMount() {
-    this.props.GetOrders(this.props.navigation.getParam("customerId"));
+    this.props.GetOrders(this.props.navigation.getParam("customerId"),1,18);
     this.setState({ refreshing: false }); 
   }
 
   onRefresh() {
     this.setState({ refreshing: true });
-    this.componentWillMount();
+    this.props.GetOrders(this.props.navigation.getParam("customerId"),1,18);
+    this.setState({ refreshing: false }); 
   }
 
   deleteOrderAlert(){
@@ -158,15 +159,16 @@ odemeAl(values: amountData){
   this.props.AddCash(this.state.orderId,values.amount);
   this.closeAmountModal();
   this.onRefresh();
-  this.componentWillMount();
+  
 }
 
 deleteSelectedOrder(){
   const {orderDelete}=this.props;
-  orderDelete(this.state.orderId);
   this.closeModal();
+  orderDelete(this.state.orderId);
+  this.props.GetOrders(this.props.navigation.getParam("customerId"),1,8);
+  this.setState({ refreshing: false });
   this.onRefresh();
-  this.componentWillMount();
 }
 
 
@@ -337,16 +339,18 @@ deleteSelectedOrder(){
           </Modal>
 
         <View style={styles.order_ustbilgi_row}>
-        <View style={styles.row_cell1}>
+        <View style={styles.customerDetailHeader1}>
           <Text style={styles.musteri_adi}>{nameSurname}</Text>
           <Text style={styles.alt_bilgi}>{companyName}</Text>
         </View>
+        <View style={styles.customerDetailHeader2}>
         <TouchableOpacity
-            style={styles.iconButtonOrder}
+            style={styles.iconButtonOrderCustomer}
             onPress={()=>this.openPriceModal()}>
-            <Icon name="md-more" size={24} color={"#C4B47B"} />
+            <Text style={styles.customerDetailHeaderButtonText}>...</Text>
         </TouchableOpacity>
-        <View style={styles.row_cell2}>
+        </View>
+        <View style={styles.customerDetailHeader3}>
           <Text style={styles.paratextalınan}>{this.props.tookTotalAmount} TL Alınan</Text>
           <Text style={styles.paratextkalan} >{this.props.restTotalAmount} TL Kalan</Text>
           <Text style={styles.paratextToplam}>Toplam: {this.props.takeTotalAmount} TL </Text>
@@ -372,8 +376,8 @@ const mapStateToProps = (state: AppState) => ({
 
 function bindToAction(dispatch: any,) {
   return {
-    GetOrders: (customerId:number) =>
-    dispatch(GetOrders(customerId)),
+    GetOrders: (customerId:number,pageIndex:number,pageSize:number) =>
+    dispatch(GetOrders(customerId,pageIndex,pageSize)),
     AddCash:(orderId:number,amount:string)=>
     dispatch(AddCash(orderId,Number(amount))),
     orderDelete: (orderId:number) =>

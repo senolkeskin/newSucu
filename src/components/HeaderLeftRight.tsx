@@ -20,7 +20,7 @@ export class HeaderLeftRight extends Component<Props, {}> {
               style={styles.iconButton}
               onPress={leftButtonPress}
             >
-              <Icon name="md-arrow-dropleft-circle" size={24} color={"white"} />
+              <Icon name="ios-arrow-back" size={24} color={"white"} />
             </TouchableOpacity>
           ) : null}
         </View>

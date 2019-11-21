@@ -5,8 +5,8 @@ import {CUSTOMER_EDIT_FAILED,CUSTOMER_EDIT_SUCCEED} from './../types'
 import {Action} from '../states'
 
 
-export function customerEdit(id:number, nameSurname:string, companyName:string) {
-
+export function customerEdit(id:number, nameSurname:string, companyName:string,dayOfWeek :number) {
+  console.log(dayOfWeek+"sfsfsfsafafsafasfsaf")
   return (dispatch : Dispatch<Action>) =>  {
 
   axios.post(WATER_CUSTOMER_EDIT,
@@ -14,6 +14,7 @@ export function customerEdit(id:number, nameSurname:string, companyName:string) 
         id: id,
         nameSurname: nameSurname,
         companyName: companyName,
+        dayOfWeek :dayOfWeek
     })
   .then((response) =>{
   if(response.data.isSuccess){

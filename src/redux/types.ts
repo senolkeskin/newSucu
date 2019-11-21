@@ -74,3 +74,6 @@ export const EMPLOYEE_EDIT_FAILED ="EmployeeEditFailed";
 
 export const EMPLOYEE_DELETE_SUCCEED ="EmployeeDeleteSucceed";
 export const EMPLOYEE_DELETE_FAILED ="EmployeeDeleteFailed";
+
+export const USER_GET = "UserGet";
+export const USER_LOADING = "UserLoading";

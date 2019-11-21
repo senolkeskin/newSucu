@@ -26,7 +26,8 @@ export function GetEmployees() {
                             employeeId: employee.employeeId,
                             employeeName: employee.employeeName,
                             monthlySalary: employee.monthlySalary,
-                            createDate: employee.createDate
+                            createDate: employee.createDate,
+                            active: employee.active,
                         }
                         employeesModel.push(employeeItem);
                     });

@@ -68,8 +68,6 @@ class addProduct extends Component<Props, {}> {
   }
 
   handleAlert(){
-    const {isSuccees} = this.props;
-    if(isSuccees){
       this.props.navigation.navigate("Products");
       Alert.alert(
         //title
@@ -81,20 +79,6 @@ class addProduct extends Component<Props, {}> {
         ],
         { cancelable: false }
       );      
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-    }
-
   }
 
   componentDidUpdate(){}

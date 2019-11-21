@@ -88,8 +88,6 @@ class addOrder extends Component<Props, State> {
   componentDidUpdate(){}
 
   handleAlert(){
-    const {isSuccees} = this.props;
-    if(isSuccees){
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(
         //title
@@ -101,19 +99,6 @@ class addOrder extends Component<Props, State> {
         ],
         { cancelable: false }
       );      
-    }
-    else{
-      Alert.alert(
-        //title
-        'Bir Sorun Oluştu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-    }
   }
 
   siparisOlustur(values:input){

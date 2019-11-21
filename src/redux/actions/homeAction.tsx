@@ -7,13 +7,13 @@ import {Action} from '../states'
 import { ICustomerItem } from "../models/homeModel";
 
 
-export function GetCustomers(orderType:number,searchText?:string) {
+export function GetCustomers(orderType:number,searchText:string, dayOfWeek:number) {
 
   return (dispatch : Dispatch<Action>) =>  {
   
     dispatch(loading(true));
 
-    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET+orderType+"&searchText="+searchText;
+    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET+orderType+"&searchText="+searchText+"&pageIndex=1&pageSize=10&dayOfWeek="+dayOfWeek;
 
   axios.get(WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT,
     
@@ -33,6 +33,7 @@ export function GetCustomers(orderType:number,searchText?:string) {
                     displayRestTotalAmount: customer.displayRestTotalAmount,
                     restTotalAmount: customer.restTotalAmount,
                     displayTookTotalAmount:customer.displayTookTotalAmount,
+                    dayOfWeek : customer.dayOfWeek
             }
         customersModel.push(customerItem);         
       });
