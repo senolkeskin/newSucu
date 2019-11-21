@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -28,6 +27,7 @@ import { IAddOrderItem } from "../redux/models/addOrderModel";
 import {GetProduct} from "../redux/actions/productForCustomerAction";
 import { IProductForCustomerItem } from "../redux/models/productForCustomerModel";
 import {EditOrder} from "../redux/actions/editOrderAction";
+import { Input } from "react-native-elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -204,8 +204,9 @@ class editOrder extends Component<Props, State> {
                     />
                     </View>
                       <Text>Ürün Adedi:</Text>
-                      <TextInput
-                        style={styles.input}
+                      <View style={styles.input}>
+                      <Input
+                        
                         placeholder="Ürün Adedi"
                         placeholderTextColor="#9A9A9A"
                         keyboardType="number-pad"
@@ -213,16 +214,19 @@ class editOrder extends Component<Props, State> {
                         onChangeText={props.handleChange("count")}
                         onBlur={props.handleBlur("count")}
                       />
+                      </View>
                       <Text>Ürün Kodu:</Text>
-                      <TextInput
+                      <View style={styles.input}>
+                      <Input
                         editable={false}
-                        style={styles.input}
                         placeholderTextColor="#313033"
                         value={this.props.product.productCode}       
                       />
+                      </View>
                       <Text>Birim Fiyat:</Text>
-                      <TextInput
-                        style={styles.input}
+                      <View style={styles.input}>
+                      <Input
+                        
                         placeholder="Ürün Adedi"
                         placeholderTextColor="#9A9A9A"
                         keyboardType="number-pad"
@@ -230,12 +234,14 @@ class editOrder extends Component<Props, State> {
                         onChangeText={props.handleChange("unitPrice")}
                         onBlur={props.handleBlur("unitPrice")}     
                       />
-                      <TextInput
+                      </View>
+                      <View style={styles.input}>
+                      <Input
                         editable={false}
-                        style={styles.input}
                         placeholderTextColor="#313033"
                         value={"Toplam Tutar: "+(Number(props.values.unitPrice)*Number(props.values.count))+" TL"}       
                       />
+                      </View>
                       <TouchableOpacity style={styles.siparisButtonContainer}>
                         <Text style={styles.amountButtonText}
                         onPress={props.handleSubmit}

@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   Modal,
@@ -14,7 +13,7 @@ import {
 } from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
-import { Header, Input } from "../components";
+import { Header} from "../components";
 import styles from "./styles";
 import { GetCustomers, GetCustomerMore } from "../redux/actions/homeAction";
 import { AppState } from "../redux/store";
@@ -24,6 +23,7 @@ import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Ionicons";
 import { customerDelete } from "../redux/actions/customerDeleteAction";
 import RNPickerSelect from 'react-native-picker-select';
+import { Input } from "react-native-elements";
 
 
 interface Props {
@@ -334,8 +334,8 @@ class Customer extends Component<Props, State> {
                 return (
                   <View>
                     <View style={styles.search_row}>
-                      <TextInput
-                        style={styles.searchInput}
+                      <View style={styles.searchInput}>
+                      <Input
                         placeholder="Ara"
                         placeholderTextColor="#9A9A9A"
                         value={props.values.searchText}
@@ -343,6 +343,7 @@ class Customer extends Component<Props, State> {
                         onChangeText={props.handleChange("searchText")}
                         onBlur={props.handleBlur("searchText")}
                       />
+                      </View>
                       <TouchableOpacity style={styles.searchButton}
                         onPress={() => this.search(props.values)}>
                         <Icon name="ios-arrow-round-forward" size={30} color={"#EBEDF1"} />

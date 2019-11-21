@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -25,6 +24,7 @@ import { GetCustomerProduct } from "../redux/actions/customerPriceGetProductActi
 import { ICustomerPriceProductItem } from "../redux/models/customerPriceProductModel";
 import {customerPriceAdd} from "../redux/actions/customerpriceAddAction";
 import {ICustomerPriceItem} from "../redux/models/addCustomerPriceModel";
+import { Input } from "react-native-elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -161,8 +161,9 @@ class addOrder extends Component<Props, State> {
                       }}
                     />
                     </View>
-                      <TextInput
-                        style={styles.input}
+                    <View style={styles.input}>
+                      <Input
+                        
                         placeholder="Ürün Fiyatı"
                         placeholderTextColor="#9A9A9A"
                         keyboardType="number-pad"
@@ -170,10 +171,11 @@ class addOrder extends Component<Props, State> {
                         onChangeText={props.handleChange("price")}
                         onBlur={props.handleBlur("price")}
                       />
+                      </View>
                       <TouchableOpacity style={styles.newPriceButtonContainer}>
                         <Text style={styles.amountButtonText}
                         onPress={props.handleSubmit}
-                        >Sipariş Ekle</Text>
+                        >Yeni Fiyat Ekle</Text>
                       </TouchableOpacity>
 
                     </View>

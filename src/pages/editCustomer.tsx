@@ -5,8 +5,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
-  Image,
   TouchableOpacity,
   StatusBar,
   Alert,
@@ -22,6 +20,7 @@ import { connect } from "react-redux";
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/Ionicons";
 import {GetUser} from "../redux/actions/getUserAction"
+import { Input } from "react-native-elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -139,8 +138,9 @@ class editCustomer extends Component<Props, State> {
                   <View>
                     <View style={styles.inputContainer}>
                       <Text>Adı Soyadı</Text>
-                      <TextInput
-                        style={styles.input}
+                      <View style={styles.input}>
+                      <Input
+                        
                         placeholder="Adı Soyadı"
                         placeholderTextColor="#9A9A9A"
                         value={props.values.musteriAdiSoyadi}
@@ -148,9 +148,11 @@ class editCustomer extends Component<Props, State> {
                         onChangeText={props.handleChange("musteriAdiSoyadi")}
                         onBlur={props.handleBlur("musteriAdiSoyadi")}
                       />
+                      </View>
                       <Text>Şirket Adı</Text>
-                      <TextInput
-                        style={styles.input}
+                      <View style={styles.input}>
+                      <Input
+                        
                         placeholder="Şirket Adı"
                         placeholderTextColor="#9A9A9A"
                         value={props.values.sirketAdi}
@@ -159,6 +161,8 @@ class editCustomer extends Component<Props, State> {
                         onBlur={props.handleBlur("sirketAdi")}
 
                       />
+                      </View>
+                      <Text>Ödeme Alınacak Gün</Text>
                       <View style={styles.rnpickerselect}>
                         <RNPickerSelect
                           style={styles.pickerSelectStyles}

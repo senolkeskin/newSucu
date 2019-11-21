@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -21,6 +20,7 @@ import { AppState } from '../redux/store'
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import RNPickerSelect from 'react-native-picker-select';
+import { Input } from "react-native-elements";
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isSuccees : boolean;
@@ -119,8 +119,9 @@ class addCustomer extends Component<Props, CustomerInserState> {
                 return (                
                   <View>
                     <View style={styles.inputContainer}>
-                      <TextInput
-                        style={styles.input}
+                      <View style={styles.input}>
+                      <Input
+                        
                         placeholder="Adı Soyadı"
                         placeholderTextColor="#9A9A9A"
                         value={values.musteriAdiSoyadi}
@@ -128,8 +129,10 @@ class addCustomer extends Component<Props, CustomerInserState> {
                         onChangeText={handleChange("musteriAdiSoyadi")}
                         onBlur={handleBlur("musteriAdiSoyadi")}                   
                       />
+                      </View>
                       <Text style={styles.errorText}>{errors.musteriAdiSoyadi}</Text>
-                      <TextInput
+                      <View style={styles.input}>
+                      <Input
                         style={styles.input}
                         placeholder="Şirket Adı"
                         placeholderTextColor="#9A9A9A"
@@ -138,7 +141,9 @@ class addCustomer extends Component<Props, CustomerInserState> {
                         onChangeText={handleChange("sirketAdi")}
                         onBlur={handleBlur("sirketAdi")} 
                       />
+                      </View>
                       <Text style={styles.errorText}>{errors.sirketAdi}</Text>
+                      <View style={styles.rnpickerselect}>
                       <RNPickerSelect
                   style={styles.pickerSelectStyles}
                   placeholder={placeHolderDay}
@@ -157,6 +162,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
                     return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
                   }}
                 />
+                </View>
 
                       <TouchableOpacity 
                         style={styles.customerAddButton}

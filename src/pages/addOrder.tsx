@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -26,6 +25,7 @@ import { AddOrder } from "../redux/actions/addOrderAction";
 import { IAddOrderItem } from "../redux/models/addOrderModel";
 import {GetProduct} from "../redux/actions/productForCustomerAction";
 import { IProductForCustomerItem } from "../redux/models/productForCustomerModel";
+import { Input } from "react-native-elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -85,8 +85,6 @@ class addOrder extends Component<Props, State> {
     };
   }
 
-  componentDidUpdate(){}
-
   handleAlert(){
       this.props.navigation.navigate("OrdersCustomer");
       Alert.alert(
@@ -106,8 +104,6 @@ class addOrder extends Component<Props, State> {
     var customerId = navigation.getParam("customerId");
     console.log(isSuccees+" before")
     AddOrder(this.state.productId, customerId, Number(values.unitPrice),Number(values.count));
-    this.componentDidUpdate();
-    this.componentDidUpdate();
     this.handleAlert()
     console.log(isSuccees+" after")
   }
@@ -193,7 +189,8 @@ class addOrder extends Component<Props, State> {
                     />
                     </View>
                       <Text>Ürün Adedi:</Text>
-                      <TextInput
+                      <View style={styles.input}>
+                      <Input
                         style={styles.input}
                         placeholder="Ürün Adedi"
                         placeholderTextColor="#9A9A9A"
@@ -202,21 +199,28 @@ class addOrder extends Component<Props, State> {
                         onChangeText={props.handleChange("count")}
                         onBlur={props.handleBlur("count")}
                       />
-                      <TextInput
+                      </View>
+                      <Text>Tarih:</Text>
+                      <View style={styles.input}>
+                      <Input
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
                         value={this.state.date}
                       />
+                      </View>
                       <Text>Ürün Kodu:</Text>
-                      <TextInput
+                      <View style={styles.input}>
+                      <Input
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
                         value={this.props.product.productCode}       
                       />
+                      </View>
                       <Text>Birim Fiyat:</Text>
-                      <TextInput
+                      <View style={styles.input}>
+                      <Input
                         style={styles.input}
                         placeholder="Ürün Adedi"
                         placeholderTextColor="#9A9A9A"
@@ -225,12 +229,16 @@ class addOrder extends Component<Props, State> {
                         onChangeText={props.handleChange("unitPrice")}
                         onBlur={props.handleBlur("unitPrice")}     
                       />
-                      <TextInput
+                      </View>
+                      <Text>Toplam:</Text>
+                      <View style={styles.input}>
+                      <Input
                         editable={false}
                         style={styles.input}
                         placeholderTextColor="#313033"
                         value={"Toplam Tutar: "+(Number(props.values.unitPrice)*Number(props.values.count))+" TL"}       
                       />
+                      </View>
                       <TouchableOpacity style={styles.siparisButtonContainer}>
                         <Text style={styles.amountButtonText}
                         onPress={props.handleSubmit}

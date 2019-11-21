@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, ActivityIndicator, StatusBar, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert, TextInput } from "react-native";
+import { View, FlatList, ActivityIndicator, StatusBar, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert } from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
 import { HeaderLeftRight } from "../components";

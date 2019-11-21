@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -19,11 +18,12 @@ import { HeaderLeft } from "../components";
 import { productAdd } from "../redux/actions/productAddAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
+import { Input } from "react-native-elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
-  isSuccees : boolean;
-  productAdd : (productName : string , productCode : string, price: string ) => void;
+  isSuccees: boolean;
+  productAdd: (productName: string, productCode: string, price: string) => void;
   ProductAddMessage: string;
   urun: productData;
 }
@@ -34,24 +34,24 @@ interface productData {
   urunFiyati: string;
 }
 
-const initialValues:productData = {
-    urunAdi: "",
-    urunKodu: "",
-    urunFiyati:"",
+const initialValues: productData = {
+  urunAdi: "",
+  urunKodu: "",
+  urunFiyati: "",
 }
 
 const girdiler = Yup.object().shape({
-    urunAdi: Yup.string()
+  urunAdi: Yup.string()
     .matches(/./g)
     .min(1)
     .max(30)
     .required(),
-    urunKodu: Yup.string()
+  urunKodu: Yup.string()
     .matches(/./g)
     .min(1)
     .max(30)
     .required(),
-    urunFiyati: Yup.number()
+  urunFiyati: Yup.number()
     .positive()
     .required()
     .moreThan(0),
@@ -63,28 +63,28 @@ class addProduct extends Component<Props, {}> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      
+
     };
   }
 
-  handleAlert(){
-      this.props.navigation.navigate("Products");
-      Alert.alert(
-        //title
-        'Yeni Ürün Oluşturuldu!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );      
+  handleAlert() {
+    this.props.navigation.navigate("Products");
+    Alert.alert(
+      //title
+      'Yeni Ürün Oluşturuldu!',
+      //body
+      '',
+      [
+        { text: 'Tamam' }
+      ],
+      { cancelable: false }
+    );
   }
 
-  componentDidUpdate(){}
+  componentDidUpdate() { }
 
   handleCreateProduct(values: productData) {
-    const { productAdd} = this.props;
+    const { productAdd } = this.props;
     productAdd(values.urunAdi, values.urunKodu, values.urunFiyati);
     this.componentDidUpdate();
     this.handleAlert()
@@ -94,12 +94,12 @@ class addProduct extends Component<Props, {}> {
   render() {
     return (
       <View style={styles.addCustomerContainer}>
-        <StatusBar backgroundColor="#2B6EDC"/>
+        <StatusBar backgroundColor="#2B6EDC" />
         <HeaderLeft
           title="Ürün Oluştur"
           leftButtonPress={() => this.props.navigation.navigate("Products")}
         />
-        <View style={{marginBottom:30}}></View>
+        <View style={{ marginBottom: 30 }}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -110,45 +110,50 @@ class addProduct extends Component<Props, {}> {
               onSubmit={values => this.handleCreateProduct(values)}
             >
               {props => {
-                return (                
+                return (
                   <View>
                     <View style={styles.inputContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Ürün Adı"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.urunAdi}
-                        autoCapitalize="words"
-                        onChangeText={props.handleChange("urunAdi")}
-                        onBlur={props.handleBlur("urunAdi")}                   
-                      />
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Ürün Kodu"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.urunKodu}
-                        autoCapitalize="words"
-                        onChangeText={props.handleChange("urunKodu")}
-                        onBlur={props.handleBlur("urunKodu")}
-                        
-                      />
-                      <View style={styles.inputFiyatContainer}>
-                      <TextInput
-                        style={styles.inputFiyat}
-                        placeholder="Ürün Fiyatı"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.urunFiyati}
-                        autoCapitalize="none"
-                        keyboardType= "numeric"
-                        onChangeText={props.handleChange("urunFiyati")}
-                        onBlur={props.handleBlur("urunFiyati")}      
-                      />
-                      <Text style={styles.inputFiyatText}>TL</Text>
+                      <View style={styles.input}>
+                        <Input
+                          style={styles.input}
+                          placeholder="Ürün Adı"
+                          placeholderTextColor="#9A9A9A"
+                          value={props.values.urunAdi}
+                          autoCapitalize="words"
+                          onChangeText={props.handleChange("urunAdi")}
+                          onBlur={props.handleBlur("urunAdi")}
+                        />
                       </View>
-                      <TouchableOpacity 
+                      <View style={styles.input}>
+                        <Input
+                          style={styles.input}
+                          placeholder="Ürün Kodu"
+                          placeholderTextColor="#9A9A9A"
+                          value={props.values.urunKodu}
+                          autoCapitalize="words"
+                          onChangeText={props.handleChange("urunKodu")}
+                          onBlur={props.handleBlur("urunKodu")}
+                        />
+                      </View>
+                      <View style={styles.inputFiyatContainer}>
+                        <View style={{ flex: 8 }}>
+                          <Input
+                            style={styles.inputFiyat}
+                            placeholder="Ürün Fiyatı"
+                            placeholderTextColor="#9A9A9A"
+                            value={props.values.urunFiyati}
+                            autoCapitalize="none"
+                            keyboardType="numeric"
+                            onChangeText={props.handleChange("urunFiyati")}
+                            onBlur={props.handleBlur("urunFiyati")}
+                          />
+                        </View>
+                        <Text style={styles.inputFiyatText}>TL</Text>
+                      </View>
+                      <TouchableOpacity
                         style={styles.ProductAddButton}
                         onPress={props.handleSubmit}>
-                        <Text style={styles.ProductAddButtonText}>Oluştur</Text>               
+                        <Text style={styles.ProductAddButtonText}>Oluştur</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -162,16 +167,16 @@ class addProduct extends Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state : AppState) => ({
-  isSuccees : state.productAdd.isSuccess,
-  ProductAddMessage :state.productAdd.ProductAddMessage
+const mapStateToProps = (state: AppState) => ({
+  isSuccees: state.productAdd.isSuccess,
+  ProductAddMessage: state.productAdd.ProductAddMessage
 })
 
-function bindToAction(dispatch : any) {
+function bindToAction(dispatch: any) {
   return {
-    productAdd : (productName:string , productCode : string, price : string) =>
-    dispatch(productAdd(productName,productCode,price))   
+    productAdd: (productName: string, productCode: string, price: string) =>
+      dispatch(productAdd(productName, productCode, price))
   };
 }
 
-export default connect(mapStateToProps,bindToAction)(addProduct);
+export default connect(mapStateToProps, bindToAction)(addProduct);
