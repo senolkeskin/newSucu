@@ -5,11 +5,9 @@ import { View,
         Text, 
         TouchableOpacity, 
         ActivityIndicator, 
-        TextInput, 
         KeyboardAvoidingView, 
         Platform,
-        Modal,
-        Alert,} from "react-native";
+        Modal,} from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
 import { HeaderLeftRight } from "../components";

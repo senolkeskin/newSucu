@@ -45,13 +45,14 @@ const styles = StyleSheet.create({
   },
   input: {
     elevation:2,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: '#E2E7F5',
     marginHorizontal: 5,
     paddingHorizontal: 20,
     color: 'black',
-    marginBottom:10,
+    marginBottom:5,
     borderRadius:4,
-    borderColor:"white"
+    borderColor:"white",
+    flex:1,
   },
   inputFiyat: {
     elevation:2,
@@ -78,6 +79,8 @@ const styles = StyleSheet.create({
 
   inputFiyatContainer:{
     flexDirection:"row",
+    backgroundColor:"#E2E7F5",
+    
   },
 
   logoContainer:{
@@ -710,7 +713,7 @@ const styles = StyleSheet.create({
 
   rnpickerselect: {
     elevation:2,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: '#E2E7F5',
     marginHorizontal: 5,
     paddingHorizontal: 20,
     color: 'black',

@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -18,16 +17,17 @@ import { loginUserService } from "../../../redux/actions/loginAction";
 import styles from "./styles";
 import { connect } from "react-redux";
 import { AppState } from '../../../redux/store'
+import { Input } from "react-native-elements";
 
 const logo = require("./water.png");
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
-  isFinished : boolean;
-  isSucceed : boolean;
-  isLoading : boolean;
-  loginErrorMessage:string;
-  loginUserService : (email : string , password : string ) => void;
+  isFinished: boolean;
+  isSucceed: boolean;
+  isLoading: boolean;
+  loginErrorMessage: string;
+  loginUserService: (email: string, password: string) => void;
 }
 
 interface userData {
@@ -50,36 +50,35 @@ const loginSchema = Yup.object().shape({
 
 class Login extends Component<Props, {}> {
 
-  handleLogin = (values: userData) => { 
+  handleLogin = (values: userData) => {
     const { loginUserService, isSucceed } = this.props;
-      loginUserService(values.username, values.password);
-      console.log(isSucceed);
+    loginUserService(values.username, values.password);
+    console.log(isSucceed);
   };
 
-  _renderLoginButton(pr:any){
-    const {isLoading } = this.props;
-    if(isLoading){
+  _renderLoginButton(pr: any) {
+    const { isLoading } = this.props;
+    if (isLoading) {
       return (<ActivityIndicator></ActivityIndicator>);
     }
 
     return (
       <TouchableOpacity style={styles.buttonContainer}>
-      <Text style={styles.buttonText}
-      onPress={pr.handleSubmit}
-      >Giriş</Text>
-    </TouchableOpacity>
+        <Text style={styles.buttonText}
+          onPress={pr.handleSubmit}
+        >Giriş</Text>
+      </TouchableOpacity>
     );
   }
 
   render() {
-    if(this.props.isSucceed)
-    {
+    if (this.props.isSucceed) {
       console.log("ata");
       this.props.navigation.navigate("Customer");
     }
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#2B6EDC"/>
+        <StatusBar backgroundColor="#2B6EDC" />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -93,42 +92,44 @@ class Login extends Component<Props, {}> {
                 return (
                   <View>
                     <View style={styles.headStyle}>
-                      <Image 
+                      <Image
                         style={styles.logo}
                         source={logo}
-                             
+
                       />
                       <Text style={styles.headText}>
                         SUCU
                       </Text>
                     </View>
                     <View style={styles.inputContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Kullanıcı Adı / E-posta"
-                        placeholderTextColor="white"
-                        value={props.values.username}
-                        keyboardType="email-address"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        onChangeText={props.handleChange("username")}
-                        onBlur={props.handleBlur("username")}                   
-                      />
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Şifre"
-                        placeholderTextColor="white"
-                        value={props.values.password}
-                        onChangeText={props.handleChange("password")}
-                        onBlur={props.handleBlur("password")}
-                        secureTextEntry
-                      />
+                      <View style={styles.input}>
+                        <Input
+                          placeholder="Kullanıcı Adı / E-posta"
+                          placeholderTextColor="white"
+                          value={props.values.username}
+                          keyboardType="email-address"
+                          autoCapitalize="words"
+                          autoCorrect={false}
+                          onChangeText={props.handleChange("username")}
+                          onBlur={props.handleBlur("username")}
+                        />
+                      </View>
+                      <View style={styles.input}>
+                        <Input
+                          placeholder="Şifre"
+                          placeholderTextColor="white"
+                          value={props.values.password}
+                          onChangeText={props.handleChange("password")}
+                          onBlur={props.handleBlur("password")}
+                          secureTextEntry
+                        />
+                      </View>
                       {this._renderLoginButton(props)}
-  
+
                       <Text style={styles.errorMessageText}>{this.props.loginErrorMessage}</Text>
                       <Text style={styles.linkText}
-                      onPress={() => this.props.navigation.navigate("MainStack")}>
-                      Şifremi Unuttum
+                        onPress={() => this.props.navigation.navigate("MainStack")}>
+                        Şifremi Unuttum
                     </Text>
 
                     </View>
@@ -138,7 +139,7 @@ class Login extends Component<Props, {}> {
             </Formik>
           </ScrollView>
         </KeyboardAvoidingView>
-        
+
       </View>
     );
   }
@@ -146,20 +147,20 @@ class Login extends Component<Props, {}> {
 
 
 
-const mapStateToProps = (state : AppState) => ({
-  isFinished : state.login.isFinished,
-  isSucceed : state.login.isSucceed,
-  isLoading : state.login.isLoading,
-  loginErrorMessage :state.login.loginErrorMessage
+const mapStateToProps = (state: AppState) => ({
+  isFinished: state.login.isFinished,
+  isSucceed: state.login.isSucceed,
+  isLoading: state.login.isLoading,
+  loginErrorMessage: state.login.loginErrorMessage
 })
 
-function bindToAction(dispatch : any) {
+function bindToAction(dispatch: any) {
   return {
-    loginUserService : (email:string , password : string) =>
-    dispatch(loginUserService(email,password))
+    loginUserService: (email: string, password: string) =>
+      dispatch(loginUserService(email, password))
   };
 
 }
 
 
-export default connect(mapStateToProps,bindToAction)(Login);
+export default connect(mapStateToProps, bindToAction)(Login);

@@ -5,13 +5,11 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TextInput,
-  Image,
   TouchableOpacity,
   StatusBar,
   Alert,
 } from "react-native";
-import { CheckBox } from 'react-native-elements'
+import { CheckBox, Input } from 'react-native-elements'
 import { NavigationScreenProp, NavigationState, } from "react-navigation";
 import { Formik, setNestedObjectValues } from "formik";
 import * as Yup from "yup";
@@ -119,7 +117,7 @@ class editProduct extends Component<Props,state> {
                   <View>
                     <View style={styles.inputContainer}> 
                     <Text>Ürün Adı</Text>
-                      <TextInput
+                      <Input
                         style={styles.input}
                         placeholder="Ürün Adı"
                         placeholderTextColor="#9A9A9A"
@@ -129,7 +127,7 @@ class editProduct extends Component<Props,state> {
                         onBlur={props.handleBlur("productName")}                   
                       />
                       <Text>Ürün Kodu</Text>
-                      <TextInput
+                      <Input
                         style={styles.input}
                         placeholder="Ürün Kodu"
                         placeholderTextColor="#9A9A9A"
@@ -141,7 +139,7 @@ class editProduct extends Component<Props,state> {
                       />
                       <Text>Fiyat</Text>
                       <View style={styles.inputFiyatContainer}>
-                      <TextInput
+                      <Input
                         style={styles.inputFiyat}
                         placeholder="Ürün Fiyatı"
                         placeholderTextColor="#9A9A9A"

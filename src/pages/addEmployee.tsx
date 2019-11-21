@@ -5,8 +5,6 @@ import {
     KeyboardAvoidingView,
     ScrollView,
     Platform,
-    TextInput,
-    Image,
     TouchableOpacity,
     StatusBar,
     Alert,
@@ -119,8 +117,9 @@ class addEmployee extends Component<Props, {}> {
                                 return (
                                     <View>
                                         <View style={styles.inputContainer}>
+                                            <View style={styles.input}>
                                             <Input
-                                                style={styles.input}
+                                                
                                                 placeholder="Adı Soyadı"
                                                 placeholderTextColor="#9A9A9A"
                                                 value={values.nameSurname}
@@ -128,9 +127,10 @@ class addEmployee extends Component<Props, {}> {
                                                 onChangeText={handleChange("nameSurname")}
                                                 onBlur={handleBlur("nameSurname")}
                                             />
+                                            </View>
                                             <Text style={styles.errorText}>{errors.nameSurname}</Text>
                                             <View style={styles.inputFiyatContainer}>
-                                                <View style={{ flex: 8 }}>
+                                                <View style={{ flex: 8 }}> 
                                                     <Input
                                                         style={styles.inputFiyat}
                                                         placeholder="Maaş"
@@ -148,8 +148,9 @@ class addEmployee extends Component<Props, {}> {
                                             <Text style={styles.errorText}>{errors.monthlySalary}</Text>
                                             <View style={styles.userAddContiner}>
                                                 <Text style={styles.addUserInfoText}>İsteğe Bağlı Alan(Çalışanın Kullanıcı Girişi İçin)</Text>
+                                                <View style={styles.input}>
                                                 <Input
-                                                    style={styles.input}
+                                                    
                                                     placeholder="E-posta"
                                                     placeholderTextColor="#9A9A9A"
                                                     value={values.mail}
@@ -158,9 +159,11 @@ class addEmployee extends Component<Props, {}> {
                                                     onChangeText={handleChange("mail")}
                                                     onBlur={handleBlur("mail")}
                                                 />
+                                                </View>
                                                 <Text style={styles.errorText}>{errors.mail}</Text>
+                                                <View style={styles.input}>
                                                 <Input
-                                                    style={styles.input}
+                                                    
                                                     placeholder="Şifre"
                                                     placeholderTextColor="#9A9A9A"
                                                     value={values.password}
@@ -168,6 +171,7 @@ class addEmployee extends Component<Props, {}> {
                                                     onChangeText={handleChange("password")}
                                                     onBlur={handleBlur("password")}
                                                 />
+                                                </View>
                                                 <Text style={styles.errorText}>{errors.password}</Text>
                                             </View>
                                             <TouchableOpacity
