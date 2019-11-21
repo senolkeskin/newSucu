@@ -16,7 +16,7 @@ import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigat
 import { connect } from "react-redux";
 import { Header, Input } from "../components";
 import styles from "./styles";
-import { GetCustomers } from "../redux/actions/homeAction";
+import { GetCustomers, GetCustomerMore } from "../redux/actions/homeAction";
 import { AppState } from "../redux/store";
 import { ICustomerItem } from "../redux/models/homeModel";
 import { Formik } from "formik";
@@ -30,7 +30,9 @@ interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isHomeLoading: boolean;
   customers: ICustomerItem[];
-  GetCustomers: (orderType: number, searchText: string, dayOfWeek:number) => void;
+  GetCustomers: (orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) => void;
+  GetCustomerMore: (orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) => void;
+
   customerDelete: (customerId: number) => void;
   CustomerDeleteIsSuccess: boolean;
 }
@@ -42,9 +44,14 @@ interface State {
   nameSurname: string;
   companyName: string;
   orderType: number;
-  dayOfWeek : number;
-  searchText : string;
+  dayOfWeek: number;
+  searchText: string;
   dayOfWeekCustomer?: number;
+  page: number;
+  loading: boolean;
+  loadingMore: boolean;
+  error: boolean;
+  customersData: ICustomerItem[];
 }
 
 interface search {
@@ -73,43 +80,51 @@ class Customer extends Component<Props, State> {
       nameSurname: "",
       companyName: "",
       orderType: 1,
-      dayOfWeek : 0,
-      searchText : '',
-      dayOfWeekCustomer:0,
+      dayOfWeek: 0,
+      searchText: '',
+      dayOfWeekCustomer: 0,
+      page: 1,
+      loading: true,
+      loadingMore: false,
+      error: false,
+      customersData: []
     };
   }
 
+
+
   search(search: search) {
-    this.props.GetCustomers(this.state.orderType, search.searchText, this.state.dayOfWeek);
-    this.setState({searchText:search.searchText});
+    this.setState({ searchText: search.searchText });
+    this._getCustomerList(this.state.orderType, search.searchText, this.state.dayOfWeek, this.state.page);
+
   }
 
   componentWillMount() {
-    this.props.GetCustomers(this.state.orderType, this.state.searchText,this.state.dayOfWeek);
     this.setState({ refreshing: false });
+    this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page);
+
   }
+
 
   getMusteri(value: number) {
     // this.setState({
     //   productId: productId,
     // });
     // this.props.GetProduct(productId,this.props.navigation.getParam("customerId"));
-    
-    this.props.GetCustomers(value, this.state.searchText, this.state.dayOfWeek);
     this.setState({
       orderType: value,
     });
-
+    this.setState({ page: 1 });
+    this._getCustomerList(value, this.state.searchText, this.state.dayOfWeek, 1);
+  }
+  getDayOfMusteri(value: number) {
+    this.setState({
+      dayOfWeek: value,
+    });
+    this.setState({ page: 1 });
+    this._getCustomerList(this.state.orderType, this.state.searchText, value, 1);
 
   }
-getDayOfMusteri(value:number){
-  console.log(value);
-  this.props.GetCustomers(this.state.orderType, this.state.searchText, value);
-  this.setState({
-    dayOfWeek: value,
-  });
-
-}
 
   openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number) {
     this.setState({
@@ -125,13 +140,36 @@ getDayOfMusteri(value:number){
     this.setState({ modalVisible: false });
   }
 
+  removePeople() {
+    var array = [...this.state.customersData]; // make a separate copy of the array
+
+
+    for (var i = 0; i < this.state.customersData.length; i++) {
+      delete array[i];
+      console.log(array[i]);
+    }
+    this.setState({ customersData: array });
+
+  }
+  _getCustomerList(orderType: number, searchText: string, dayOfWeek: number, page: number) {
+    console.log(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page, "sorgular");
+    this.props.GetCustomers(orderType, searchText, dayOfWeek, page);
+
+  }
+  _renderActivity() {
+    if (this.props.isHomeLoading) {
+      return (<ActivityIndicator></ActivityIndicator>);
+    }
+  }
   deleteSelectedCustomer() {
     const { customerDelete } = this.props;
     customerDelete(this.state.customerId);
     this.closeModal();
     this.onRefresh();
-    this.props.GetCustomers(this.state.orderType, this.state.searchText,this.state.dayOfWeek);
     this.setState({ refreshing: false });
+    this.setState({ page: 1 });
+    this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page);
+
   }
 
   deleteCustomerAlert() {
@@ -164,55 +202,79 @@ getDayOfMusteri(value:number){
   }
 
   onRefresh() {
+    this.setState({ page: 1 });
     this.setState({ refreshing: true });
-    this.props.GetCustomers(this.state.orderType, this.state.searchText,this.state.dayOfWeek);
+    this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, 1);
     this.setState({ refreshing: false });
   }
-
   _renderView() {
     const { customers, isHomeLoading, navigation } = this.props;
-    console.log(isHomeLoading);
-    if (isHomeLoading) {
+    if (this.props.isHomeLoading) {
       return (<ActivityIndicator></ActivityIndicator>);
     }
     else {
-      if(this.props.customers.length>0){
 
-        return (<FlatList
-          refreshing={this.state.refreshing}
-          onRefresh={() => this.onRefresh()}
-          data={this.props.customers}
-          renderItem={({ item }) => (
-            <View style={styles.row}>
-              <TouchableOpacity style={styles.row_cell5} onPress={
-                () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName})}>
-                <View style={styles.row_cell1}>
-              <Text style={styles.musteri_adi}>{item.nameSurname} {item.dayOfWeek}</Text>
-                  <Text style={styles.alt_bilgi}>{item.companyName}</Text>
-                </View>
-                <View style={styles.row_cell2}>
-                  <Text style={styles.paratextalınan}>{item.displayTookTotalAmount} Alınan</Text>
-                  <Text style={styles.paratextkalan} >{item.displayRestTotalAmount} Kalan</Text>
-                  <Text style={styles.paratextToplam} >Toplam: {item.displayTotalAmount}</Text>
-                </View>
-  
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.iconButtonCustomer}
-  
-                onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek )}>
-  
-                <Icon name="md-more" size={24} color={"#C4B47B"} />
-              </TouchableOpacity>
-            </View>)}
-          keyExtractor={item => item.customerId.toString()}
-        />);
+
+      if (this.props.customers.length > 0 || (this.props.isHomeLoading && this.state.page>1)) {
+        return (
+          <View>
+            {this._renderActivity()}
+
+            <FlatList
+              refreshing={this.state.refreshing}
+              onRefresh={() => this.onRefresh()}
+              data={this.props.customers}
+              renderItem={({ item }) => (
+                <View style={styles.row}>
+                  <TouchableOpacity style={styles.row_cell5} onPress={
+                    () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName, displayTookTotalAmount: item.displayTookTotalAmount, restTotalAmount : item.displayRestTotalAmount, totalAmount : item.displayTotalAmount })}>
+                    <View style={styles.row_cell1}>
+                      <Text style={styles.musteri_adi}>{item.nameSurname} {item.dayOfWeek}</Text>
+                      <Text style={styles.alt_bilgi}>{item.companyName}</Text>
+                    </View>
+                    <View style={styles.row_cell2}>
+                      <Text style={styles.paratextalınan}>{item.displayTookTotalAmount} Alınan</Text>
+                      <Text style={styles.paratextkalan} >{item.displayRestTotalAmount} Kalan</Text>
+                      <Text style={styles.paratextToplam} >Toplam: {item.displayTotalAmount}</Text>
+                    </View>
+
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.iconButtonCustomer}
+
+                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek)}>
+
+                    <Icon name="md-more" size={24} color={"#C4B47B"} />
+                  </TouchableOpacity>
+                </View>)}
+              keyExtractor={(item, index) => String(index)}
+              onEndReached={() => {
+                var pagenew = this.state.page + 1;
+                this.setState({ page: pagenew });
+                if (pagenew == 1) {
+                  pagenew = pagenew + 1;
+                  this.setState({ page: pagenew });
+                }
+                this.props.GetCustomerMore(this.state.orderType, this.state.searchText, this.state.dayOfWeek, pagenew);
+              }}
+              onEndReachedThreshold={0.5}
+              initialNumToRender={8}
+              ListFooterComponent={
+                this.state.loadingMore ? (
+                  <View>
+                    <ActivityIndicator />
+                  </View>
+                ) : null
+              }
+            />
+          </View>
+        );
 
       }
-      else{
+      else if (this.props.customers.length == 0 && this.state.page == 1 && this.props.isHomeLoading == false) {
         return (<View style={styles.musteribulunamadiContainer}><Text style={styles.musteribulunamadiText}>Arama sonucu bulunamadı.</Text></View>);
       }
-      
+
     }
   }
   render() {
@@ -221,7 +283,7 @@ getDayOfMusteri(value:number){
       value: 1,
       color: '#2B6EDC',
     };
-    const placeHolderDay ={
+    const placeHolderDay = {
       label: 'Tümü',
       value: 0,
       color: '#2B6EDC',
@@ -343,8 +405,11 @@ const mapStateToProps = (state: AppState) => ({
 })
 function bindToAction(dispatch: any) {
   return {
-    GetCustomers: (orderType: number, searchText: string, dayOfWeek:number) =>
-      dispatch(GetCustomers(orderType, searchText, dayOfWeek)),
+    GetCustomers: (orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) =>
+      dispatch(GetCustomers(orderType, searchText, dayOfWeek, pageIndex)),
+    GetCustomerMore: (orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) =>
+      dispatch(GetCustomerMore(orderType, searchText, dayOfWeek, pageIndex)),
+
     customerDelete: (customerId: number) =>
       dispatch(customerDelete(customerId)),
   };

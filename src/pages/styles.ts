@@ -3,7 +3,7 @@ import { colors } from "../constants";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4FCFF",
+    backgroundColor: "#F2F2F2",
     justifyContent: "flex-start",
     
   },
@@ -220,24 +220,24 @@ const styles = StyleSheet.create({
     flex:7,
   },
   customerDetailHeader1: {
-    flex: 6,
+    flex: 0.4,
     flexDirection: 'column',
-    marginBottom:10,
-    marginTop:10,
+
   },
   customerDetailHeader2: {
-    flex:7,
+    flex:0.1,
     flexDirection: 'column',
-    marginBottom:10,
-    marginTop:10,
+    justifyContent:'center'
   },
   customerDetailHeader3: {
-    flex: 4,
-    flexDirection: 'column',
-    marginBottom:10,
-    marginTop:10,
+    flex: 0.5,
+    flexDirection: 'row',
   },
-
+  customerDetailHeader4:{
+    flex: 0.4,
+    flexDirection: 'column',
+    justifyContent:'flex-start'
+  },
   customerDetailHeaderButtonText:{
     color: "#1E1E1E",
     fontSize:40,
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   musteri_adi: {
-    color: "#131843",
+    color: "#333",
     textAlignVertical: 'bottom',
     includeFontPadding: false,
     flex: 0,
@@ -268,24 +268,46 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 12,
+    fontSize: 15,
     textAlign: "right",
+  },
+  paratextalınanDetail: {
+    color: "green",
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 15,
   },
   paratextkalan: {
     color: "#E30606",
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 12,
+    fontSize: 15,
     textAlign: "right",
+  },
+  paratextkalanDetail: {
+    color: "#E30606",
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 15,
   },
   paratextToplam: {
     color: "black",
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 10,
+    fontSize: 15,
     textAlign: "right",
+  },
+  paratextToplamDetail: {
+    color: "black",
+    includeFontPadding: false,
+    fontSize: 15,
+    flexDirection:'column',
+    justifyContent:'flex-end',
+    alignSelf:'center',
+    flex:1
   },
   detay_bilgi: {
     color: "#0A157A",
@@ -383,10 +405,11 @@ const styles = StyleSheet.create({
   },
 
   order_ustbilgi_row: {
-    marginHorizontal:10,
+    paddingLeft:10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor:'#fff'
   },
 
   iconButtonCustomer: {
@@ -683,10 +706,6 @@ const styles = StyleSheet.create({
   },
 
   iconButtonOrderCustomer: {
-    textAlign:"left",
-    flexDirection: "column-reverse",
-    flex:1,
-    paddingTop:10,
   },
 
   rnpickerselect: {
