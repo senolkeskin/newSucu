@@ -12,9 +12,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headText: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: "700",
     color: "white",
+
     
   },
   inputContainer: {
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
     marginHorizontal: 5,
-    paddingHorizontal: 45,
-    borderRadius: 2000,
+    paddingHorizontal: 10,
+    borderRadius:5,
     color: '#ffffff',
     marginBottom:10,
   },
@@ -45,12 +46,17 @@ const styles = StyleSheet.create({
   logo:{
     width:100,
     height:100,
+    borderRadius:50,
+    backgroundColor:'white',
+    // paddingRight:100
   },
   buttonContainer:{
+
     backgroundColor:'#D2D5F1',
-    borderRadius: 2000,
-    marginHorizontal: 20,
+    borderRadius: 5,
+    marginHorizontal: 60,
     paddingVertical: 15,
+
     marginBottom:10,
   },
   buttonText:{

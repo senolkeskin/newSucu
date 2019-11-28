@@ -60,6 +60,37 @@ const initialValues: amountData = {
 
 class OrdersCustomer extends Component<Props, State> {
 
+
+//   <HeaderLeftRight
+//   title={"Müşteri Siparişleri"}
+//   leftButtonPress={() => this.props.navigation.navigate("Customer")}
+//   rightButtonPress={() => }
+// />
+
+
+static navigationOptions =  ({navigation}) => {
+  return {
+
+    title: 'Müşteri Siparişleri',
+    headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate("AddOrder", { customerId: navigation.getParam("customerId") })}>
+<Icon name="ios-add" size={40} style={{color:'white'}} />
+    </TouchableOpacity>,
+
+
+  headerStyle: {
+    backgroundColor: '#2B6EDC',
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+
+  }
+
+  
+};
+
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -250,11 +281,7 @@ class OrdersCustomer extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <HeaderLeftRight
-          title={"Müşteri Siparişleri"}
-          leftButtonPress={() => this.props.navigation.navigate("Customer")}
-          rightButtonPress={() => this.props.navigation.navigate("AddOrder", { customerId: this.props.navigation.getParam("customerId") })}
-        />
+       
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -312,6 +339,7 @@ class OrdersCustomer extends Component<Props, State> {
                         <View>
                           <View style={styles.inputFiyatContainer}>
                             <Input
+                              containerStyle ={{width:'70%'}}
                               style={styles.inputFiyat}
                               placeholder="Ürün Fiyatı"
                               placeholderTextColor="#9A9A9A"

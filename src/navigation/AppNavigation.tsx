@@ -43,7 +43,7 @@ const EmployeeApp = createStackNavigator(
 
   },
   {
-    headerMode:"none"
+    // headerMode:"none"
   })
 
 const CustomerApp =createStackNavigator(
@@ -58,7 +58,7 @@ const CustomerApp =createStackNavigator(
   EditOrder: {screen: editOrder}
   },
   {
-    headerMode: "none"
+    // headerMode: "none"
   }
 
 );
@@ -72,7 +72,7 @@ const SettingsApp = createStackNavigator(
 
   },
   {
-    headerMode: "none"
+    // headerMode: "none"
   }
 )
 

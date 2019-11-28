@@ -59,6 +59,29 @@ const girdiler = Yup.object().shape({
 
 
 class addProduct extends Component<Props, {}> {
+  
+
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Ürün Oluştur',
+     
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
 
   constructor(props: Props) {
     super(props);
@@ -95,10 +118,7 @@ class addProduct extends Component<Props, {}> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <HeaderLeft
-          title="Ürün Oluştur"
-          leftButtonPress={() => this.props.navigation.navigate("Products")}
-        />
+
         <View style={{ marginBottom: 30 }}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}

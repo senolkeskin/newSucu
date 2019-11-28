@@ -70,6 +70,28 @@ class addOrder extends Component<Props, State> {
     };
   }
 
+  static navigationOptions =  ({navigation}) => {
+    return {
+  
+      title: 'Yeni Fiyat',
+ 
+  
+  
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  
+    }
+  
+    
+  };
+
+
+
   yeniFiyat(values:input){
     const { customerPriceAdd } = this.props;
       customerPriceAdd(this.state.productId, this.state.customerId, Number(values.price));
@@ -124,15 +146,13 @@ class addOrder extends Component<Props, State> {
       label: 'Ürün Seçiniz...',
       value: '',
       color: '#2B6EDC',
+
     };
 
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeft
-          title="Yeni Fiyat"
-          leftButtonPress={() => this.props.navigation.navigate("OrdersCustomer")}
-        />
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -151,6 +171,7 @@ class addOrder extends Component<Props, State> {
                     <View style={styles.inputContainer}>
                     <View style={styles.input}>
                     <RNPickerSelect
+
                       style={styles.pickerSelectStyles}
                       placeholder={placeholder}
                       onValueChange={(value) => this.OrderInfo(value)}

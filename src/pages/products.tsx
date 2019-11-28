@@ -35,6 +35,33 @@ interface State {
 }
 
 class Products extends Component<Props, State> {
+
+
+
+static navigationOptions =  ({navigation}) => {
+  return {
+
+    title: 'Ürünler Listesi',
+    headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate("AddProduct")}>
+<Icon name="ios-add" size={40} style={{color:'white'}} />
+    </TouchableOpacity>,
+
+
+  headerStyle: {
+    backgroundColor: '#2B6EDC',
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+
+  }
+
+  
+};
+
+
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -119,11 +146,7 @@ _renderView(){
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeftRight
-          title="Ürünler Listesi"
-          rightButtonPress={() => this.props.navigation.navigate("AddProduct")}
-          leftButtonPress={()=>this.props.navigation.navigate("Settings")}
-        />
+       
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >

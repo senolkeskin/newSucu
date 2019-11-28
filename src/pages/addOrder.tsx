@@ -72,6 +72,32 @@ const girdiler = Yup.object().shape({
 });
 class addOrder extends Component<Props, State> {
 
+
+
+
+
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Sipariş Ekle',
+      
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -156,10 +182,7 @@ class addOrder extends Component<Props, State> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeft
-          title="Sipariş Ekle"
-          leftButtonPress={() => this.props.navigation.navigate("OrdersCustomer")}
-        />
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -176,15 +199,16 @@ class addOrder extends Component<Props, State> {
                     <View>
                     </View>
                     <View style={styles.inputContainer}>
-                    <View style={styles.input}>
+                    <View style={[styles.input,{paddingTop:30}]}>
                     <RNPickerSelect
+                      
                       style={styles.pickerSelectStyles}
                       placeholder={placeholder}
                       onValueChange={(value) => this.OrderInfo(value)}
                       items={this.PickerMenuCreate()}
                       textInputProps={{ underlineColor: 'yellow' }}
                       Icon={() => {
-                        return <Icon name="md-arrow-down" size={24} color="gray" style={{top:15}} />;
+                        return <Icon name="md-arrow-down" size={24} color="gray" style={{top:Platform.OS == 'ios' ? -15 : 10,right: 10 }} />;
                       }}
                     />
                     </View>

@@ -52,6 +52,32 @@ class Employee extends Component<Props, State> {
       active:false,
     };
   }
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Çalışanlar',
+      headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={() => navigation.navigate("AddEmployee")}>
+<Icon name="ios-add" size={40} style={{color:'white'}} />
+      </TouchableOpacity>,
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
+  
+
+
+
 
   componentWillMount() {
     this.props.GetEmployees();
@@ -149,10 +175,10 @@ class Employee extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <Header
+        {/* <Header
           title="Çalışanlar"
           rightButtonPress={() => this.props.navigation.navigate("AddEmployee")}
-        />
+        /> */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >

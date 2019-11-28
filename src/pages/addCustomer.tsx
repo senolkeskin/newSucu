@@ -59,6 +59,34 @@ const girdiler = Yup.object().shape({
 
 class addCustomer extends Component<Props, CustomerInserState> {
 
+
+  
+
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Müşteri Ekle',
+//       headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
+// <Icon name="ios-add" size={40} style={{color:'white'}} />
+//       </TouchableOpacity>,
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
+
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -101,10 +129,10 @@ class addCustomer extends Component<Props, CustomerInserState> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeft
+        {/* <HeaderLeft
           title="Müşteri Ekle"
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
-        />
+        /> */}
         <View style={{marginBottom:30}}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -159,7 +187,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
                   ]}
                   textInputProps={{ underlineColor: 'yellow' }}
                   Icon={() => {
-                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
+                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
                   }}
                 />
                 </View>
