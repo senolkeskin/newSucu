@@ -25,7 +25,8 @@ export function GetProducts() {
                 productId :product.productId,
                 productName : product.productName,
                 productCode :product.productCode,
-                price :product.price
+                price :product.price,
+                productStatus: product.productStatus,
             }
             productModel.push(productItem);         
       });

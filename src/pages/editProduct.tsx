@@ -52,7 +52,10 @@ const girdiler = Yup.object().shape({
   .positive()
   .required()
   .moreThan(0),
+  productStatus: Yup.boolean()
+  .required(),
 });
+
 
 
 class editProduct extends Component<Props,state> {
@@ -60,8 +63,16 @@ class editProduct extends Component<Props,state> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      status:true,
+      status:false,
     };
+  }
+
+  componentWillMount(){
+    this.setState({
+      status:this.props.navigation.getParam("productStatus"),
+    })
+    console.log("param "+this.props.navigation.getParam("productStatus"))
+    console.log("will mount "+this.state.status)
   }
 
   handleAlert(){
@@ -79,6 +90,7 @@ class editProduct extends Component<Props,state> {
   }
 
   handleEditProduct(values: productData) {
+    console.log("fsfafsfffsff "+this.state.status)
     const { productEdit } = this.props;
     productEdit(
       this.props.navigation.getParam("productId"),
@@ -94,6 +106,7 @@ class editProduct extends Component<Props,state> {
     var productName:string=this.props.navigation.getParam("productName");
     var productCode:string=this.props.navigation.getParam("productCode");
     var price:string=this.props.navigation.getParam("price")+"";
+    var productStatus:boolean=this.props.navigation.getParam("productStatus");
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
@@ -108,7 +121,7 @@ class editProduct extends Component<Props,state> {
         >
           <ScrollView bounces={false}>
             <Formik
-              initialValues={{productName,productCode,price}}
+              initialValues={{productName,productCode,price,productStatus}}
               validationSchema={girdiler}
               onSubmit={values => this.handleEditProduct(values)}
             >

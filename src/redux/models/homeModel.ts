@@ -9,5 +9,6 @@ export interface ICustomerItem{
     restTotalAmount:number;
     displayTookTotalAmount:string;
     dayOfWeek ? : number;
+    fountainCount?: number;
 
 }

@@ -6,6 +6,7 @@ import {Action} from '../states'
 
 
 export function productEdit(id:number, status:boolean, productName:string,productCode:string,price:number) {
+  console.log("status: "+status);
 
   return (dispatch : Dispatch<Action>) =>  {
 
