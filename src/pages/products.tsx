@@ -32,6 +32,7 @@ interface State {
   productName:string;
   productCode:string;
   price:number;
+  productStatus:boolean;
 }
 
 class Products extends Component<Props, State> {
@@ -43,7 +44,8 @@ class Products extends Component<Props, State> {
       productId:0,
       productCode:"",
       productName:"",
-      price:0
+      price:0,
+      productStatus:false,
     };
   }
 
@@ -53,12 +55,13 @@ class Products extends Component<Props, State> {
   }
 
 
-  openModal(productCode:string,productName:string,price:number,productId:number) {
+  openModal(productCode:string,productName:string,price:number,productId:number,productStatus:boolean) {
     this.setState({modalVisible:true,
                 productId: productId,
                 productCode:productCode,
                 productName:productName,
-                price:price,});
+                price:price,
+                productStatus:productStatus});
   }
 
   closeModal() {
@@ -72,7 +75,8 @@ class Products extends Component<Props, State> {
                     {productId: this.state.productId,
                     productName:this.state.productName,
                     price:this.state.price,
-                    productCode:this.state.productCode})
+                    productCode:this.state.productCode,
+                    productStatus:this.state.productStatus})
 
   }
 
@@ -106,7 +110,7 @@ _renderView(){
       <TouchableOpacity
           style={styles.iconButtonCustomer}
 
-          onPress={()=>this.openModal(item.productCode,item.productName,item.price,item.productId)}>
+          onPress={()=>this.openModal(item.productCode,item.productName,item.price,item.productId,item.productStatus)}>
           
       <Icon name="md-more" size={24} color={"#C4B47B"} />
       </TouchableOpacity>

@@ -221,8 +221,11 @@ class OrdersCustomer extends Component<Props, State> {
         keyExtractor={(item, index) => String(index)}
         onEndReached={() => {
           var pagenew = this.state.page + 1;
-          this.setState({ page: pagenew});
-          console.log(pagenew,"test");
+          this.setState({ page: pagenew });
+          if (pagenew == 1) {
+            pagenew = pagenew + 1;
+            this.setState({ page: pagenew });
+          }
           this.props.GetOrdersMore(this.props.navigation.getParam("customerId"), pagenew, 3);
 
         }}
