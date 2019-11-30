@@ -130,10 +130,7 @@ class Login extends Component<Props, {}> {
                       {this._renderLoginButton(props)}
 
                       <Text style={styles.errorMessageText}>{this.props.loginErrorMessage}</Text>
-                      <Text style={styles.linkText}
-                        onPress={() => this.props.navigation.navigate("MainStack")}>
-                        Şifremi Unuttum
-                    </Text>
+
 
                     </View>
                   </View>

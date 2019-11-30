@@ -3,21 +3,7 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-<<<<<<< HEAD
-      "size" : "20x20",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "iphone",
-      "size" : "20x20",
-      "scale" : "3x"
-    },
-    {
-      "idiom" : "iphone",
-      "size" : "29x29",
-=======
       "filename" : "Icon-App-20x20@2x.png",
->>>>>>> finito
       "scale" : "2x"
     },
     {
@@ -69,10 +55,6 @@
       "scale" : "3x"
     },
     {
-<<<<<<< HEAD
-      "idiom" : "ios-marketing",
-      "size" : "1024x1024",
-=======
       "size" : "20x20",
       "idiom" : "ipad",
       "filename" : "Icon-App-20x20@1x.png",
@@ -130,7 +112,6 @@
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
       "filename" : "ItunesArtwork@2x.png",
->>>>>>> finito
       "scale" : "1x"
     }
   ],
