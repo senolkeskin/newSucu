@@ -23,8 +23,8 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Input } from "react-native-elements";
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
-  isSuccees : boolean;
-  customerAdd : (nameSurname : string , companyName : string, dayOfWeek:number) => void;
+  isSuccees: boolean;
+   customerAdd:  (nameSurname: string, companyName: string, dayOfWeek: number, fountainCount: string) =>  void;
   CustomerAddMessage: string;
   musteri: customerData;
 }
@@ -32,28 +32,34 @@ interface Props {
 interface customerData {
   musteriAdiSoyadi: string;
   sirketAdi: string;
+  fountainCount: string;
 }
 
-const initialValues:customerData = {
+const initialValues: customerData = {
   musteriAdiSoyadi: "",
   sirketAdi: "",
+  fountainCount: "",
 }
 
-interface CustomerInserState{
-  dayOfWeek : number;
+interface CustomerInserState {
+  dayOfWeek: number;
 }
 
 const girdiler = Yup.object().shape({
   musteriAdiSoyadi: Yup.string()
-    .matches(/./g," ")
-    .min(3,"*Müşteri adı 3 karakterden kısa olamaz!")
-    .max(30,"*Müşteri adı 30 karakterden uzun olamaz!")
+    .matches(/./g, " ")
+    .min(3, "*Müşteri adı 3 karakterden kısa olamaz!")
+    .max(30, "*Müşteri adı 30 karakterden uzun olamaz!")
     .required("*Zorunlu Alan"),
-    sirketAdi: Yup.string()
-    .matches(/./g," ")
-    .min(3,"*Şirket adı 3 karakterden kısa olamaz!")
-    .max(30,"*Şirket adı 30 karakterden uzun olamaz!")
+  sirketAdi: Yup.string()
+    .matches(/./g, " ")
+    .min(3, "*Şirket adı 3 karakterden kısa olamaz!")
+    .max(30, "*Şirket adı 30 karakterden uzun olamaz!")
     .required("*Zorunlu Alan"),
+  fountainCount: Yup.number()
+    .positive("*Pozitif değer giriniz.")
+    .required("*Zorunlu Alan")
+    .moreThan(0),
 });
 
 
@@ -90,38 +96,24 @@ class addCustomer extends Component<Props, CustomerInserState> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      dayOfWeek:0
+      dayOfWeek: 0
     };
   }
 
-  resultMessage(){
-      this.props.navigation.navigate("Customer");
-      Alert.alert(
-        //title
-        'Müşteri Ekleme Başarılı!',
-        //body
-        '',
-        [
-          {text: 'Tamam'}
-        ],
-        { cancelable: false }
-      );
-  }
 
-  _SetStateDay(value:number){
+  _SetStateDay(value: number) {
 
-    this.setState({dayOfWeek:value});
+    this.setState({ dayOfWeek: value });
   }
 
   handleAddCustomer(values: customerData) {
-    const { customerAdd} = this.props;
+    const { customerAdd } = this.props;
+    customerAdd(values.musteriAdiSoyadi, values.sirketAdi, this.state.dayOfWeek, values.fountainCount);
 
-    customerAdd(values.musteriAdiSoyadi, values.sirketAdi, this.state.dayOfWeek);
-    this.resultMessage();
   };
 
   render() {
-    const placeHolderDay ={
+    const placeHolderDay = {
       label: 'Tümü',
       value: 0,
       color: '#2B6EDC',
@@ -143,34 +135,47 @@ class addCustomer extends Component<Props, CustomerInserState> {
               validationSchema={girdiler}
               onSubmit={values => this.handleAddCustomer(values)}
             >
-              {({values,errors,handleChange,handleBlur,handleSubmit}) => {
-                return (                
+              {({ values, errors, handleChange, handleBlur, handleSubmit }) => {
+                return (
                   <View>
                     <View style={styles.inputContainer}>
                       <View style={styles.input}>
-                      <Input
-                        
-                        placeholder="Adı Soyadı"
-                        placeholderTextColor="#9A9A9A"
-                        value={values.musteriAdiSoyadi}
-                        autoCapitalize="words"
-                        onChangeText={handleChange("musteriAdiSoyadi")}
-                        onBlur={handleBlur("musteriAdiSoyadi")}                   
-                      />
+                        <Input
+
+                          placeholder="Adı Soyadı"
+                          placeholderTextColor="#9A9A9A"
+                          value={values.musteriAdiSoyadi}
+                          autoCapitalize="words"
+                          onChangeText={handleChange("musteriAdiSoyadi")}
+                          onBlur={handleBlur("musteriAdiSoyadi")}
+                        />
                       </View>
                       <Text style={styles.errorText}>{errors.musteriAdiSoyadi}</Text>
                       <View style={styles.input}>
-                      <Input
-                        style={styles.input}
-                        placeholder="Şirket Adı"
-                        placeholderTextColor="#9A9A9A"
-                        value={values.sirketAdi}
-                        autoCapitalize="words"
-                        onChangeText={handleChange("sirketAdi")}
-                        onBlur={handleBlur("sirketAdi")} 
-                      />
+                        <Input
+                          style={styles.input}
+                          placeholder="Şirket Adı"
+                          placeholderTextColor="#9A9A9A"
+                          value={values.sirketAdi}
+                          autoCapitalize="words"
+                          onChangeText={handleChange("sirketAdi")}
+                          onBlur={handleBlur("sirketAdi")}
+                        />
                       </View>
                       <Text style={styles.errorText}>{errors.sirketAdi}</Text>
+                      <View style={styles.input}>
+                        <Input
+
+                          placeholder="Sebil Sayısı"
+                          placeholderTextColor="#9A9A9A"
+                          value={String(values.fountainCount)}
+                          autoCapitalize="words"
+                          keyboardType="numeric"
+                          onChangeText={handleChange("fountainCount")}
+                          onBlur={handleBlur("fountainCount")}
+                        />
+                      </View>
+                      <Text style={styles.errorText}>{errors.fountainCount}</Text>
                       <View style={styles.rnpickerselect}>
                       <RNPickerSelect
                   style={styles.pickerSelectStyles}
@@ -195,7 +200,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
                       <TouchableOpacity 
                         style={styles.customerAddButton}
                         onPress={handleSubmit}>
-                        <Text style={styles.CustomerAddButtonText}>Ekle</Text>               
+                        <Text style={styles.CustomerAddButtonText}>Ekle</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -209,16 +214,16 @@ class addCustomer extends Component<Props, CustomerInserState> {
   }
 }
 
-const mapStateToProps = (state : AppState) => ({
-  isSuccees : state.customerAdd.isSuccess,
-  CustomerAddMessage :state.customerAdd.CustomerAddMessage
+const mapStateToProps = (state: AppState) => ({
+  isSuccees: state.customerAdd.isSuccess,
+  CustomerAddMessage: state.customerAdd.CustomerAddMessage
 })
 
-function bindToAction(dispatch : any) {
+function bindToAction(dispatch: any) {
   return {
-    customerAdd : (nameSurname:string , companyName : string, dayOfWeek:number) =>
-    dispatch(customerAdd(nameSurname,companyName, dayOfWeek))   
+    customerAdd: (nameSurname: string, companyName: string, dayOfWeek: number, fountainCount: string) =>
+      dispatch(customerAdd(nameSurname, companyName, dayOfWeek, fountainCount))
   };
 }
 
-export default connect(mapStateToProps,bindToAction)(addCustomer);
+export default connect(mapStateToProps, bindToAction)(addCustomer);

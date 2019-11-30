@@ -1,123 +1,123 @@
 import { AsyncStorage } from "react-native";
 import axios from 'axios'
-import {WATER_CUSTOMERS_HOME_GET} from './../constants'
+import { WATER_CUSTOMERS_HOME_GET } from './../constants'
 import { Dispatch } from "react";
-import {CUSTOMER_GET,HOME_LOADING_CUSTOMERS, CUSTOMER_GET_MORE } from './../types'
-import {Action} from '../states'
+import { CUSTOMER_GET, HOME_LOADING_CUSTOMERS, CUSTOMER_GET_MORE } from './../types'
+import { Action } from '../states'
 import { ICustomerItem } from "../models/homeModel";
 
 
-export function GetCustomers(orderType:number,searchText:string, dayOfWeek:number, pageIndex:number) {
+export function GetCustomers(orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) {
 
-  return (dispatch : Dispatch<Action>) =>  {
-  
+  return (dispatch: Dispatch<Action>) => {
+
     dispatch(loading(true));
 
-    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET+orderType+"&searchText="+searchText+"&pageIndex="+pageIndex+"&pageSize=15&dayOfWeek="+dayOfWeek;
+    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET + orderType + "&searchText=" + searchText + "&pageIndex=" + pageIndex + "&pageSize=15&dayOfWeek=" + dayOfWeek;
 
-  axios.get(WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT,
-    
+    axios.get(WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT,
+
     )
-  .then((response) =>{
-    
-  if(response.data.isSuccess){
-    var customersModel :ICustomerItem[] = [];
-      
-      response.data.result.homeCustomerItemModels.forEach((customer:any) => {
-            var customerItem : ICustomerItem={
-                    customerId : customer.customerId,
-                    companyName :customer.companyName,
-                    nameSurname :customer.nameSurname,
-                    displayTotalAmount: customer.displayTotalAmount,
-                    totalAmount: customer.totalAmount,
-                    displayRestTotalAmount: customer.displayRestTotalAmount,
-                    restTotalAmount: customer.restTotalAmount,
-                    displayTookTotalAmount:customer.displayTookTotalAmount,
-                    dayOfWeek : customer.dayOfWeek
+      .then((response) => {
+
+        if (response.data.isSuccess) {
+          var customersModel: ICustomerItem[] = [];
+
+          response.data.result.homeCustomerItemModels.forEach((customer: any) => {
+            var customerItem: ICustomerItem = {
+              customerId: customer.customerId,
+              companyName: customer.companyName,
+              nameSurname: customer.nameSurname,
+              displayTotalAmount: customer.displayTotalAmount,
+              totalAmount: customer.totalAmount,
+              displayRestTotalAmount: customer.displayRestTotalAmount,
+              restTotalAmount: customer.restTotalAmount,
+              displayTookTotalAmount: customer.displayTookTotalAmount,
+              dayOfWeek: customer.dayOfWeek,
+              fountainCount: customer.fountainCount,
             }
-        customersModel.push(customerItem);         
+            customersModel.push(customerItem);
+          });
+
+          dispatch(customers(customersModel));
+
+        }
+
+
+        else {
+
+        }
+      })
+      .catch((err) => {
+        console.log(err + "error axios")
+        // dispatch(loading(false));
+
       });
-   
-      dispatch(customers(customersModel));
-      
-    }
-   
-  
-  else {
-
-  }
-  })
-  .catch((err) => {
-    console.log(err + "error axios") 
-    // dispatch(loading(false));
-
-  });
 
 
   }
 
 }
 
-export function GetCustomerMore(orderType:number,searchText:string, dayOfWeek:number, pageIndex:number){
-  return (dispatch : Dispatch<Action>) =>  {
-  
+export function GetCustomerMore(orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) {
+  return (dispatch: Dispatch<Action>) => {
 
 
-    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET+orderType+"&searchText="+searchText+"&pageIndex="+pageIndex+"&pageSize=10&dayOfWeek="+dayOfWeek;
 
-  axios.get(WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT,
-    
+    var WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT = WATER_CUSTOMERS_HOME_GET + orderType + "&searchText=" + searchText + "&pageIndex=" + pageIndex + "&pageSize=10&dayOfWeek=" + dayOfWeek;
+
+    axios.get(WATER_CUSTOMERS_HOME_GET_ORDER_TYPE_SEARCH_TEXT,
+
     )
-  .then((response) =>{
-    
-  if(response.data.isSuccess){
-    var customersModel :ICustomerItem[] = [];
-      
-      response.data.result.homeCustomerItemModels.forEach((customer:any) => {
-            var customerItem : ICustomerItem={
-                    customerId : customer.customerId,
-                    companyName :customer.companyName,
-                    nameSurname :customer.nameSurname,
-                    displayTotalAmount: customer.displayTotalAmount,
-                    totalAmount: customer.totalAmount,
-                    displayRestTotalAmount: customer.displayRestTotalAmount,
-                    restTotalAmount: customer.restTotalAmount,
-                    displayTookTotalAmount:customer.displayTookTotalAmount,
-                    dayOfWeek : customer.dayOfWeek
+      .then((response) => {
+
+        if (response.data.isSuccess) {
+          var customersModel: ICustomerItem[] = [];
+
+          response.data.result.homeCustomerItemModels.forEach((customer: any) => {
+            var customerItem: ICustomerItem = {
+              customerId: customer.customerId,
+              companyName: customer.companyName,
+              nameSurname: customer.nameSurname,
+              displayTotalAmount: customer.displayTotalAmount,
+              totalAmount: customer.totalAmount,
+              displayRestTotalAmount: customer.displayRestTotalAmount,
+              restTotalAmount: customer.restTotalAmount,
+              displayTookTotalAmount: customer.displayTookTotalAmount,
+              dayOfWeek: customer.dayOfWeek
             }
-        customersModel.push(customerItem);         
+            customersModel.push(customerItem);
+          });
+
+          dispatch(customersMore(customersModel));
+
+        }
+
+
+        else {
+
+        }
+      })
+      .catch((err) => {
+        console.log(err + "error axios")
+        // dispatch(loading(false));
+
       });
-   
-      dispatch(customersMore(customersModel));
-      
-    }
-   
-  
-  else {
-
-  }
-  })
-  .catch((err) => {
-    console.log(err + "error axios") 
-    // dispatch(loading(false));
-
-  });
 
 
   }
 }
 
-export const loading = (loader : boolean) => ({
-    type : HOME_LOADING_CUSTOMERS,
-    payload : loader
-  })
+export const loading = (loader: boolean) => ({
+  type: HOME_LOADING_CUSTOMERS,
+  payload: loader
+})
 
-  export const customers = (customers :ICustomerItem[] ) => ({
-    type : CUSTOMER_GET,
-    payload : customers
-  })
-  export const customersMore = (customers :ICustomerItem[] ) => ({
-    type : CUSTOMER_GET_MORE,
-    payload : customers
-  })
-  
+export const customers = (customers: ICustomerItem[]) => ({
+  type: CUSTOMER_GET,
+  payload: customers
+})
+export const customersMore = (customers: ICustomerItem[]) => ({
+  type: CUSTOMER_GET_MORE,
+  payload: customers
+})

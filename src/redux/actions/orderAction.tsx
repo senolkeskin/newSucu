@@ -79,7 +79,7 @@ export function GetOrdersMore(customerId:number,pageIndex:number,pageSize:number
 .then((response) =>{
   
 if(response.data.isSuccess){
-  console.log(response.data.result.takeTotalAmount+"fsfsafafsafsafsafafsaf");
+
     var takeTotal:number = response.data.result.takeTotalAmount;
     var tookTotal:number = response.data.result.tookTotalAmount;
     var restTotal:number = response.data.result.restTotalAmount;

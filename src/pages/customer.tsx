@@ -52,6 +52,7 @@ interface State {
   loadingMore: boolean;
   error: boolean;
   customersData: ICustomerItem[];
+  fountainCount?:number;
 }
 
 interface search {
@@ -139,7 +140,8 @@ class Customer extends Component<Props, State> {
       loading: true,
       loadingMore: false,
       error: false,
-      customersData: []
+      customersData: [],
+      fountainCount: 0,
     };
   }
 
@@ -178,13 +180,14 @@ class Customer extends Component<Props, State> {
 
   }
 
-  openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number) {
+  openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number,fountainCount?:number) {
     this.setState({
       modalVisible: true,
       customerId: customerId,
       nameSurname: nameSurname,
       companyName: companyName,
       dayOfWeekCustomer: dayOfWeek,
+      fountainCount: fountainCount===null ? 0 : fountainCount,
     });
   }
 
@@ -248,7 +251,8 @@ class Customer extends Component<Props, State> {
         customerId: this.state.customerId,
         nameSurname: this.state.nameSurname,
         companyName: this.state.companyName,
-        dayofWeekCustomer: this.state.dayOfWeekCustomer
+        dayofWeekCustomer: this.state.dayOfWeekCustomer,
+        fountainCount:this.state.fountainCount,
       })
 
   }
@@ -285,8 +289,9 @@ class Customer extends Component<Props, State> {
                   <TouchableOpacity style={styles.row_cell5} onPress={
                     () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName, displayTookTotalAmount: item.displayTookTotalAmount, restTotalAmount : item.displayRestTotalAmount, totalAmount : item.displayTotalAmount })}>
                     <View style={styles.row_cell1}>
-                      <Text style={styles.musteri_adi}>{item.nameSurname} {item.dayOfWeek}</Text>
+                      <Text style={styles.musteri_adi}>{item.nameSurname}</Text>
                       <Text style={styles.alt_bilgi}>{item.companyName}</Text>
+                      <Icon name="md-pint"><Text> {item.fountainCount ==null ? 0: item.fountainCount}</Text></Icon>
                     </View>
                     <View style={styles.row_cell2}>
                       <Text style={styles.paratextalınan}>{item.displayTookTotalAmount} Alınan</Text>
@@ -298,7 +303,7 @@ class Customer extends Component<Props, State> {
                   <TouchableOpacity
                     style={styles.iconButtonCustomer}
 
-                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek)}>
+                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek,item.fountainCount)}>
 
                     <Icon name="md-more" size={24} color={"#C4B47B"} />
                   </TouchableOpacity>

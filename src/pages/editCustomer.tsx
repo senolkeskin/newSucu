@@ -19,13 +19,13 @@ import { AppState } from '../redux/store'
 import { connect } from "react-redux";
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/Ionicons";
-import {GetUser} from "../redux/actions/getUserAction"
+import { GetUser } from "../redux/actions/getUserAction"
 import { Input } from "react-native-elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isSuccees: boolean;
-  customerEdit: (id: number, nameSurname: string, companyName: string, dayOfWeek: number) => void;
+  customerEdit: (id: number, nameSurname: string, companyName: string, dayOfWeek: number,fountainCount:number) => void;
   CustomerEditMessage: string;
   musteri: customerData;
   GetUser: (employeeId: number) => void;
@@ -34,6 +34,7 @@ interface Props {
 interface customerData {
   musteriAdiSoyadi: string;
   sirketAdi: string;
+  fountainCount: number;
 }
 
 const girdiler = Yup.object().shape({
@@ -47,6 +48,10 @@ const girdiler = Yup.object().shape({
     .min(1)
     .max(30)
     .required(),
+    fountainCount: Yup.number()
+    .positive()
+    .required()
+    .moreThan(0),
 });
 
 interface State {
@@ -103,11 +108,11 @@ class editCustomer extends Component<Props, State> {
 
   handleEditCustomer(values: customerData) {
     const { customerEdit, isSuccees, navigation } = this.props;
-    customerEdit(this.props.navigation.getParam("customerId"), values.musteriAdiSoyadi, values.sirketAdi, this.state.dayOfWeek);
+    customerEdit(this.props.navigation.getParam("customerId"), values.musteriAdiSoyadi, values.sirketAdi, this.state.dayOfWeek, values.fountainCount);
     this.handleAlert();
   };
 
-  _setStateDayOfWeek(value:any){
+  _setStateDayOfWeek(value: any) {
     this.setState({ dayOfWeek: value })
 
   }
@@ -118,6 +123,7 @@ class editCustomer extends Component<Props, State> {
     var musteriAdiSoyadi: string = this.props.navigation.getParam("nameSurname");
     var sirketAdi: string = this.props.navigation.getParam("companyName");
     var dayOfWeek1: number = this.props.navigation.getParam("dayofWeekCustomer");
+    var fountainCount: number = this.props.navigation.getParam("fountainCount");
     var dayOfWeekValue: number = 0;
     if (dayOfWeek1 != null) {
       dayOfWeekValue = +dayOfWeek1;
@@ -152,7 +158,7 @@ class editCustomer extends Component<Props, State> {
         >
           <ScrollView bounces={false}>
             <Formik
-              initialValues={{ musteriAdiSoyadi, sirketAdi }}
+              initialValues={{ musteriAdiSoyadi, sirketAdi, fountainCount }}
               validationSchema={girdiler}
               onSubmit={values => this.handleEditCustomer(values)}
             >
@@ -162,28 +168,42 @@ class editCustomer extends Component<Props, State> {
                     <View style={styles.inputContainer}>
                       <Text>Adı Soyadı</Text>
                       <View style={styles.input}>
-                      <Input
-                        
-                        placeholder="Adı Soyadı"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.musteriAdiSoyadi}
-                        autoCapitalize="words"
-                        onChangeText={props.handleChange("musteriAdiSoyadi")}
-                        onBlur={props.handleBlur("musteriAdiSoyadi")}
-                      />
+                        <Input
+
+                          placeholder="Adı Soyadı"
+                          placeholderTextColor="#9A9A9A"
+                          value={props.values.musteriAdiSoyadi}
+                          autoCapitalize="words"
+                          onChangeText={props.handleChange("musteriAdiSoyadi")}
+                          onBlur={props.handleBlur("musteriAdiSoyadi")}
+                        />
                       </View>
                       <Text>Şirket Adı</Text>
                       <View style={styles.input}>
-                      <Input
-                        
-                        placeholder="Şirket Adı"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.sirketAdi}
-                        autoCapitalize="words"
-                        onChangeText={props.handleChange("sirketAdi")}
-                        onBlur={props.handleBlur("sirketAdi")}
+                        <Input
 
-                      />
+                          placeholder="Şirket Adı"
+                          placeholderTextColor="#9A9A9A"
+                          value={props.values.sirketAdi}
+                          autoCapitalize="words"
+                          onChangeText={props.handleChange("sirketAdi")}
+                          onBlur={props.handleBlur("sirketAdi")}
+
+                        />
+                      </View>
+                      <Text>Sebil Sayısı</Text>
+                      <View style={styles.input}>
+                        <Input
+
+                          placeholder="Sebil Sayısı"
+                          placeholderTextColor="#9A9A9A"
+                          value={String(props.values.fountainCount)}
+                          autoCapitalize="words"
+                          keyboardType="numeric"
+                          onChangeText={props.handleChange("fountainCount")}
+                          onBlur={props.handleBlur("fountainCount")}
+
+                        />
                       </View>
                       <Text>Ödeme Alınacak Gün</Text>
                       <View style={styles.rnpickerselect}>
@@ -231,9 +251,9 @@ const mapStateToProps = (state: AppState) => ({
 
 function bindToAction(dispatch: any) {
   return {
-    customerEdit: (id: number, nameSurname: string, companyName: string, dayOfWeek: number) =>
-      dispatch(customerEdit(id, nameSurname, companyName, dayOfWeek)),
-      GetUser: (employeeId: number)=>
+    customerEdit: (id: number, nameSurname: string, companyName: string, dayOfWeek: number,fountainCount:number) =>
+      dispatch(customerEdit(id, nameSurname, companyName, dayOfWeek,fountainCount)),
+    GetUser: (employeeId: number) =>
       dispatch(GetUser(employeeId)),
   };
 }

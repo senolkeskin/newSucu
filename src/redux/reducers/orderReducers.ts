@@ -25,6 +25,7 @@ export default (state: Orders = initalState, action: Action) => {
       case ORDERS_GET_MORE:
         return {
           ...state,
+     
           orders:[...state.orders, ...action.payload],
           loadingMore:true,
           isOrderLoading:false
