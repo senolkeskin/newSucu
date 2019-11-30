@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, ActivityIndicator, StatusBar, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert } from "react-native";
+import { View, FlatList, ActivityIndicator, StatusBar, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert, AsyncStorage } from "react-native";
 import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { connect } from "react-redux";
 import { HeaderLeftRight } from "../components";
@@ -84,24 +84,48 @@ class OrdersCustomer extends Component<Props, State> {
 
   onRefresh() {
     this.setState({ refreshing: true });
-    this.setState({page:1});
+    this.setState({ page: 1 });
     this.props.GetOrders(this.props.navigation.getParam("customerId"), 1, 4);
     this.setState({ refreshing: false });
   }
 
   deleteOrderAlert() {
     //function to make three option alert
-    Alert.alert(
-      //title
-      'Sipariş Silme İşlemi',
-      //body
-      'Siparişi silmek istiyor musunuz?',
-      [
-        { text: 'Geri Gel' },
-        { text: 'Evet', onPress: () => this.deleteSelectedOrder() },
-      ],
-      { cancelable: false }
-    );
+    AsyncStorage.getItem("UserType").then((value) => {
+      console.log("type", value);
+     if (value === "2") {
+      
+        Alert.alert(
+          //title
+          'Hata',
+          //body
+          'Sipariş silme yetkiniz bulunmamaktadır',
+          [
+            { text: 'Tamam' },
+          ],
+          { cancelable: false }
+        );
+      this.closeModal();
+
+
+     }
+     else {
+      Alert.alert(
+        //title
+        'Sipariş Silme İşlemi',
+        //body
+        'Siparişi silmek istiyor musunuz?',
+        [
+          { text: 'Geri Gel' },
+          { text: 'Evet', onPress: () => this.deleteSelectedOrder() },
+        ],
+        { cancelable: false }
+      );
+     }
+
+
+   });
+
 
   }
 
@@ -179,7 +203,6 @@ class OrdersCustomer extends Component<Props, State> {
     this.setState({ refreshing: false });
     this.onRefresh();
   }
-
 
   _renderView() {
     const { orders, isOrderLoading, navigation } = this.props;
@@ -261,13 +284,14 @@ class OrdersCustomer extends Component<Props, State> {
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <Modal
+                <Modal
             visible={this.state.modalVisible}
             animationType={'slide'}
             onRequestClose={() => this.closeModal()}
             transparent={true}
           >
             <View style={styles.modalContainer}>
+
               <View style={styles.innerContainer}>
                 <TouchableOpacity style={styles.modalCancelButtonContainer}
                   onPress={() => this.closeModal()}>
@@ -375,18 +399,18 @@ class OrdersCustomer extends Component<Props, State> {
               <TouchableOpacity
                 style={styles.iconButtonOrderCustomer}
                 onPress={() => this.openPriceModal()}>
-               <Icon name="ios-more" size={40}></Icon>
+                <Icon name="ios-more" size={40}></Icon>
               </TouchableOpacity>
             </View>
             <View style={styles.customerDetailHeader3}>
-            <Text style={styles.paratextToplamDetail}><Icon name="ios-cash" style={{fontSize:20, color:"green"}}></Icon> {this.props.navigation.getParam("totalAmount")} </Text>
+              <Text style={styles.paratextToplamDetail}><Icon name="ios-cash" style={{ fontSize: 20, color: "green" }}></Icon> {this.props.navigation.getParam("totalAmount")} </Text>
 
               <View style={styles.customerDetailHeader4}>
 
-              <Text style={styles.paratextalınanDetail}>{this.props.navigation.getParam("displayTookTotalAmount")} Alınan</Text>
-              <Text style={styles.paratextkalanDetail} >{this.props.navigation.getParam("restTotalAmount")}  Kalan</Text>
+                <Text style={styles.paratextalınanDetail}>{this.props.navigation.getParam("displayTookTotalAmount")} Alınan</Text>
+                <Text style={styles.paratextkalanDetail} >{this.props.navigation.getParam("restTotalAmount")}  Kalan</Text>
               </View>
-             
+
             </View>
 
           </View>

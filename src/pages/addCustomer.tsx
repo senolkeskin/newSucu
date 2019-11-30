@@ -35,7 +35,7 @@ interface customerData {
   fountainCount: string;
 }
 
-const initialValues: customerData = {
+const initialValues: any = {
   musteriAdiSoyadi: "",
   sirketAdi: "",
   fountainCount: "",
@@ -107,7 +107,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
               validationSchema={girdiler}
               onSubmit={values => this.handleAddCustomer(values)}
             >
-              {({ values, errors, handleChange, handleBlur, handleSubmit }) => {
+              {({ values, errors, handleChange, handleBlur, handleSubmit, resetForm }) => {
                 return (
                   <View>
                     <View style={styles.inputContainer}>
@@ -141,7 +141,6 @@ class addCustomer extends Component<Props, CustomerInserState> {
                           placeholder="Sebil Sayısı"
                           placeholderTextColor="#9A9A9A"
                           value={String(values.fountainCount)}
-                          autoCapitalize="words"
                           keyboardType="numeric"
                           onChangeText={handleChange("fountainCount")}
                           onBlur={handleBlur("fountainCount")}
@@ -171,7 +170,8 @@ class addCustomer extends Component<Props, CustomerInserState> {
 
                       <TouchableOpacity
                         style={styles.customerAddButton}
-                        onPress={handleSubmit}>
+                        onPress={()=>{handleSubmit()}}
+                        onLongPress={()=>{resetForm(initialValues)}}>
                         <Text style={styles.CustomerAddButtonText}>Ekle</Text>
                       </TouchableOpacity>
                     </View>
