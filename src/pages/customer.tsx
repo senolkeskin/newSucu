@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  Alert,Button
+  Alert,Button,
 } from "react-native";
-import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
+import { NavigationScreenProp, NavigationState, ScrollView,SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import { Header} from "../components";
 import styles from "./styles";
@@ -280,7 +280,8 @@ class Customer extends Component<Props, State> {
           rightButtonPress={() => this.props.navigation.navigate("CustomerAdd")}
         /> */}
             <FlatList
-            style={{marginTop :10}}
+
+            style={{marginTop :10,marginBottom:110}}
               refreshing={this.state.refreshing}
               onRefresh={() => this.onRefresh()}
               data={this.props.customers}
@@ -352,7 +353,7 @@ class Customer extends Component<Props, State> {
 
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC" />
         
         <KeyboardAvoidingView
@@ -458,7 +459,7 @@ class Customer extends Component<Props, State> {
         </KeyboardAvoidingView>
         {this._renderView()}
 
-      </View>
+      </SafeAreaView>
     );
   }
 }

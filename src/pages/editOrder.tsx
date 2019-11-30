@@ -88,6 +88,29 @@ class editOrder extends Component<Props, State> {
     };
   }
 
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Sipariş Düzenle',
+//       headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
+// <Icon name="ios-add" size={40} style={{color:'white'}} />
+//       </TouchableOpacity>,
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
   
   componentDidUpdate(){}
 
@@ -171,10 +194,7 @@ class editOrder extends Component<Props, State> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeft
-          title="Sipariş Düzenle"
-          leftButtonPress={() => this.props.navigation.navigate("OrdersCustomer")}
-        />
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >

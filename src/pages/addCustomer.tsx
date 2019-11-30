@@ -120,12 +120,18 @@ class addCustomer extends Component<Props, CustomerInserState> {
     }
     return (
       <View style={styles.addCustomerContainer}>
+<<<<<<< HEAD
         <StatusBar backgroundColor="#2B6EDC"/>
         {/* <HeaderLeft
           title="Müşteri Ekle"
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
         /> */}
         <View style={{marginBottom:30}}></View>
+=======
+        <StatusBar backgroundColor="#2B6EDC" />
+      
+        <View style={{ marginBottom: 30 }}></View>
+>>>>>>> finito
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
