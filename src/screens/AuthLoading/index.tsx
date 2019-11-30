@@ -22,7 +22,7 @@ class AuthLoading extends React.Component<Props, {}> {
     const { navigation } = this.props;
     const userToken = await AsyncStorage.getItem("userToken");
    
-        navigation.navigate(userToken ? "Customer" : "LoginScreen");
+    navigation.navigate(userToken ? "Customer" : "LoginScreen");
   };
 
   render() {

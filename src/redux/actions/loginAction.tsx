@@ -24,7 +24,10 @@ export function loginUserService(username:string, password:string) {
     AsyncStorage.setItem("userToken", response.data.result.token)
     .then(() => {       
       AsyncStorage.setItem("UserId", response.data.result.userId.toString()).then(()=>{
-        dispatch(loginIsSucceed(true,"")); 
+        AsyncStorage.setItem("UserType",response.data.result.userType.toString()).then(()=>{
+          dispatch(loginIsSucceed(true,"")); 
+        });
+       
       })
     })
     .catch(error => { 
