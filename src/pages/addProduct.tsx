@@ -62,7 +62,7 @@ class addProduct extends Component<Props, {}> {
   
 
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
 
       title: 'Ürün Oluştur',

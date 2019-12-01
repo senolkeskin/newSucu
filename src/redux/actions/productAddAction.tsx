@@ -23,8 +23,6 @@ export function productAdd(productName:string, productCode:string, price:string)
     }
   })
   .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
     dispatch(productAddIsSucceed(false,"Bir hata oluştu."));
   });
 

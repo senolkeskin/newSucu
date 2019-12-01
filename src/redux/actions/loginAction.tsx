@@ -31,8 +31,6 @@ export function loginUserService(username:string, password:string) {
       })
     })
     .catch(error => { 
-      
-      console.log(error + 'error kaydetme asn storage')   
       dispatch(loginIsSucceed(false,"Bir hata oluştu."));
       dispatch(reset());
     });

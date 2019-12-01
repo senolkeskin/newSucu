@@ -6,7 +6,6 @@ import {Action} from '../states'
 
 
 export function productEdit(id:number, status:boolean, productName:string,productCode:string,price:number) {
-  console.log("status: "+status);
 
   return (dispatch : Dispatch<Action>) =>  {
 
@@ -26,7 +25,6 @@ export function productEdit(id:number, status:boolean, productName:string,produc
     }
   })
   .catch(error => {      
-    console.log(error + 'error kaydetme asn storage')   
     dispatch(productEditIsSucceed(false,"Bir hata oluştu."));
   });
   }

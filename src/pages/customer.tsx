@@ -74,19 +74,11 @@ const girdiler = Yup.object().shape({
 class Customer extends Component<Props, State> {
 
 
-
-
-
-
-  static navigationOptions =  ({navigation}) => {
-    return {
-
-      title: 'Müşteriler',
-      headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
-<Icon name="ios-add" size={40} style={{color:'white'}} />
-      </TouchableOpacity>,
-
-
+  static navigationOptions =  ({navigation}:Props) => ({
+    title: 'Müşteriler',
+    headerRight: <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('CustomerAdd')}>
+      <Icon name="ios-add" size={40} style={{ color: 'white' }} />
+    </TouchableOpacity>,
     headerStyle: {
       backgroundColor: '#2B6EDC',
     },
@@ -94,11 +86,7 @@ class Customer extends Component<Props, State> {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-
-    }
-
-    
-  };
+  });
   // static navigationOptions = ({ navigation }) => {
   //   return {
   //     headerTitle: () => <Text>Müşteriler</Text>,
@@ -201,13 +189,11 @@ class Customer extends Component<Props, State> {
 
     for (var i = 0; i < this.state.customersData.length; i++) {
       delete array[i];
-      console.log(array[i]);
     }
     this.setState({ customersData: array });
 
   }
   _getCustomerList(orderType: number, searchText: string, dayOfWeek: number, page: number) {
-    console.log(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page, "sorgular");
     this.props.GetCustomers(orderType, searchText, dayOfWeek, page);
 
   }
@@ -245,7 +231,6 @@ class Customer extends Component<Props, State> {
 
   editCustomer() {
     this.closeModal();
-    console.log(this.state.dayOfWeekCustomer)
     this.props.navigation.navigate("EditCustomer",
       {
         customerId: this.state.customerId,

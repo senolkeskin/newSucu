@@ -68,7 +68,7 @@ class OrdersCustomer extends Component<Props, State> {
 // />
 
 
-static navigationOptions =  ({navigation}) => {
+static navigationOptions =  ({navigation}:Props) => {
   return {
 
     title: 'Müşteri Siparişleri',
@@ -123,7 +123,6 @@ static navigationOptions =  ({navigation}) => {
   deleteOrderAlert() {
     //function to make three option alert
     AsyncStorage.getItem("UserType").then((value) => {
-      console.log("type", value);
      if (value === "2") {
       
         Alert.alert(
@@ -237,7 +236,6 @@ static navigationOptions =  ({navigation}) => {
 
   _renderView() {
     const { orders, isOrderLoading, navigation } = this.props;
-    console.log(isOrderLoading);
     if (isOrderLoading) {
       return (<ActivityIndicator></ActivityIndicator>);
     }

@@ -26,9 +26,6 @@ export function employeeEdit(employeeId:number,active:boolean,nameSurname:string
     }
   })
   .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
-    dispatch(employeEditIsSucceed(false,"Çalışan Düzelenirken bir hata oluştu."));
   });
 
   }

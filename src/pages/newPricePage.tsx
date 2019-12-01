@@ -70,7 +70,7 @@ class addOrder extends Component<Props, State> {
     };
   }
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
   
       title: 'Yeni Fiyat',
@@ -114,8 +114,6 @@ class addOrder extends Component<Props, State> {
     this.setState({
       productId: productId,
     })
-    console.log(productId);
-    console.log(this.state.customerId);
   }
   
   PickerMenuCreate(){

@@ -22,9 +22,7 @@ export function customerPriceAdd(productId:number, customerId:number, price:numb
       }
     }
   })
-  .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
+  .catch(error => {  
     dispatch(customerPriceAddIsSucceed(false,"Bir hata oluştu."));
   });
 

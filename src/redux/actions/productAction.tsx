@@ -41,8 +41,6 @@ export function GetProducts() {
   }
   })
   .catch((err) => {
-    console.log(err + "error axios") 
-    // dispatch(loading(false));
 
   });
 

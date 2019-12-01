@@ -21,9 +21,6 @@ export function employeeDelete(id:number) {
     }
   })
   .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
-    dispatch(employeeDeleteIsSucceed(false,"Çalışan Silinirken Bir hata oluştu."));
   });
 
   }

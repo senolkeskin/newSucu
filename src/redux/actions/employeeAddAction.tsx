@@ -24,8 +24,6 @@ export function employeeAdd(nameSurname:string, monthlySalary:number,email:strin
     }
   })
   .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
     dispatch(employeAddIsSucceed(false,"Çalışan Eklenirken bir hata oluştu."));
   });
 

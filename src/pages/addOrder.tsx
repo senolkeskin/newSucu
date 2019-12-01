@@ -77,7 +77,7 @@ class addOrder extends Component<Props, State> {
 
 
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
 
       title: 'Sipariş Ekle',
@@ -128,10 +128,8 @@ class addOrder extends Component<Props, State> {
   siparisOlustur(values:input){
     const { AddOrder, navigation, isSuccees } = this.props;
     var customerId = navigation.getParam("customerId");
-    console.log(isSuccees+" before")
     AddOrder(this.state.productId, customerId, Number(values.unitPrice),Number(values.count));
     this.handleAlert()
-    console.log(isSuccees+" after")
   }
 
   OrderInfo(productId:number){
@@ -160,8 +158,6 @@ class addOrder extends Component<Props, State> {
     this.props.GetProducts();
     var dateAta:string;
     var date = new Date();
-
-    console.log(date);
     dateAta = date.toLocaleDateString()+" "+date.toLocaleTimeString();
     this.setState({date:dateAta});
     
@@ -199,7 +195,7 @@ class addOrder extends Component<Props, State> {
                     <View>
                     </View>
                     <View style={styles.inputContainer}>
-                    <View style={[styles.input,{paddingTop:30}]}>
+                    <View style={styles.rnpickerselect}>
                     <RNPickerSelect
                       
                       style={styles.pickerSelectStyles}
@@ -208,7 +204,7 @@ class addOrder extends Component<Props, State> {
                       items={this.PickerMenuCreate()}
                       textInputProps={{ underlineColor: 'yellow' }}
                       Icon={() => {
-                        return <Icon name="md-arrow-down" size={24} color="gray" style={{top:Platform.OS == 'ios' ? -15 : 10,right: 10 }} />;
+                        return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
                       }}
                     />
                     </View>

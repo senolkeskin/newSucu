@@ -39,7 +39,7 @@ class Products extends Component<Props, State> {
 
 
 
-static navigationOptions =  ({navigation}) => {
+static navigationOptions =  ({navigation}:Props) => {
   return {
 
     title: 'Ürünler Listesi',
@@ -114,7 +114,6 @@ static navigationOptions =  ({navigation}) => {
 
 _renderView(){
   const {products, isLoading,navigation} = this.props;
-  console.log(isLoading);
   if(isLoading){
     return (<ActivityIndicator></ActivityIndicator>);
   }

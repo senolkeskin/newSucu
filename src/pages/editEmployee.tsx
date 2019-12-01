@@ -75,7 +75,7 @@ class addEmployee extends Component<Props, state> {
         };
     }
 
-    static navigationOptions =  ({navigation}) => {
+    static navigationOptions =  ({navigation}:Props) => {
         return {
     
           title: 'Çalışan Düzenle',
@@ -95,7 +95,6 @@ class addEmployee extends Component<Props, state> {
       };
 
     componentWillMount() {
-        console.log("fsfsaasfasfsafasfsafsafsafsafasfasf")  
         const {GetUser,navigation }= this.props
         GetUser(navigation.getParam("employeeId"));
     }
@@ -118,7 +117,6 @@ class addEmployee extends Component<Props, state> {
 
     handleEditEmployee(values: multi) {
         const { employeeEdit, AddUser, navigation } = this.props;
-        console.log(String(navigation.getParam("employeeId")) + " " + values.nameSurname + " " + values.monthlySalary+" "+values.mail+" "+values.password)
         employeeEdit(navigation.getParam("employeeId"),values.active, values.nameSurname, Number(values.monthlySalary),values.mail,values.password);
         // if (values.mail != "" && values.password != "") {
         //     AddUser(values.nameSurname, values.mail, values.password);
@@ -162,7 +160,7 @@ class addEmployee extends Component<Props, state> {
                                                 style={styles.input}
                                                 placeholder="Adı Soyadı"
                                                 placeholderTextColor="#9A9A9A"
-                                                value={values.nameSurname+String(values.active)}
+                                                value={values.nameSurname}
                                                 autoCapitalize="words"
                                                 onChangeText={handleChange("nameSurname")}
                                                 onBlur={handleBlur("nameSurname")}

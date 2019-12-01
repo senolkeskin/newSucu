@@ -24,8 +24,6 @@ export function EditOrder(orderId:number,productId:number, customerId:number,uni
     }
   })
   .catch(error => { 
-    console.log(error + 'error kaydetme asn storage')   
-    dispatch(addOrder(false,"Sipariş düzenlenirken bir hata oluştuuu."));
   });
 
   }

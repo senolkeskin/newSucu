@@ -151,3 +151,9 @@ export interface AddUser
     user:IGetUserItem;
     isUserLoading :boolean;
 }
+
+export interface EmployeeCostAdd
+{
+  isSuccess: boolean,
+  EmployeeCostAddMessage: string,
+}

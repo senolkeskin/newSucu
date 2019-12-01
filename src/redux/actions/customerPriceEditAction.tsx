@@ -21,8 +21,7 @@ export function customerPriceEdit(price:number, customerPriceId:number) {
       }
     }
   })
-  .catch(error => {      
-    console.log(error + 'error kaydetme asn storage')   
+  .catch(error => {     
     dispatch(customerPriceEditIsSucceed(false,"Bir hata oluştu."));
   });
   }

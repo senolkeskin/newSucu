@@ -89,7 +89,7 @@ class editOrder extends Component<Props, State> {
   }
 
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
 
       title: 'Sipariş Düzenle',
@@ -131,11 +131,6 @@ class editOrder extends Component<Props, State> {
   siparisDüzenle(values:input){
     const { AddOrder, navigation, isSuccees, EditOrder} = this.props;
     var customerId = navigation.getParam("customerId");
-    console.log("orderId "+this.props.navigation.getParam("orderId"))
-    console.log("productId "+ this.state.productId)
-    console.log("customerId "+customerId)
-    console.log("unitprice"+values.unitPrice)
-    console.log("count"+values.count)
     EditOrder(this.props.navigation.getParam("orderId"),this.state.productId,customerId,Number(values.unitPrice),Number(values.count))
     this.componentDidUpdate();
     this.componentDidUpdate();
@@ -167,8 +162,6 @@ class editOrder extends Component<Props, State> {
     this.props.GetProducts();
     var dateAta:string;
     var date = new Date();
-
-    console.log(date);
     dateAta = date.toLocaleDateString()+" "+date.toLocaleTimeString();
     this.setState({date:dateAta});
 
