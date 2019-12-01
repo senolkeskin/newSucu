@@ -63,6 +63,32 @@ const girdiler = Yup.object().shape({
 
 class addEmployee extends Component<Props, {}> {
 
+
+    
+
+
+    static navigationOptions =  ({navigation}) => {
+        return {
+    
+          title: "Çalışan Ekle",
+
+    
+    
+        headerStyle: {
+          backgroundColor: '#2B6EDC',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+    
+        }
+    
+        
+      };
+
+
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -99,10 +125,10 @@ class addEmployee extends Component<Props, {}> {
         return (
             <View style={styles.addCustomerContainer}>
                 <StatusBar backgroundColor="#2B6EDC" />
-                <HeaderLeft
+                {/* <HeaderLeft
                     title="Çalışan Ekle"
                     leftButtonPress={() => this.props.navigation.navigate("Employee")}
-                />
+                /> */}
                 <View style={{ marginBottom: 30 }}></View>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}

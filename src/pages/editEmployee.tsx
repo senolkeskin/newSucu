@@ -65,11 +65,34 @@ interface state {
 
 class addEmployee extends Component<Props, state> {
 
+
+    
+
+
     constructor(props: Props) {
         super(props);
         this.state = {
         };
     }
+
+    static navigationOptions =  ({navigation}) => {
+        return {
+    
+          title: 'Çalışan Düzenle',
+         
+    
+        headerStyle: {
+          backgroundColor: '#2B6EDC',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+    
+        }
+    
+        
+      };
 
     componentWillMount() {
         console.log("fsfsaasfasfsafasfsafsafsafsafasfasf")  
@@ -117,10 +140,10 @@ class addEmployee extends Component<Props, state> {
         return (
             <View style={styles.addCustomerContainer}>
                 <StatusBar backgroundColor="#2B6EDC" />
-                <HeaderLeft
+                {/* <HeaderLeft
                     title="Çalışan Düzenle"
                     leftButtonPress={() => this.props.navigation.navigate("Employee")}
-                />
+                /> */}
                 <View style={{ marginBottom: 30 }}></View>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}

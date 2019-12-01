@@ -69,6 +69,28 @@ class Products extends Component<Props, State> {
     };
   }
 
+  static navigationOptions =  ({navigation}) => {
+    return {
+  
+      title: 'Müşteriye Özel Ürün Fiyatları',
+ 
+  
+  
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  
+    }
+  
+    
+  };
+
+
+
   componentWillMount() {
     this.props.getCustomerPrice(this.props.navigation.getParam("customerId"));
     this.setState({ refreshing: false });  
@@ -149,10 +171,7 @@ _renderView(){
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeftRight
-          title="Müşteriye Özel Ürün Fiyatları"
-          leftButtonPress={()=>this.props.navigation.navigate("OrdersCustomer")}
-        />
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >

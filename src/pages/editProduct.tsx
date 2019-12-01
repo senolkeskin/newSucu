@@ -18,6 +18,8 @@ import { HeaderLeft } from "../components";
 import { productEdit } from "../redux/actions/productEditAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
+import Icon from "react-native-vector-icons/Ionicons";
+// import { Icon } from "react-native-vector-icons/Icon";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
@@ -59,6 +61,30 @@ const girdiler = Yup.object().shape({
 
 
 class editProduct extends Component<Props,state> {
+
+  
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Ürün Bilgilerini Düzenle',
+      headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
+<Icon name="ios-add" size={40} style={{color:'white'}} />
+      </TouchableOpacity>,
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
 
   constructor(props: Props) {
     super(props);
@@ -110,10 +136,7 @@ class editProduct extends Component<Props,state> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <HeaderLeft
-          title="Ürün Bilgilerini Düzenle"
-          leftButtonPress={() => this.props.navigation.navigate("Products")}
-        />
+
 
         <View style={{marginBottom:30}}></View>
         <KeyboardAvoidingView
@@ -153,6 +176,7 @@ class editProduct extends Component<Props,state> {
                       <Text>Fiyat</Text>
                       <View style={styles.inputFiyatContainer}>
                       <Input
+                      containerStyle = {{width:'70%'}}
                         style={styles.inputFiyat}
                         placeholder="Ürün Fiyatı"
                         placeholderTextColor="#9A9A9A"

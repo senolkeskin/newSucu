@@ -59,6 +59,32 @@ interface State {
 }
 class editCustomer extends Component<Props, State> {
 
+
+
+ 
+
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Müşteri Düzenle',
+    
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -124,10 +150,7 @@ class editCustomer extends Component<Props, State> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <HeaderLeft
-          title="Müşteri Bilgilerini Düzenle"
-          leftButtonPress={() => this.props.navigation.navigate("Customer")}
-        />
+
 
         <View style={{ marginBottom: 30 }}></View>
         <KeyboardAvoidingView
@@ -200,7 +223,7 @@ class editCustomer extends Component<Props, State> {
                           ]}
                           textInputProps={{ underlineColor: 'yellow' }}
                           Icon={() => {
-                            return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
+                            return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == 'ios' ? 0 :  15 }} />;
                           }}
                         />
                       </View>

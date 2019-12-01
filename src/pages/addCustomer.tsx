@@ -34,7 +34,6 @@ interface customerData {
   sirketAdi: string;
   fountainCount: string;
 }
-
 const initialValues: any = {
   musteriAdiSoyadi: "",
   sirketAdi: "",
@@ -64,6 +63,34 @@ const girdiler = Yup.object().shape({
 
 
 class addCustomer extends Component<Props, CustomerInserState> {
+
+
+  
+
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Müşteri Ekle',
+//       headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
+// <Icon name="ios-add" size={40} style={{color:'white'}} />
+//       </TouchableOpacity>,
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+
+
 
   constructor(props: Props) {
     super(props);
@@ -107,6 +134,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
               validationSchema={girdiler}
               onSubmit={values => this.handleAddCustomer(values)}
             >
+
               {({ values, errors, handleChange, handleBlur, handleSubmit, resetForm }) => {
                 return (
                   <View>

@@ -98,12 +98,13 @@ class Login extends Component<Props, {}> {
 
                       />
                       <Text style={styles.headText}>
-                        SUCU
+                        Korkmazlar
                       </Text>
                     </View>
                     <View style={styles.inputContainer}>
                       <View style={styles.input}>
                         <Input
+                          inputStyle={{color : 'white'}}
                           placeholder="Kullanıcı Adı / E-posta"
                           placeholderTextColor="white"
                           value={props.values.username}
@@ -116,6 +117,8 @@ class Login extends Component<Props, {}> {
                       </View>
                       <View style={styles.input}>
                         <Input
+                          inputStyle={{color:'white'}}
+
                           placeholder="Şifre"
                           placeholderTextColor="white"
                           value={props.values.password}
@@ -127,10 +130,7 @@ class Login extends Component<Props, {}> {
                       {this._renderLoginButton(props)}
 
                       <Text style={styles.errorMessageText}>{this.props.loginErrorMessage}</Text>
-                      <Text style={styles.linkText}
-                        onPress={() => this.props.navigation.navigate("MainStack")}>
-                        Şifremi Unuttum
-                    </Text>
+
 
                     </View>
                   </View>

@@ -1,4 +1,4 @@
-import { StyleSheet, Button } from "react-native";
+import { StyleSheet, Button, Platform } from "react-native";
 import { colors } from "../constants";
 const styles = StyleSheet.create({
   container: {
@@ -28,13 +28,14 @@ const styles = StyleSheet.create({
     
   },
   inputContainer: {
+   
     elevation:5,
     borderRadius:2,
     paddingTop:30,
-    marginHorizontal:20,
+    //marginHorizontal:20,
     justifyContent: "space-between",
     padding: 20,
-    flex:4,
+    //flex:4,
   },
   signupLink: {
     flexDirection: "row",
@@ -46,40 +47,48 @@ const styles = StyleSheet.create({
   input: {
     elevation:2,
     backgroundColor: '#E2E7F5',
-    marginHorizontal: 5,
-    paddingHorizontal: 20,
+    //marginHorizontal: 5,
+    //paddingHorizontal: 20,
     color: 'black',
-    marginBottom:5,
+    //marginBottom:5,
+    paddingTop:0,
+    height:50,
+    marginTop:20,
     borderRadius:4,
     borderColor:"white",
-    flex:1,
+    //flex:1,
   },
   inputFiyat: {
     elevation:2,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    marginHorizontal: 5,
-    paddingHorizontal: 20,
+    //marginHorizontal: 5,
+    //paddingHorizontal: 20,
     color: 'black',
     marginBottom:10,
     borderRadius:4,
+    
     borderColor:"white",
-    flex:8,
+   // flex:8,
     flexDirection:"column",
   },
 
   inputFiyatText: {
-    flex:1,
-    flexDirection:"column",
+    //flex:1,
+    // flexDirection:"column",
     textAlign:"center",
     marginTop:12,
-    paddingRight:10,
+
+    //paddingRight:10,
     fontSize:20,
     fontWeight:"bold",
   },
 
   inputFiyatContainer:{
+    justifyContent:'space-evenly',
     flexDirection:"row",
     backgroundColor:"#E2E7F5",
+    // marginHorizontal:5,
+    borderRadius:5
     
   },
 
@@ -107,6 +116,7 @@ const styles = StyleSheet.create({
     marginTop:5,
     marginBottom:10,
     marginLeft:200,
+    borderRadius:5
   },
 
   ProductAddButton:{
@@ -122,10 +132,12 @@ const styles = StyleSheet.create({
   customerEditButton:{
     backgroundColor:'#2B6EDC',
     marginHorizontal: 20,
+    marginRight:0,
     paddingVertical: 15,
     marginTop:5,
     marginBottom:10,
-    marginLeft:200,
+    marginLeft: 200,
+    borderRadius:5
   },
 
   CustomerAddButtonText:{
@@ -390,7 +402,7 @@ const styles = StyleSheet.create({
 
   searchButton:{
     backgroundColor:'#2B6EDC',
-    borderRadius: 2000,
+    borderRadius: 5,
     marginHorizontal: 10,
     paddingVertical: 8,
     marginBottom:5,
@@ -402,9 +414,10 @@ const styles = StyleSheet.create({
 
   search_row: {
     flex: 1,
+    height: 50,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: 'center',
+    // alignItems: 'center',
   },
 
   order_ustbilgi_row: {
@@ -488,11 +501,14 @@ const styles = StyleSheet.create({
 
   logoutButtonContainer:{
     backgroundColor:'#D60D0D',
-    paddingHorizontal:61,
-    margin:5,
+    // paddingHorizontal:61,
+    // margin:5,
     borderRadius: 5,
-    flex:1,
-    justifyContent:"flex-end"
+    // flex:1,
+    // justifyContent:"flex-end"
+    marginBottom:10,
+    paddingVertical:10,
+    marginHorizontal:5,
   },
 
   logoutButtonText:{
@@ -500,8 +516,8 @@ const styles = StyleSheet.create({
     color: "#F3CCCC",
     fontWeight: "900",
     fontSize:17,
-    paddingVertical: 17,
-    marginHorizontal:10,
+    // paddingVertical: 17,
+    // marginHorizontal:10,
   },
 
   settingsContainer:{
@@ -510,11 +526,12 @@ const styles = StyleSheet.create({
 
   addProductButtonContainer:{
     backgroundColor:'#2B6EDC',
-    paddingHorizontal:61,
+    // paddingHorizontal:61,
+    paddingVertical:10,
     margin:5,
     borderRadius: 5,
-    justifyContent:"flex-start",
-    flex:0.1,
+    // justifyContent:"flex-start",
+    // flex:0.1,
 
   },
   addProductButtonText:{
@@ -522,8 +539,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "900",
     fontSize:17,
-    paddingVertical: 17,
-    marginHorizontal:10,
+    // paddingVertical: 17,
+    // marginHorizontal:10,
   },
 
   errorText:{
@@ -541,7 +558,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop:5,
     marginBottom:22,
-    marginLeft:200,
+    //marginLeft:200,
     right:10,
     alignItems:"center",
 
@@ -581,13 +598,13 @@ const styles = StyleSheet.create({
 
   pickerSelectStyles:{
     fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    //paddingHorizontal:20,
+    textAlign : 'center',
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 4,
     color: 'black',
-    paddingRight: 30,
+
   },
   chechBoxContainer: {
     elevation:2,
@@ -665,8 +682,9 @@ const styles = StyleSheet.create({
   },
 
   siparisButtonContainer:{
+    marginTop:10,
     backgroundColor:'#2B6EDC',
-    borderRadius: 2000,
+    borderRadius: 5,
     marginHorizontal: 20,
     paddingVertical: 15,
     marginBottom:10,
@@ -674,10 +692,11 @@ const styles = StyleSheet.create({
 
   newPriceButtonContainer:{
     backgroundColor:'#2B6EDC',
-    borderRadius: 2000,
+    borderRadius: 5,
     marginHorizontal: 20,
-    paddingVertical: 15,
-    marginBottom:10,
+    marginTop: 20,
+    height:50,
+    justifyContent:'center'
   },
 
   maasText: {
@@ -712,10 +731,12 @@ const styles = StyleSheet.create({
   },
 
   rnpickerselect: {
+    height: 50,
     elevation:2,
     backgroundColor: '#E2E7F5',
     marginHorizontal: 5,
     paddingHorizontal: 20,
+    justifyContent:'center',
     color: 'black',
     marginBottom:10,
     borderRadius:4,

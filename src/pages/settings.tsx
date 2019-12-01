@@ -35,6 +35,20 @@ class Settings extends Component<Props> {
     };
   }
 
+  static navigationOptions = {
+    title: 'Ayarlar',
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
+
+
 
   handleLogout = () => {
     const { navigation } = this.props;
@@ -49,9 +63,9 @@ class Settings extends Component<Props> {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC"/>
-        <Header
+        {/* <Header
           title="Ayarlar"
-        />
+        /> */}
         <View style={styles.settingsContainer}>
         <TouchableOpacity style={styles.addProductButtonContainer}
         onPress={()=>this.props.navigation.navigate("Products")}>

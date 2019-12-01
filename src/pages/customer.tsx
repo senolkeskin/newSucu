@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  Alert,
+  Alert,Button,
 } from "react-native";
-import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
+import { NavigationScreenProp, NavigationState, ScrollView,SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import { Header} from "../components";
 import styles from "./styles";
@@ -72,6 +72,58 @@ const girdiler = Yup.object().shape({
 });
 
 class Customer extends Component<Props, State> {
+
+
+
+
+
+
+  static navigationOptions =  ({navigation}) => {
+    return {
+
+      title: 'Müşteriler',
+      headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
+<Icon name="ios-add" size={40} style={{color:'white'}} />
+      </TouchableOpacity>,
+
+
+    headerStyle: {
+      backgroundColor: '#2B6EDC',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+    }
+
+    
+  };
+  // static navigationOptions = ({ navigation }) => {
+  //   return {
+  //     headerTitle: () => <Text>Müşteriler</Text>,
+  //     headerRight: () => (
+  //       <TouchableOpacity
+  //         onPress={navigation.getParam('increaseCount')}
+        
+  //         // color="#fff"
+  //       ><Text>sd</Text>a</TouchableOpacity>
+  //     ),
+  //     headerStyle : {
+  //       backgroundColor: '#2B6EDC',
+  //       color : 'white'
+  //     },
+    
+  //     headerTintColor: '#fff',
+  //     headerTitleStyle: {
+  //       fontWeight: 'bold',
+  //     },
+  //   };
+  // };
+
+
+
+  
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -223,8 +275,13 @@ class Customer extends Component<Props, State> {
         return (
           <View>
             {this._renderActivity()}
-
+            {/* <Header
+          title="Müşteriler"
+          rightButtonPress={() => this.props.navigation.navigate("CustomerAdd")}
+        /> */}
             <FlatList
+
+            style={{marginTop :10,marginBottom:110}}
               refreshing={this.state.refreshing}
               onRefresh={() => this.onRefresh()}
               data={this.props.customers}
@@ -293,17 +350,17 @@ class Customer extends Component<Props, State> {
       value: 0,
       color: '#2B6EDC',
     }
+
+
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <Header
-          title="Müşteriler"
-          rightButtonPress={() => this.props.navigation.navigate("CustomerAdd")}
-        />
+        
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <Modal
+          
             visible={this.state.modalVisible}
             animationType={'slide'}
             onRequestClose={() => this.closeModal()}
@@ -363,13 +420,16 @@ class Customer extends Component<Props, State> {
                 <RNPickerSelect
                   style={styles.pickerSelectStyles}
                   placeholder={placeholder}
+                  
                   onValueChange={(value) => (this.getMusteri(value))}
                   items={[
                     { label: 'Ödeme Alınacaklar', value: 2 },
                   ]}
-                  textInputProps={{ underlineColor: 'yellow' }}
+                  textInputProps={{ 
+
+                    underlineColor: 'yellow' }}
                   Icon={() => {
-                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
+                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
                   }}
                 />
               </View>
@@ -389,7 +449,7 @@ class Customer extends Component<Props, State> {
                   ]}
                   textInputProps={{ underlineColor: 'yellow' }}
                   Icon={() => {
-                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
+                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
                   }}
                 />
               </View>
@@ -399,7 +459,7 @@ class Customer extends Component<Props, State> {
         </KeyboardAvoidingView>
         {this._renderView()}
 
-      </View>
+      </SafeAreaView>
     );
   }
 }
