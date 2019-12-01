@@ -10,6 +10,7 @@ import {
   Platform,
   Modal,
   Alert,
+  AsyncStorage,
 } from "react-native";
 import { NavigationScreenProp, NavigationState,} from "react-navigation";
 import { connect } from "react-redux";
@@ -37,7 +38,8 @@ interface State {
   nameSurname: string;
   employeeId: number;
   monthlySalary:number;
-  active:boolean
+  active:boolean;
+  UserType:string|null;
 }
 
 class Employee extends Component<Props, State> {
@@ -50,6 +52,7 @@ class Employee extends Component<Props, State> {
       employeeId: 0,
       monthlySalary:0,
       active:false,
+      UserType:"",
     };
   }
   static navigationOptions =  ({navigation}) => {
@@ -82,6 +85,7 @@ class Employee extends Component<Props, State> {
   componentWillMount() {
     this.props.GetEmployees();
     this.setState({ refreshing: false });
+    this.getUserType();
   }
 
   openModal(employeeId: number, nameSurname: string, monthlySalary: number,active:boolean) {
@@ -139,7 +143,19 @@ class Employee extends Component<Props, State> {
     this.componentWillMount();
   }
 
+  getUserType() {
+    //function to make three option alert
+    AsyncStorage.getItem("UserType").then((value) => {
+     this.setState({
+      UserType:value,
+     })
+   });
+
+
+  }
+
   _renderView() {
+    console.log(this.state.UserType)
     const { isLoading, navigation } = this.props;
     console.log(isLoading);
     if (isLoading) {
@@ -172,7 +188,10 @@ class Employee extends Component<Props, State> {
     }
   }
   render() {
-    return (
+    if(this.state.UserType==="2"){
+      return (<View style={styles.musteribulunamadiContainer}><Text style={styles.musteribulunamadiText}>Bu Sayfaya Erişim İzniniz Yok</Text></View>);
+    }
+    else{return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC" />
         {/* <Header
@@ -212,7 +231,7 @@ class Employee extends Component<Props, State> {
         {this._renderView()}
 
       </View>
-    );
+    );}
   }
 }
 

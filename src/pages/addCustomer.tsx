@@ -34,8 +34,7 @@ interface customerData {
   sirketAdi: string;
   fountainCount: string;
 }
-
-const initialValues: customerData = {
+const initialValues: any = {
   musteriAdiSoyadi: "",
   sirketAdi: "",
   fountainCount: "",
@@ -120,12 +119,12 @@ class addCustomer extends Component<Props, CustomerInserState> {
     }
     return (
       <View style={styles.addCustomerContainer}>
-        <StatusBar backgroundColor="#2B6EDC"/>
-        {/* <HeaderLeft
+        <StatusBar backgroundColor="#2B6EDC" />
+        <HeaderLeft
           title="Müşteri Ekle"
           leftButtonPress={() => this.props.navigation.navigate("Customer")}
-        /> */}
-        <View style={{marginBottom:30}}></View>
+        />
+        <View style={{ marginBottom: 30 }}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -135,7 +134,8 @@ class addCustomer extends Component<Props, CustomerInserState> {
               validationSchema={girdiler}
               onSubmit={values => this.handleAddCustomer(values)}
             >
-              {({ values, errors, handleChange, handleBlur, handleSubmit }) => {
+
+              {({ values, errors, handleChange, handleBlur, handleSubmit, resetForm }) => {
                 return (
                   <View>
                     <View style={styles.inputContainer}>
@@ -169,7 +169,6 @@ class addCustomer extends Component<Props, CustomerInserState> {
                           placeholder="Sebil Sayısı"
                           placeholderTextColor="#9A9A9A"
                           value={String(values.fountainCount)}
-                          autoCapitalize="words"
                           keyboardType="numeric"
                           onChangeText={handleChange("fountainCount")}
                           onBlur={handleBlur("fountainCount")}
@@ -177,29 +176,30 @@ class addCustomer extends Component<Props, CustomerInserState> {
                       </View>
                       <Text style={styles.errorText}>{errors.fountainCount}</Text>
                       <View style={styles.rnpickerselect}>
-                      <RNPickerSelect
-                  style={styles.pickerSelectStyles}
-                  placeholder={placeHolderDay}
-                  onValueChange={(value) => (this._SetStateDay(value))}
-                  items={[
-                    { label: 'Pazartesi', value: 1 },
-                    { label: 'Salı', value: 2 },
-                    { label: 'Çarşamba', value: 3 },
-                    { label: 'Perşembe', value: 4 },
-                    { label: 'Cuma', value: 5 },
-                    { label: 'Cumartesi', value: 6 },
-                    { label: 'Pazar', value: 7 },
-                  ]}
-                  textInputProps={{ underlineColor: 'yellow' }}
-                  Icon={() => {
-                    return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
-                  }}
-                />
-                </View>
+                        <RNPickerSelect
+                          style={styles.pickerSelectStyles}
+                          placeholder={placeHolderDay}
+                          onValueChange={(value) => (this._SetStateDay(value))}
+                          items={[
+                            { label: 'Pazartesi', value: 1 },
+                            { label: 'Salı', value: 2 },
+                            { label: 'Çarşamba', value: 3 },
+                            { label: 'Perşembe', value: 4 },
+                            { label: 'Cuma', value: 5 },
+                            { label: 'Cumartesi', value: 6 },
+                            { label: 'Pazar', value: 7 },
+                          ]}
+                          textInputProps={{ underlineColor: 'yellow' }}
+                          Icon={() => {
+                            return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: 15 }} />;
+                          }}
+                        />
+                      </View>
 
-                      <TouchableOpacity 
+                      <TouchableOpacity
                         style={styles.customerAddButton}
-                        onPress={handleSubmit}>
+                        onPress={()=>{handleSubmit()}}
+                        onLongPress={()=>{resetForm(initialValues)}}>
                         <Text style={styles.CustomerAddButtonText}>Ekle</Text>
                       </TouchableOpacity>
                     </View>
