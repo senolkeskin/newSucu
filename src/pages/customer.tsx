@@ -9,11 +9,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  Alert,Button,
+  Alert, Button,
 } from "react-native";
-import { NavigationScreenProp, NavigationState, ScrollView,SafeAreaView } from "react-navigation";
+import { NavigationScreenProp, NavigationState, ScrollView, SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
-import { Header} from "../components";
+import { Header } from "../components";
 import styles from "./styles";
 import { GetCustomers, GetCustomerMore } from "../redux/actions/homeAction";
 import { AppState } from "../redux/store";
@@ -24,17 +24,21 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { customerDelete } from "../redux/actions/customerDeleteAction";
 import RNPickerSelect from 'react-native-picker-select';
 import { Input } from "react-native-elements";
+import RBSheet from "react-native-raw-bottom-sheet";
+import { stat } from "fs";
 
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
   isHomeLoading: boolean;
   customers: ICustomerItem[];
+
   GetCustomers: (orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) => void;
   GetCustomerMore: (orderType: number, searchText: string, dayOfWeek: number, pageIndex: number) => void;
 
-  customerDelete: (customerId: number) => void;
+  customerDelete: (customerId: number) =>  void;
   CustomerDeleteIsSuccess: boolean;
+  isLoadingCustomerDelete:boolean;
 }
 
 interface State {
@@ -52,7 +56,8 @@ interface State {
   loadingMore: boolean;
   error: boolean;
   customersData: ICustomerItem[];
-  fountainCount?:number;
+  fountainCount?: number;
+
 }
 
 interface search {
@@ -74,7 +79,7 @@ const girdiler = Yup.object().shape({
 class Customer extends Component<Props, State> {
 
 
-  static navigationOptions =  ({navigation}:Props) => ({
+  static navigationOptions = ({ navigation }: Props) => ({
     title: 'Müşteriler',
     headerRight: <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('CustomerAdd')}>
       <Icon name="ios-add" size={40} style={{ color: 'white' }} />
@@ -93,7 +98,7 @@ class Customer extends Component<Props, State> {
   //     headerRight: () => (
   //       <TouchableOpacity
   //         onPress={navigation.getParam('increaseCount')}
-        
+
   //         // color="#fff"
   //       ><Text>sd</Text>a</TouchableOpacity>
   //     ),
@@ -101,7 +106,7 @@ class Customer extends Component<Props, State> {
   //       backgroundColor: '#2B6EDC',
   //       color : 'white'
   //     },
-    
+
   //     headerTintColor: '#fff',
   //     headerTitleStyle: {
   //       fontWeight: 'bold',
@@ -111,7 +116,7 @@ class Customer extends Component<Props, State> {
 
 
 
-  
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -132,22 +137,13 @@ class Customer extends Component<Props, State> {
       fountainCount: 0,
     };
   }
-
-
-
-  search(search: search) {
-    this.setState({ searchText: search.searchText });
-    this._getCustomerList(this.state.orderType, search.searchText, this.state.dayOfWeek, this.state.page);
-
+  search() {
+    this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, 1);
   }
-
   componentWillMount() {
     this.setState({ refreshing: false });
     this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page);
-
   }
-
-
   getMusteri(value: number) {
     // this.setState({
     //   productId: productId,
@@ -168,15 +164,15 @@ class Customer extends Component<Props, State> {
 
   }
 
-  openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number,fountainCount?:number) {
+  openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number, fountainCount?: number) {
     this.setState({
-      modalVisible: true,
       customerId: customerId,
       nameSurname: nameSurname,
       companyName: companyName,
       dayOfWeekCustomer: dayOfWeek,
-      fountainCount: fountainCount===null ? 0 : fountainCount,
+      fountainCount: fountainCount === null ? 0 : fountainCount,
     });
+    this.CustomerListSheet.open();
   }
 
   closeModal() {
@@ -204,12 +200,12 @@ class Customer extends Component<Props, State> {
   }
   deleteSelectedCustomer() {
     const { customerDelete } = this.props;
-    customerDelete(this.state.customerId);
-    this.closeModal();
-    this.onRefresh();
-    this.setState({ refreshing: false });
+     customerDelete(this.state.customerId);
     this.setState({ page: 1 });
-    this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page);
+    if(this.props.CustomerDeleteIsSuccess){
+      this.props.GetCustomers(this.state.orderType, this.state.searchText, this.state.dayOfWeek, 1);
+      
+    }
 
   }
 
@@ -237,9 +233,34 @@ class Customer extends Component<Props, State> {
         nameSurname: this.state.nameSurname,
         companyName: this.state.companyName,
         dayofWeekCustomer: this.state.dayOfWeekCustomer,
-        fountainCount:this.state.fountainCount,
+        fountainCount: this.state.fountainCount,
       })
 
+  }
+  _renderCustomerSheetContent() {
+    return (<View style={styles.SheetContainer}>
+
+      <TouchableOpacity style={styles.SheetItemContainer}
+        onPress={() => {
+          this.CustomerListSheet.close();
+          this.editCustomer();
+        }}>
+        <Icon name="ios-arrow-round-forward" size={30} style={styles.SheetItemIcon}></Icon>
+
+        <Text style={styles.SheetItemText}
+        >Düzenle</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.SheetItemContainer}
+        onPress={() => {
+          this.CustomerListSheet.close();
+          this.deleteCustomerAlert();
+        }}>
+        <Icon name="ios-trash" size={30} style={styles.SheetItemIcon}></Icon>
+        <Text style={styles.SheetItemText}
+        >Sil</Text>
+      </TouchableOpacity>
+
+    </View>);
   }
 
   onRefresh() {
@@ -249,14 +270,13 @@ class Customer extends Component<Props, State> {
     this.setState({ refreshing: false });
   }
   _renderView() {
-    const { customers, isHomeLoading, navigation } = this.props;
-    if (this.props.isHomeLoading) {
+    const { customers, isHomeLoading, navigation } = this.props;    
+    if (this.props.isHomeLoading || this.props.isLoadingCustomerDelete) {
       return (<ActivityIndicator></ActivityIndicator>);
     }
     else {
-
-
-      if (this.props.customers.length > 0 || (this.props.isHomeLoading && this.state.page>1)) {
+      if ((this.props.customers.length > 0 || (this.props.isHomeLoading===false && this.state.page > 1) && this.props.isLoadingCustomerDelete===false)) {
+        console.log(this.props.isLoadingCustomerDelete, "çek "); 
         return (
           <View>
             {this._renderActivity()}
@@ -266,18 +286,18 @@ class Customer extends Component<Props, State> {
         /> */}
             <FlatList
 
-            style={{marginTop :10,marginBottom:110}}
+              style={{ marginTop: 10, marginBottom: 110 }}
               refreshing={this.state.refreshing}
               onRefresh={() => this.onRefresh()}
               data={this.props.customers}
               renderItem={({ item }) => (
                 <View style={styles.row}>
                   <TouchableOpacity style={styles.row_cell5} onPress={
-                    () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName, displayTookTotalAmount: item.displayTookTotalAmount, restTotalAmount : item.displayRestTotalAmount, totalAmount : item.displayTotalAmount })}>
+                    () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName, displayTookTotalAmount: item.displayTookTotalAmount, restTotalAmount: item.displayRestTotalAmount, totalAmount: item.displayTotalAmount })}>
                     <View style={styles.row_cell1}>
                       <Text style={styles.musteri_adi}>{item.nameSurname}</Text>
                       <Text style={styles.alt_bilgi}>{item.companyName}</Text>
-                      <Icon name="md-pint"><Text> {item.fountainCount ==null ? 0: item.fountainCount}</Text></Icon>
+                      <Icon name="md-pint"><Text> {item.fountainCount == null ? 0 : item.fountainCount}</Text></Icon>
                     </View>
                     <View style={styles.row_cell2}>
                       <Text style={styles.paratextalınan}>{item.displayTookTotalAmount} Alınan</Text>
@@ -289,7 +309,7 @@ class Customer extends Component<Props, State> {
                   <TouchableOpacity
                     style={styles.iconButtonCustomer}
 
-                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek,item.fountainCount)}>
+                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek, item.fountainCount)}>
 
                     <Icon name="md-more" size={24} color={"#C4B47B"} />
                   </TouchableOpacity>
@@ -339,13 +359,30 @@ class Customer extends Component<Props, State> {
 
     return (
       <SafeAreaView style={styles.container}>
+        <NavigationEvents onWillFocus={() => this.props.GetCustomers(1, "", 0, 1)} />
+        <RBSheet
+          ref={ref => {
+            this.CustomerListSheet = ref;
+          }}
+          height={250}
+          duration={200}
+          customStyles={{
+            container: {
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              paddingLeft: 20
+            }
+          }}
+        >
+          {this._renderCustomerSheetContent()}
+        </RBSheet>
         <StatusBar backgroundColor="#2B6EDC" />
-        
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <Modal
-          
+
             visible={this.state.modalVisible}
             animationType={'slide'}
             onRequestClose={() => this.closeModal()}
@@ -353,72 +390,53 @@ class Customer extends Component<Props, State> {
           >
             <View style={styles.modalContainer}>
               <View style={styles.innerContainer}>
-                <TouchableOpacity style={styles.modalCancelButtonContainer}
-                  onPress={() => this.closeModal()}>
-                  <Icon name="md-close" size={30} color={"#6E6E6E"} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalEditButtonContainer}
-                  onPress={() => this.editCustomer()}>
-                  <Text style={styles.modalEditButtonText}
-                  >Düzenle</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalDeleteButtonContainer}
-                  onPress={() => this.deleteCustomerAlert()}>
-                  <Text style={styles.modalDeleteButtonText}
-                  >Sil</Text>
-                </TouchableOpacity>
+
               </View>
             </View>
           </Modal>
           <View style={{ marginTop: 10 }}></View>
           <ScrollView bounces={false}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={girdiler}
-              onSubmit={values => this.search(values)}
-            >
-              {props => {
-                return (
-                  <View>
-                    <View style={styles.search_row}>
-                      <View style={styles.searchInput}>
-                      <Input
-                        placeholder="Ara"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.searchText}
-                        autoCapitalize="none"
-                        onChangeText={props.handleChange("searchText")}
-                        onBlur={props.handleBlur("searchText")}
-                      />
-                      </View>
-                      <TouchableOpacity style={styles.searchButton}
-                        onPress={() => this.search(props.values)}>
-                        <Icon name="ios-arrow-round-forward" size={30} color={"#EBEDF1"} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                );
-              }}
-            </Formik>
+
+            <View>
+              <View style={styles.search_row}>
+                <View style={styles.searchInput}>
+                  <Input
+                    placeholder="Ara"
+                    placeholderTextColor="#9A9A9A"
+                    value={this.state.searchText}
+                    autoCapitalize="none"
+                    onChangeText={e =>
+                      this.setState({ searchText: e })
+                    }
+
+                  />
+                </View>
+                <TouchableOpacity style={styles.searchButton}
+                  onPress={() => this.search()}>
+                  <Icon name="ios-arrow-round-forward" size={30} color={"#EBEDF1"} />
+                </TouchableOpacity>
+              </View>
+            </View>
             <View style={styles.search_row}>
-              <View style={styles.rnpickerselect}>
+              <View style={[styles.rnpickerselect, styles.PickerColor]}>
                 <RNPickerSelect
                   style={styles.pickerSelectStyles}
                   placeholder={placeholder}
-                  
+
                   onValueChange={(value) => (this.getMusteri(value))}
                   items={[
                     { label: 'Ödeme Alınacaklar', value: 2 },
                   ]}
-                  textInputProps={{ 
+                  textInputProps={{
 
-                    underlineColor: 'yellow' }}
+                    underlineColor: 'yellow'
+                  }}
                   Icon={() => {
                     return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
                   }}
                 />
               </View>
-              <View style={styles.rnpickerselect}>
+              <View style={[styles.rnpickerselect, styles.PickerColor]}>
                 <RNPickerSelect
                   style={styles.pickerSelectStyles}
                   placeholder={placeHolderDay}
@@ -452,7 +470,8 @@ class Customer extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   isHomeLoading: state.home.isHomeLoading,
   customers: state.home.customers,
-  CustomerDeleteIsSuccess: state.customerDelete.isSuccess,
+  CustomerDeleteIsSuccess: state.customerDelete.isSuccessCustomerDelete,
+  isLoadingCustomerDelete : state.customerDelete.isLoadingCustomerDelete
 })
 function bindToAction(dispatch: any) {
   return {

@@ -14,7 +14,6 @@ import { NavigationScreenProp, NavigationState, } from "react-navigation";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
-import { HeaderLeft } from "../components";
 import { customerAdd } from "../redux/actions/customerAddAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
@@ -120,11 +119,6 @@ class addCustomer extends Component<Props, CustomerInserState> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <HeaderLeft
-          title="Müşteri Ekle"
-          leftButtonPress={() => this.props.navigation.navigate("Customer")}
-        />
-        <View style={{ marginBottom: 30 }}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -139,9 +133,10 @@ class addCustomer extends Component<Props, CustomerInserState> {
                 return (
                   <View>
                     <View style={styles.inputContainer}>
+                    <Text style={styles.FormLabel}>Adı Soyadı</Text>
                       <View style={styles.input}>
                         <Input
-
+     underlineColorAndroid="transparent"
                           placeholder="Adı Soyadı"
                           placeholderTextColor="#9A9A9A"
                           value={values.musteriAdiSoyadi}
@@ -151,7 +146,9 @@ class addCustomer extends Component<Props, CustomerInserState> {
                         />
                       </View>
                       <Text style={styles.errorText}>{errors.musteriAdiSoyadi}</Text>
+                      <Text style={styles.FormLabel}>Şirket Adı</Text>
                       <View style={styles.input}>
+               
                         <Input
                           style={styles.input}
                           placeholder="Şirket Adı"
@@ -163,11 +160,13 @@ class addCustomer extends Component<Props, CustomerInserState> {
                         />
                       </View>
                       <Text style={styles.errorText}>{errors.sirketAdi}</Text>
+                      <Text style={styles.FormLabel}>Sebil Sayısı</Text>
                       <View style={styles.input}>
                         <Input
 
                           placeholder="Sebil Sayısı"
                           placeholderTextColor="#9A9A9A"
+                       
                           value={String(values.fountainCount)}
                           keyboardType="numeric"
                           onChangeText={handleChange("fountainCount")}
@@ -175,8 +174,9 @@ class addCustomer extends Component<Props, CustomerInserState> {
                         />
                       </View>
                       <Text style={styles.errorText}>{errors.fountainCount}</Text>
+                      <Text style={styles.FormLabel}>Gün</Text>
                       <View style={styles.rnpickerselect}>
-                        <RNPickerSelect
+                               <RNPickerSelect
                           style={styles.pickerSelectStyles}
                           placeholder={placeHolderDay}
                           onValueChange={(value) => (this._SetStateDay(value))}

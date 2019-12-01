@@ -10,7 +10,7 @@ import {
   StatusBar,
   Alert,
 } from "react-native";
-import { NavigationScreenProp, NavigationState } from "react-navigation";
+import { NavigationScreenProp, NavigationState, NavigationEvents } from "react-navigation";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
@@ -112,7 +112,7 @@ class addOrder extends Component<Props, State> {
   }
 
   handleAlert(){
-      this.props.navigation.navigate("OrdersCustomer");
+      this.props.navigation.navigate("OrdersCustomer",{customerId:this.props.navigation.getParam("customerId")});
       Alert.alert(
         //title
         'Yeni Sipariş Oluşturuldu!',
@@ -153,7 +153,9 @@ class addOrder extends Component<Props, State> {
 
       return PickerModel;
   }
-
+componentDidMount(){
+  this.props.GetProducts();
+}
   componentWillMount() {
     this.props.GetProducts();
     var dateAta:string;
@@ -177,6 +179,7 @@ class addOrder extends Component<Props, State> {
 
     return (
       <View style={styles.addCustomerContainer}>
+              
         <StatusBar backgroundColor="#2B6EDC"/>
 
         <KeyboardAvoidingView

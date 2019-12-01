@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, FlatList, ActivityIndicator, StatusBar, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert, AsyncStorage } from "react-native";
-import { NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
+import { NavigationScreenProp, NavigationState, ScrollView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
 import { HeaderLeftRight } from "../components";
 import { Input } from "react-native-elements";
@@ -14,19 +14,22 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { AddCash } from "../redux/actions/addCashAction";
 import { orderDelete } from "../redux/actions/deleteOrderAction"
+import RBSheet from "react-native-raw-bottom-sheet";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>;
-  orders: IOrderItem[],
-  takeTotalAmount: number,
-  tookTotalAmount: number,
-  restTotalAmount: number,
-  isOrderLoading: boolean,
-  loadingMore: boolean,
+  orders: IOrderItem[];
+  takeTotalAmount: number;
+  tookTotalAmount: number;
+  restTotalAmount: number;
+  isOrderLoading: boolean;
+  loadingMore: boolean;
+  isSuccess :boolean;
   GetOrders: (customerId: number, pageIndex: number, pageSize: number) => void;
   GetOrdersMore: (customerId: number, pageIndex: number, pageSize: number) => void;
   AddCash: (orderId: number, amount: string) => void;
   orderDelete: (orderId: number) => void;
+  RbSheet: RBSheet;
 }
 
 interface amountData {
@@ -59,37 +62,23 @@ const initialValues: amountData = {
 
 
 class OrdersCustomer extends Component<Props, State> {
-
-
-//   <HeaderLeftRight
-//   title={"Müşteri Siparişleri"}
-//   leftButtonPress={() => this.props.navigation.navigate("Customer")}
-//   rightButtonPress={() => }
-// />
-
-
-static navigationOptions =  ({navigation}:Props) => {
-  return {
-
-    title: 'Müşteri Siparişleri',
-    headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate("AddOrder", { customerId: navigation.getParam("customerId") })}>
-<Icon name="ios-add" size={40} style={{color:'white'}} />
-    </TouchableOpacity>,
-
-
-  headerStyle: {
-    backgroundColor: '#2B6EDC',
-  },
-  headerTintColor: '#fff',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
-
-  }
-
-  
-};
-
+  static navigationOptions = ({ navigation }: Props) => {
+    return {
+      title: 'Müşteri Siparişleri',
+      headerRight:
+        <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate("AddOrder", { customerId: navigation.getParam("customerId") })}>
+          <Icon name="ios-add" size={40} style={{ color: 'white' }} />
+        </TouchableOpacity>
+      ,
+      headerStyle: {
+        backgroundColor: '#2B6EDC',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -109,22 +98,22 @@ static navigationOptions =  ({navigation}:Props) => {
   }
 
   componentWillMount() {
-    this.props.GetOrders(this.props.navigation.getParam("customerId"), 1, 4);
+    this.props.GetOrders(this.props.navigation.getParam("customerId"), 1, 10);
     this.setState({ refreshing: false });
   }
 
   onRefresh() {
     this.setState({ refreshing: true });
     this.setState({ page: 1 });
-    this.props.GetOrders(this.props.navigation.getParam("customerId"), 1, 4);
+    this.props.GetOrders(this.props.navigation.getParam("customerId"), 1, 10);
     this.setState({ refreshing: false });
   }
 
   deleteOrderAlert() {
     //function to make three option alert
     AsyncStorage.getItem("UserType").then((value) => {
-     if (value === "2") {
-      
+      if (value === "2") {
+
         Alert.alert(
           //title
           'Hata',
@@ -135,26 +124,26 @@ static navigationOptions =  ({navigation}:Props) => {
           ],
           { cancelable: false }
         );
-      this.closeModal();
+        this.closeModal();
 
 
-     }
-     else {
-      Alert.alert(
-        //title
-        'Sipariş Silme İşlemi',
-        //body
-        'Siparişi silmek istiyor musunuz?',
-        [
-          { text: 'Geri Gel' },
-          { text: 'Evet', onPress: () => this.deleteSelectedOrder() },
-        ],
-        { cancelable: false }
-      );
-     }
+      }
+      else {
+        Alert.alert(
+          //title
+          'Sipariş Silme İşlemi',
+          //body
+          'Siparişi silmek istiyor musunuz?',
+          [
+            { text: 'Geri Gel' },
+            { text: 'Evet', onPress: () => this.deleteSelectedOrder() },
+          ],
+          { cancelable: false }
+        );
+      }
 
 
-   });
+    });
 
 
   }
@@ -179,13 +168,13 @@ static navigationOptions =  ({navigation}:Props) => {
 
   openModal(orderId: number, unitPrice: number, count: number, productId: number, productName: string) {
     this.setState({
-      modalVisible: true,
       orderId: orderId,
       unitPrice: unitPrice,
       count: count,
       productId: productId,
       productName: productName,
     });
+    this.OrderSheet.open();
   }
 
   closeModal() {
@@ -293,7 +282,59 @@ static navigationOptions =  ({navigation}:Props) => {
       />);
     }
   }
+  _renderCustomerSheetContent(){
+    return ( <View style={styles.SheetContainer}>
+      <TouchableOpacity style={styles.SheetItemContainer}    onPress={() => {
+                this.CustomerSheet.close();
+        this.goToNewPricePage();}}>
+        <Icon name="ios-add" size={30} style={styles.SheetItemIcon}></Icon>
+        <Text style={styles.SheetItemText}>
+          Yeni Fiyat Ekle
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.SheetItemContainer}   onPress={() => {
+        this.CustomerSheet.close();
+        this.goToDefinedPrice();}}>
+        <Icon name="ios-list" size={30} style={styles.SheetItemIcon}></Icon>
+        <Text style={styles.SheetItemText}>
+          Tanımlı Fiyatlar
+        </Text>
+      </TouchableOpacity>
 
+    </View>);
+  }
+
+  _renderOrderSheetContent(){
+    return ( <View style={styles.SheetContainer}>
+                <TouchableOpacity style={styles.SheetItemContainer}
+                  onPress={() => {
+                    this.OrderSheet.close();
+                    this.addCash();
+                  }}>
+                    <Icon name="ios-add" size={30} style={styles.SheetItemIcon}></Icon>
+                  <Text style={styles.SheetItemText}
+                  >Ödeme Ekle</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.SheetItemContainer}
+                  onPress={() => {
+                    this.OrderSheet.close();
+                    this.editOrder();
+                    }}>
+                           <Icon name="ios-arrow-round-forward" size={30} style={styles.SheetItemIcon}></Icon>
+                  <Text style={styles.SheetItemText}
+                  >Düzenle</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.SheetItemContainer}
+                  onPress={() => {
+                    this.OrderSheet.close();
+                    this.deleteOrderAlert();
+                  }}>
+                         <Icon name="ios-trash" size={30} style={styles.SheetItemIcon}></Icon>
+                  <Text style={styles.SheetItemText}
+                  >Sil</Text>
+                </TouchableOpacity>
+    </View>);
+  }
 
   render() {
 
@@ -304,42 +345,46 @@ static navigationOptions =  ({navigation}:Props) => {
 
     return (
       <View style={styles.container}>
+        <NavigationEvents onWillFocus={() => this.props.GetOrders(this.props.navigation.getParam("customerId"), 1, 10)} />
         <StatusBar backgroundColor="#2B6EDC" />
-       
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-                <Modal
-            visible={this.state.modalVisible}
-            animationType={'slide'}
-            onRequestClose={() => this.closeModal()}
-            transparent={true}
+          <RBSheet
+          ref={ref => {
+            this.CustomerSheet = ref;
+          }}
+            height={250}
+            duration={200}
+            customStyles={{
+              container: {
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                paddingLeft:20
+              }
+            }}
           >
-            <View style={styles.modalContainer}>
+           {this._renderCustomerSheetContent()}
+          </RBSheet>
 
-              <View style={styles.innerContainer}>
-                <TouchableOpacity style={styles.modalCancelButtonContainer}
-                  onPress={() => this.closeModal()}>
-                  <Icon name="md-close" size={30} color={"#6E6E6E"} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalOrderButtonContainer}
-                  onPress={() => this.addCash()}>
-                  <Text style={styles.modalAddCashButtonText}
-                  >Ödeme Ekle</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalEditButtonContainer}
-                  onPress={() => this.editOrder()}>
-                  <Text style={styles.modalEditButtonText}
-                  >Düzenle</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalDeleteButtonContainer}
-                  onPress={() => this.deleteOrderAlert()}>
-                  <Text style={styles.modalDeleteButtonText}
-                  >Sil</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
+          <RBSheet
+          ref={ref => {
+            this.OrderSheet = ref;
+          }}
+            height={250}
+            duration={200}
+            customStyles={{
+              container: {
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                paddingLeft:20
+              }
+            }}
+          >
+           {this._renderOrderSheetContent()}
+          </RBSheet>
+
 
           <Modal
             visible={this.state.modalAmountVisible}
@@ -364,7 +409,7 @@ static navigationOptions =  ({navigation}:Props) => {
                         <View>
                           <View style={styles.inputFiyatContainer}>
                             <Input
-                              containerStyle ={{width:'70%'}}
+                              containerStyle={{ width: '70%' }}
                               style={styles.inputFiyat}
                               placeholder="Ürün Fiyatı"
                               placeholderTextColor="#9A9A9A"
@@ -390,32 +435,7 @@ static navigationOptions =  ({navigation}:Props) => {
             </View>
           </Modal>
 
-          <Modal
-            visible={this.state.modalPriceVisible}
-            animationType={'slide'}
-            onRequestClose={() => this.closePriceModal()}
-            transparent={true}
-          >
-            <View style={styles.modalPriceContainer}>
-              <View style={styles.innerContainer}>
-                <TouchableOpacity style={styles.modalCancelButtonContainer}
-                  onPress={() => this.closePriceModal()}>
-                  <Icon name="md-close" size={30} color={"#6E6E6E"} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalPriceYeniPriceButtonContainer}
-                  onPress={() => this.goToNewPricePage()}>
-                  <Text style={styles.modalPriceYeniPriceButtonText}
-                  >Yeni Fiyat Gir</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalPriceTanimliFiyatButtonContainer}
-                  onPress={() => this.goToDefinedPrice()}>
-                  <Text style={styles.modalPriceTanimliFiyatButtonText}
-                  >Tanımlı Fiyatlar</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-
+   
           <View style={styles.order_ustbilgi_row}>
             <View style={styles.customerDetailHeader1}>
               <Text style={styles.musteri_adi}>{nameSurname}</Text>
@@ -424,7 +444,8 @@ static navigationOptions =  ({navigation}:Props) => {
             <View style={styles.customerDetailHeader2}>
               <TouchableOpacity
                 style={styles.iconButtonOrderCustomer}
-                onPress={() => this.openPriceModal()}>
+                onPress={() => this.CustomerSheet.open()}
+              >
                 <Icon name="ios-more" size={40}></Icon>
               </TouchableOpacity>
             </View>
