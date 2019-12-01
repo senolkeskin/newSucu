@@ -777,9 +777,20 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     flex: 0,
     fontSize: 15,
-  }
-
-
+  },
+  SheetContainer:{
+    flex:1, justifyContent:'flex-start', alignItems:'flex-start', flexDirection:'column', paddingTop:10
+  },
+  SheetItemContainer:{
+    borderBottomColor:"#ccc", flexDirection:'row', paddingTop:10, borderBottomWidth:1,paddingBottom:15, width:'100%' 
+  },
+SheetItemIcon:{
+  color:"#333"
+},
+SheetItemText:{
+  fontSize:20, width:'100%', color:'#000',
+  marginLeft:20
+}
 
 
 

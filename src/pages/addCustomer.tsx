@@ -14,7 +14,6 @@ import { NavigationScreenProp, NavigationState, } from "react-navigation";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
-import { HeaderLeft } from "../components";
 import { customerAdd } from "../redux/actions/customerAddAction";
 import { AppState } from '../redux/store'
 import { connect } from "react-redux";
@@ -120,10 +119,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
     return (
       <View style={styles.addCustomerContainer}>
         <StatusBar backgroundColor="#2B6EDC" />
-        <HeaderLeft
-          title="Müşteri Ekle"
-          leftButtonPress={() => this.props.navigation.navigate("Customer")}
-        />
+
         <View style={{ marginBottom: 30 }}></View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}

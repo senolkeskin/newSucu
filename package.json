@@ -23,6 +23,7 @@
     "react-native-picker-module": "^1.2.3",
     "react-native-picker-select": "^6.3.3",
     "react-native-popup-menu": "^0.15.6",
+    "react-native-raw-bottom-sheet": "^2.0.6",
     "react-native-vector-icons": "^6.5.0",
     "react-navigation": "^3.11.0",
     "react-navigation-tabs": "^2.5.6",

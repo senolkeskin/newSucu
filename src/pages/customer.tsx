@@ -9,11 +9,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  Alert,Button,
+  Alert, Button,
 } from "react-native";
-import { NavigationScreenProp, NavigationState, ScrollView,SafeAreaView } from "react-navigation";
+import { NavigationScreenProp, NavigationState, ScrollView, SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
-import { Header} from "../components";
+import { Header } from "../components";
 import styles from "./styles";
 import { GetCustomers, GetCustomerMore } from "../redux/actions/homeAction";
 import { AppState } from "../redux/store";
@@ -52,7 +52,7 @@ interface State {
   loadingMore: boolean;
   error: boolean;
   customersData: ICustomerItem[];
-  fountainCount?:number;
+  fountainCount?: number;
 }
 
 interface search {
@@ -74,7 +74,7 @@ const girdiler = Yup.object().shape({
 class Customer extends Component<Props, State> {
 
 
-  static navigationOptions =  ({navigation}:Props) => ({
+  static navigationOptions = ({ navigation }: Props) => ({
     title: 'Müşteriler',
     headerRight: <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('CustomerAdd')}>
       <Icon name="ios-add" size={40} style={{ color: 'white' }} />
@@ -93,7 +93,7 @@ class Customer extends Component<Props, State> {
   //     headerRight: () => (
   //       <TouchableOpacity
   //         onPress={navigation.getParam('increaseCount')}
-        
+
   //         // color="#fff"
   //       ><Text>sd</Text>a</TouchableOpacity>
   //     ),
@@ -101,7 +101,7 @@ class Customer extends Component<Props, State> {
   //       backgroundColor: '#2B6EDC',
   //       color : 'white'
   //     },
-    
+
   //     headerTintColor: '#fff',
   //     headerTitleStyle: {
   //       fontWeight: 'bold',
@@ -111,7 +111,7 @@ class Customer extends Component<Props, State> {
 
 
 
-  
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -132,22 +132,13 @@ class Customer extends Component<Props, State> {
       fountainCount: 0,
     };
   }
-
-
-
-  search(search: search) {
-    this.setState({ searchText: search.searchText });
-    this._getCustomerList(this.state.orderType, search.searchText, this.state.dayOfWeek, this.state.page);
-
+  search() {
+    this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, 1);
   }
-
   componentWillMount() {
     this.setState({ refreshing: false });
     this._getCustomerList(this.state.orderType, this.state.searchText, this.state.dayOfWeek, this.state.page);
-
   }
-
-
   getMusteri(value: number) {
     // this.setState({
     //   productId: productId,
@@ -168,14 +159,14 @@ class Customer extends Component<Props, State> {
 
   }
 
-  openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number,fountainCount?:number) {
+  openModal(customerId: number, nameSurname: string, companyName: string, dayOfWeek?: number, fountainCount?: number) {
     this.setState({
       modalVisible: true,
       customerId: customerId,
       nameSurname: nameSurname,
       companyName: companyName,
       dayOfWeekCustomer: dayOfWeek,
-      fountainCount: fountainCount===null ? 0 : fountainCount,
+      fountainCount: fountainCount === null ? 0 : fountainCount,
     });
   }
 
@@ -237,7 +228,7 @@ class Customer extends Component<Props, State> {
         nameSurname: this.state.nameSurname,
         companyName: this.state.companyName,
         dayofWeekCustomer: this.state.dayOfWeekCustomer,
-        fountainCount:this.state.fountainCount,
+        fountainCount: this.state.fountainCount,
       })
 
   }
@@ -256,9 +247,10 @@ class Customer extends Component<Props, State> {
     else {
 
 
-      if (this.props.customers.length > 0 || (this.props.isHomeLoading && this.state.page>1)) {
+      if (this.props.customers.length > 0 || (this.props.isHomeLoading && this.state.page > 1)) {
         return (
           <View>
+            <NavigationEvents onWillFocus={()=>this.props.GetCustomers(1,"", 0, 1)}/>
             {this._renderActivity()}
             {/* <Header
           title="Müşteriler"
@@ -266,18 +258,18 @@ class Customer extends Component<Props, State> {
         /> */}
             <FlatList
 
-            style={{marginTop :10,marginBottom:110}}
+              style={{ marginTop: 10, marginBottom: 110 }}
               refreshing={this.state.refreshing}
               onRefresh={() => this.onRefresh()}
               data={this.props.customers}
               renderItem={({ item }) => (
                 <View style={styles.row}>
                   <TouchableOpacity style={styles.row_cell5} onPress={
-                    () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName, displayTookTotalAmount: item.displayTookTotalAmount, restTotalAmount : item.displayRestTotalAmount, totalAmount : item.displayTotalAmount })}>
+                    () => this.props.navigation.navigate("OrdersCustomer", { customerId: item.customerId, nameSurname: item.nameSurname, companyName: item.companyName, displayTookTotalAmount: item.displayTookTotalAmount, restTotalAmount: item.displayRestTotalAmount, totalAmount: item.displayTotalAmount })}>
                     <View style={styles.row_cell1}>
                       <Text style={styles.musteri_adi}>{item.nameSurname}</Text>
                       <Text style={styles.alt_bilgi}>{item.companyName}</Text>
-                      <Icon name="md-pint"><Text> {item.fountainCount ==null ? 0: item.fountainCount}</Text></Icon>
+                      <Icon name="md-pint"><Text> {item.fountainCount == null ? 0 : item.fountainCount}</Text></Icon>
                     </View>
                     <View style={styles.row_cell2}>
                       <Text style={styles.paratextalınan}>{item.displayTookTotalAmount} Alınan</Text>
@@ -289,7 +281,7 @@ class Customer extends Component<Props, State> {
                   <TouchableOpacity
                     style={styles.iconButtonCustomer}
 
-                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek,item.fountainCount)}>
+                    onPress={() => this.openModal(item.customerId, item.nameSurname, item.companyName, item.dayOfWeek, item.fountainCount)}>
 
                     <Icon name="md-more" size={24} color={"#C4B47B"} />
                   </TouchableOpacity>
@@ -340,12 +332,12 @@ class Customer extends Component<Props, State> {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#2B6EDC" />
-        
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <Modal
-          
+
             visible={this.state.modalVisible}
             animationType={'slide'}
             onRequestClose={() => this.closeModal()}
@@ -372,47 +364,41 @@ class Customer extends Component<Props, State> {
           </Modal>
           <View style={{ marginTop: 10 }}></View>
           <ScrollView bounces={false}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={girdiler}
-              onSubmit={values => this.search(values)}
-            >
-              {props => {
-                return (
-                  <View>
-                    <View style={styles.search_row}>
-                      <View style={styles.searchInput}>
-                      <Input
-                        placeholder="Ara"
-                        placeholderTextColor="#9A9A9A"
-                        value={props.values.searchText}
-                        autoCapitalize="none"
-                        onChangeText={props.handleChange("searchText")}
-                        onBlur={props.handleBlur("searchText")}
-                      />
-                      </View>
-                      <TouchableOpacity style={styles.searchButton}
-                        onPress={() => this.search(props.values)}>
-                        <Icon name="ios-arrow-round-forward" size={30} color={"#EBEDF1"} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                );
-              }}
-            </Formik>
+
+            <View>
+              <View style={styles.search_row}>
+                <View style={styles.searchInput}>
+                  <Input
+                    placeholder="Ara"
+                    placeholderTextColor="#9A9A9A"
+                    value={this.state.searchText}
+                    autoCapitalize="none"
+                    onChangeText={e=>
+                    this.setState({searchText:e})
+                    }
+           
+                  />
+                </View>
+                <TouchableOpacity style={styles.searchButton}
+                  onPress={() => this.search()}>
+                  <Icon name="ios-arrow-round-forward" size={30} color={"#EBEDF1"} />
+                </TouchableOpacity>
+              </View>
+            </View>
             <View style={styles.search_row}>
               <View style={styles.rnpickerselect}>
                 <RNPickerSelect
                   style={styles.pickerSelectStyles}
                   placeholder={placeholder}
-                  
+
                   onValueChange={(value) => (this.getMusteri(value))}
                   items={[
                     { label: 'Ödeme Alınacaklar', value: 2 },
                   ]}
-                  textInputProps={{ 
+                  textInputProps={{
 
-                    underlineColor: 'yellow' }}
+                    underlineColor: 'yellow'
+                  }}
                   Icon={() => {
                     return <Icon name="md-arrow-down" size={24} color="gray" style={{ top: Platform.OS == "ios" ? 0 : 15 }} />;
                   }}
