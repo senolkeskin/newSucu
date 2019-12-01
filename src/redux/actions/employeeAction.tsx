@@ -36,7 +36,6 @@ export function GetEmployees() {
                 }
             })
             .catch((err) => {
-                console.log(err + "error axios")
             });
     }
 }

@@ -6,7 +6,6 @@ import {Action} from '../states'
 
 
 export function AddUser(nameSurname:string, mail:string,password:string) {
-  console.log(nameSurname+" "+mail+" "+password);
   return (dispatch : Dispatch<Action>) =>  {
 
   axios.post(WATER_ADD_USER,
@@ -22,8 +21,7 @@ export function AddUser(nameSurname:string, mail:string,password:string) {
       }
     }
   })
-  .catch(error => { 
-    console.log(error + 'error kaydetme asn storage')   
+  .catch(error => {  
     dispatch(addUser(false,"Kullanıcı Eklenirken bir hata oluştuuu."));
   });
 

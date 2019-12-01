@@ -22,8 +22,6 @@ export function AddCash(orderId:number, amount:number) {
     }
   })
   .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
     dispatch(addCash(false,"Ödeme Alınırken bir hata oluştu."));
   });
 

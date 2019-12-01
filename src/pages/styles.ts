@@ -463,7 +463,22 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
+  modalCostButtonContainer:{
+    backgroundColor:'#FFFFFF',
+    paddingHorizontal:36,
+    margin:1,
+    borderRadius: 5,
+  },
+
   modalEditButtonText:{
+    textAlign: "center",
+    color: "#6E6E6E",
+    fontWeight: "900",
+    paddingVertical: 10,
+    marginHorizontal:10,   
+  },
+
+  modalCostButtonText:{
     textAlign: "center",
     color: "#6E6E6E",
     fontWeight: "900",

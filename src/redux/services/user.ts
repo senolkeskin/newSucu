@@ -18,7 +18,6 @@ export function fetchImageService(page?: number, limit?: number) {
 }
 
 export function loginUserService(username: string, password: string) {
-  console.log("username: "+username+" password: "+password)
 
   return axios.post(WATER_USER_LOGIN, {
     username: username,
@@ -26,7 +25,6 @@ export function loginUserService(username: string, password: string) {
   })
   .then((response) =>{
   if(response.data.isSuccess){
-    console.log(response.data.result.token)
   }
 
   })

@@ -6,7 +6,6 @@ import {Action} from '../states'
 
 
 export function customerEdit(id:number, nameSurname:string, companyName:string,dayOfWeek :number,fountainCount:number) {
-  console.log(dayOfWeek+"sfsfsfsafafsafasfsaf"+fountainCount)
   return (dispatch : Dispatch<Action>) =>  {
 
   axios.post(WATER_CUSTOMER_EDIT,
@@ -24,8 +23,7 @@ export function customerEdit(id:number, nameSurname:string, companyName:string,d
       }
     }
   })
-  .catch(error => {      
-    console.log(error + 'error kaydetme asn storage')   
+  .catch(error => {       
     dispatch(customerEditIsSucceed(false,"Bir hata oluştu."));
   });
   }

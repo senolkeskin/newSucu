@@ -17,9 +17,7 @@ export function GetUser(employeeId: number) {
 
         )
             .then((response) => {
-                console.log("fsfsaasfasfsafasfsafsafsafsafasfasf")
                 if (response.data.isSuccess) {
-                    console.log("fsfsaasfasfsafasfsafsafsafsafasfasf")
                     var userModel: IGetUserItem = {
                         userId: response.data.result.userId,
                         nameSurname: response.data.result.nameSurname,
@@ -27,7 +25,6 @@ export function GetUser(employeeId: number) {
                         password: response.data.result.password,
                         active: response.data.result.active,
                     };
-                    console.log(response.data.result.userId )
                     dispatch(user(userModel));
                 }
                 else {
@@ -35,7 +32,6 @@ export function GetUser(employeeId: number) {
                 }
             })
             .catch((err) => {
-                console.log(err + "error axios")
                 // dispatch(loading(false));
 
             });

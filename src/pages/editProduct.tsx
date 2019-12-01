@@ -63,7 +63,7 @@ const girdiler = Yup.object().shape({
 class editProduct extends Component<Props,state> {
 
   
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
 
       title: 'Ürün Bilgilerini Düzenle',
@@ -97,8 +97,6 @@ class editProduct extends Component<Props,state> {
     this.setState({
       status:this.props.navigation.getParam("productStatus"),
     })
-    console.log("param "+this.props.navigation.getParam("productStatus"))
-    console.log("will mount "+this.state.status)
   }
 
   handleAlert(){
@@ -116,7 +114,6 @@ class editProduct extends Component<Props,state> {
   }
 
   handleEditProduct(values: productData) {
-    console.log("fsfafsfffsff "+this.state.status)
     const { productEdit } = this.props;
     productEdit(
       this.props.navigation.getParam("productId"),

@@ -64,7 +64,7 @@ class editCustomer extends Component<Props, State> {
  
 
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
 
       title: 'Müşteri Düzenle',

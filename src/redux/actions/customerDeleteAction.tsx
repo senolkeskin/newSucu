@@ -21,8 +21,6 @@ export function customerDelete(id:number) {
     }
   })
   .catch(error => { 
-      
-    console.log(error + 'error kaydetme asn storage')   
     dispatch(customerDeleteIsSucceed(false,"Bir hata oluştu."));
   });
 

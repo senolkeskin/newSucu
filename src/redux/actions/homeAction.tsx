@@ -49,7 +49,6 @@ export function GetCustomers(orderType: number, searchText: string, dayOfWeek: n
         }
       })
       .catch((err) => {
-        console.log(err + "error axios")
         // dispatch(loading(false));
 
       });
@@ -99,7 +98,6 @@ export function GetCustomerMore(orderType: number, searchText: string, dayOfWeek
         }
       })
       .catch((err) => {
-        console.log(err + "error axios")
         // dispatch(loading(false));
 
       });

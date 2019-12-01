@@ -44,7 +44,6 @@ export function getCustomerPrice(customerId:number) {
   }
   })
   .catch((err) => {
-    console.log(err + "error axios") 
     // dispatch(loading(false));
 
   });

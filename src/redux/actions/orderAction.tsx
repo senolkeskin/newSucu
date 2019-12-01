@@ -22,7 +22,6 @@ export function GetOrders(customerId:number,pageIndex:number,pageSize:number) {
   .then((response) =>{
     
   if(response.data.isSuccess){
-    console.log(response.data.result.takeTotalAmount+"fsfsafafsafsafsafafsaf");
       var takeTotal:number = response.data.result.takeTotalAmount;
       var tookTotal:number = response.data.result.tookTotalAmount;
       var restTotal:number = response.data.result.restTotalAmount;
@@ -55,8 +54,6 @@ export function GetOrders(customerId:number,pageIndex:number,pageSize:number) {
   }
   })
   .catch((err) => {
-    console.log(err + "error axios") 
-    // dispatch(loading(false));
 
   });
 
@@ -112,8 +109,6 @@ else {
 }
 })
 .catch((err) => {
-  console.log(err + "error axios") 
-  // dispatch(loading(false));
 
 });
 

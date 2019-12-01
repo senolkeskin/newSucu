@@ -67,7 +67,7 @@ class addEmployee extends Component<Props, {}> {
     
 
 
-    static navigationOptions =  ({navigation}) => {
+    static navigationOptions =  ({navigation}:Props) => {
         return {
     
           title: "Çalışan Ekle",
@@ -113,7 +113,6 @@ class addEmployee extends Component<Props, {}> {
 
     handleAddEmployee(values: multi) {
         const { employeeAdd, AddUser } = this.props;
-        console.log(values.nameSurname+" "+values.mail+" "+values.password)
         employeeAdd(values.nameSurname, Number(values.monthlySalary),values.mail,values.password);
         // if (values.mail != "" && values.password != "") {
         //     AddUser(values.nameSurname, values.mail, values.password);

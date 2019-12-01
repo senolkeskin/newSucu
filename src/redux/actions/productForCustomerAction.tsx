@@ -36,7 +36,6 @@ export function GetProduct(productId:number,customerId:number) {
   }
   })
   .catch((err) => {
-    console.log(err + "error axios") 
     // dispatch(loading(false));
   });
   }

@@ -68,7 +68,7 @@ class addCustomer extends Component<Props, CustomerInserState> {
   
 
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
 
       title: 'Müşteri Ekle',

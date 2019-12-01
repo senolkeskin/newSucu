@@ -53,7 +53,6 @@ class Login extends Component<Props, {}> {
   handleLogin = (values: userData) => {
     const { loginUserService, isSucceed } = this.props;
     loginUserService(values.username, values.password);
-    console.log(isSucceed);
   };
 
   _renderLoginButton(pr: any) {
@@ -73,7 +72,6 @@ class Login extends Component<Props, {}> {
 
   render() {
     if (this.props.isSucceed) {
-      console.log("ata");
       this.props.navigation.navigate("Customer");
     }
     return (

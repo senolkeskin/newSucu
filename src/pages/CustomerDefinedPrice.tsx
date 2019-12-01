@@ -69,7 +69,7 @@ class Products extends Component<Props, State> {
     };
   }
 
-  static navigationOptions =  ({navigation}) => {
+  static navigationOptions =  ({navigation}:Props) => {
     return {
   
       title: 'Müşteriye Özel Ürün Fiyatları',
@@ -136,7 +136,6 @@ class Products extends Component<Props, State> {
 
 _renderView(){
   const {products, isLoading,navigation} = this.props;
-  console.log(isLoading);
   if(isLoading){
     return (<ActivityIndicator></ActivityIndicator>);
   }
