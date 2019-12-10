@@ -102,7 +102,7 @@ class addOrder extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      productId: 0,
+      productId: 19,
       productName: "",
       productCode: "",
       unitPrice: "",
@@ -174,8 +174,8 @@ class addOrder extends Component<Props, State> {
     }
 
     const placeholder = {
-      label: 'Ürün Seçiniz...',
-      value: '',
+      label: 'Ege Life Damacana',
+      value: 19,
       color: '#2B6EDC',
     };
 
