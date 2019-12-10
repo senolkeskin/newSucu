@@ -271,6 +271,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
   },
+
+  row_cell8: {
+    flex: 2,
+    flexDirection: 'column',
+    marginBottom: 10,
+    marginTop: 10,
+  },
   customerDetailHeader1: {
     flex: 0.4,
     flexDirection: 'column',
