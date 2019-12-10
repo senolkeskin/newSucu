@@ -295,7 +295,7 @@ class Employee extends Component<Props, State> {
         renderItem={({ item }) => (
           <View style={styles.row}>
             <View style={styles.row_cell5}>
-              <View style={styles.row_cell1}>
+              <View style={styles.row_cell8}>
                 <Text style={styles.musteri_adi}>{item.employeeName}</Text>
                 <Text style={styles.alt_bilgi}>İşe Giriş: {item.createDate.slice(8, 10) + "/" + item.createDate.slice(5, 7) + "/" + item.createDate.slice(0, 4)}</Text>
               </View>
