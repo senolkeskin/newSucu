@@ -67,11 +67,6 @@ class editProduct extends Component<Props,state> {
     return {
 
       title: 'Ürün Bilgilerini Düzenle',
-      headerRight: <TouchableOpacity style={{marginRight:20}}  onPress={()=> navigation.navigate('CustomerAdd')}>
-<Icon name="ios-add" size={40} style={{color:'white'}} />
-      </TouchableOpacity>,
-
-
     headerStyle: {
       backgroundColor: '#2B6EDC',
     },
