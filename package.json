@@ -14,7 +14,7 @@
     "formik": "^1.5.7",
     "jwt-decode": "^2.2.0",
     "react": "16.8.3",
-    "react-native": "0.59.9",
+    "react-native": "0.62.3",
     "react-native-date-picker": "^2.7.0",
     "react-native-elements": "^1.2.6",
     "react-native-flash-message": "^0.1.15",
